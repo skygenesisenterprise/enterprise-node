@@ -2,6 +2,7 @@
   "name": "@skygenesisenterprise/react",
   "version": "0.1.0",
   "description": "Enterprise React Integration - Hooks et composants React",
+  "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",

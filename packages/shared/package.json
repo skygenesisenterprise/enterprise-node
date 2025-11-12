@@ -2,6 +2,7 @@
   "name": "@skygenesisenterprise/shared",
   "version": "0.1.0",
   "description": "Enterprise SDK Shared - Types et utilitaires communs",
+  "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
