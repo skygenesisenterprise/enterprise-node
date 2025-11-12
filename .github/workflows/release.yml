@@ -6,23 +6,28 @@ on:
       - 'v*'
 
 jobs:
+  # ------------------------
+  # Test
+  # ------------------------
   test:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'pnpm'
 
-      - name: Install pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
+
+      - name: Verify pnpm
+        run: pnpm --version
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -36,21 +41,23 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+  # ------------------------
+  # Build
+  # ------------------------
   build:
     name: Build
     runs-on: ubuntu-latest
     needs: test
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'pnpm'
 
-      - name: Install pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -70,12 +77,15 @@ jobs:
             packages/*/lib
           retention-days: 1
 
+  # ------------------------
+  # Publish to NPM
+  # ------------------------
   publish:
     name: Publish to NPM
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -86,9 +96,8 @@ jobs:
         with:
           node-version: '18'
           registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
 
-      - name: Install pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -109,8 +118,7 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Update package versions
-        run: |
-          pnpm version $VERSION --no-git-tag-version
+        run: pnpm version ${{ steps.version.outputs.version }} --no-git-tag-version
 
       - name: Publish to NPM
         run: pnpm publish --no-git-checks --access public
@@ -128,32 +136,34 @@ jobs:
             ## Release v${{ steps.version.outputs.version }}
             
             ### Installation
-            \`\`\`bash
+            ```bash
             npm install @skygenesisenterprise/enterprise@${{ steps.version.outputs.version }}
-            \`\`\`
+            ```
             
             ### Verification
-            \`\`\`bash
+            ```bash
             npm view @skygenesisenterprise/enterprise@${{ steps.version.outputs.version }}
-            \`\`\`
+            ```
           draft: false
           prerelease: ${{ contains(steps.version.outputs.version, '-') }}
 
+  # ------------------------
+  # Update Documentation
+  # ------------------------
   update-docs:
     name: Update Documentation
     runs-on: ubuntu-latest
     needs: publish
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'pnpm'
 
-      - name: Install pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -171,6 +181,9 @@ jobs:
           publish_dir: ./docs/dist
           cname: docs.skygenesisenterprise.com
 
+  # ------------------------
+  # Notify Release (Slack)
+  # ------------------------
   notify:
     name: Notify Release
     runs-on: ubuntu-latest
