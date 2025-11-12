@@ -109,23 +109,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-  
+
       - name: Create release notes
         run: |
           cat > ./release-notes.md <<EOF
           ## Release ${{ github.ref_name }}
-  
+
           ### Installation
           \`\`\`bash
           npm install @skygenesisenterprise/enterprise@${{ github.ref_name }}
           \`\`\`
-  
+
           ### Verification
           \`\`\`bash
           npm view @skygenesisenterprise/enterprise@${{ github.ref_name }}
           \`\`\`
           EOF
-  
+
       - name: Upsert release (create or edit)
         run: |
           if gh release view "${{ github.ref_name }}" >/dev/null 2>&1; then
@@ -139,4 +139,3 @@ jobs:
               --prerelease=${{ contains(github.ref_name, '-') }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
