@@ -21,6 +21,7 @@ export interface EnterpriseConfig {
     ui?: boolean;
     project?: boolean;
     auth?: boolean;
+    sdk?: boolean;
   };
   runtime?: {
     wasmPath?: string;

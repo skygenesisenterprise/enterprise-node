@@ -78,6 +78,15 @@ export class EnterpriseSDK {
     return module;
   }
 
+  get sdk() {
+    this.ensureInitialized();
+    const module = this.loader!.getModule('sdk');
+    if (!module) {
+      throw new Error('SDK module not loaded');
+    }
+    return module;
+  }
+
   get runtime() {
     this.ensureInitialized();
     return this.loader!.getRuntime();

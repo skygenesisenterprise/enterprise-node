@@ -7,6 +7,7 @@ const config: EnterpriseConfig = {
     ui: true,
     project: true,
     auth: true,
+    sdk: true,
   },
   runtime: {
     wasmPath: '/wasm/euse_core.wasm',

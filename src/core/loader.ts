@@ -35,6 +35,9 @@ export class ModuleLoader {
     if (this.config.modules.auth) {
       modulePromises.push(this.loadModule('auth', () => import('../modules/auth')));
     }
+    if (this.config.modules.sdk) {
+      modulePromises.push(this.loadModule('sdk', () => import('../modules/sdk')));
+    }
 
     await Promise.all(modulePromises);
 
@@ -47,8 +50,9 @@ export class ModuleLoader {
   private async loadModule(name: string, importFn: () => Promise<any>): Promise<void> {
     try {
       const moduleExports = await importFn();
-      const ModuleClass = moduleExports.default || moduleExports[name.charAt(0).toUpperCase() + name.slice(1)];
-      
+      const ModuleClass =
+        moduleExports.default || moduleExports[name.charAt(0).toUpperCase() + name.slice(1)];
+
       if (ModuleClass && typeof ModuleClass === 'function') {
         const moduleInstance = new ModuleClass(this.runtime);
         await moduleInstance.init();
