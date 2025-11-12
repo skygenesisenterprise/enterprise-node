@@ -10,7 +10,7 @@ export class WasmRuntime implements RuntimeCore {
     initTime: 0,
     callCount: 0,
     averageCallTime: 0,
-    errorRate: 0
+    errorRate: 0,
   };
   private errorCount = 0;
   private totalCallTime = 0;
@@ -25,24 +25,31 @@ export class WasmRuntime implements RuntimeCore {
     try {
       const wasmPath = '/wasm/euse_core.wasm';
       const response = await fetch(wasmPath);
-      
+
       if (!response.ok) {
         throw new Error(`Failed to load WASM module: ${response.statusText}`);
       }
 
       const wasmBytes = await response.arrayBuffer();
       this.wasmModule = await WebAssembly.compile(wasmBytes);
-      
+
       this.memory = new WebAssembly.Memory({ initial: 256, maximum: 512 });
       const importObject = this.createImportObject();
       this.wasmInstance = await WebAssembly.instantiate(this.wasmModule, importObject);
-      
+
       this.isInitialized = true;
       this.performanceMetrics.initTime = performance.now() - startTime;
-      
-      this.logger.info('runtime', `WASM runtime initialized successfully in ${this.performanceMetrics.initTime.toFixed(2)}ms`);
+
+      this.logger.info(
+        'runtime',
+        `WASM runtime initialized successfully in ${this.performanceMetrics.initTime.toFixed(2)}ms`
+      );
     } catch (error) {
-      this.logger.warn('runtime', 'WASM runtime initialization failed, falling back to JS simulation', { error });
+      this.logger.warn(
+        'runtime',
+        'WASM runtime initialization failed, falling back to JS simulation',
+        { error }
+      );
       this.isInitialized = false;
       this.performanceMetrics.initTime = performance.now() - startTime;
     }
@@ -63,7 +70,7 @@ export class WasmRuntime implements RuntimeCore {
         this.updateCallMetrics(startTime, false);
         return result;
       }
-      
+
       throw new Error(`Method '${method}' not found in WASM exports`);
     } catch (error) {
       this.errorCount++;
@@ -86,28 +93,30 @@ export class WasmRuntime implements RuntimeCore {
       return {
         used: this.memory.buffer.byteLength,
         total: this.memory.buffer.byteLength,
-        wasmHeap: this.memory.buffer.byteLength
+        wasmHeap: this.memory.buffer.byteLength,
       };
     }
 
     // Fallback: estimate JS memory usage
     return {
       used: 0,
-      total: 0
+      total: 0,
     };
   }
 
   getPerformanceMetrics(): PerformanceMetrics {
-    const errorRate = this.performanceMetrics.callCount > 0 
-      ? this.errorCount / this.performanceMetrics.callCount 
-      : 0;
+    const errorRate =
+      this.performanceMetrics.callCount > 0
+        ? this.errorCount / this.performanceMetrics.callCount
+        : 0;
 
     return {
       ...this.performanceMetrics,
       errorRate,
-      averageCallTime: this.performanceMetrics.callCount > 0 
-        ? this.totalCallTime / this.performanceMetrics.callCount 
-        : 0
+      averageCallTime:
+        this.performanceMetrics.callCount > 0
+          ? this.totalCallTime / this.performanceMetrics.callCount
+          : 0,
     };
   }
 
@@ -116,7 +125,9 @@ export class WasmRuntime implements RuntimeCore {
       env: {
         memory: this.memory!,
         table: new WebAssembly.Table({ initial: 0, element: 'anyfunc' }),
-        abort: () => { throw new Error('Aborted'); },
+        abort: () => {
+          throw new Error('Aborted');
+        },
         log: (ptr: number, len: number) => {
           this.logger.debug('wasm', 'WASM Log', { ptr, len });
         },
@@ -134,75 +145,75 @@ export class WasmRuntime implements RuntimeCore {
             const string = new TextDecoder().decode(bytes);
             console.error('[WASM]', string);
           }
-        }
-      }
+        },
+      },
     };
   }
 
   private simulateCall(method: string, ...args: any[]): any {
     const simulations: Record<string, Function> = {
-      'ai_enhance': (image: any) => ({ 
-        enhanced: true, 
+      ai_enhance: (image: any) => ({
+        enhanced: true,
         data: image,
-        metadata: { algorithm: 'js-simulation', version: '0.1.0' }
+        metadata: { algorithm: 'js-simulation', version: '0.1.0' },
       }),
-      'ai_generate': (prompt: string, options?: any) => ({ 
+      ai_generate: (prompt: string, _options?: any) => ({
         text: `Generated (simulated): ${prompt}`,
-        usage: { tokens: 100, model: 'simulation-model' }
+        usage: { tokens: 100, model: 'simulation-model' },
       }),
-      'storage_save': (file: any, options?: any) => ({ 
+      storage_save: (file: any, _options?: any) => ({
         path: `/storage/simulated/${Date.now()}`,
         size: file?.size || 0,
-        hash: 'simulated-hash'
+        hash: 'simulated-hash',
       }),
-      'storage_load': (path: string) => ({ 
-        data: `Simulated data from ${path}`,
-        metadata: { simulated: true }
+      storage_load: (_path: string) => ({
+        data: `Simulated data from simulated path`,
+        metadata: { simulated: true },
       }),
-      'storage_delete': (path: string) => ({ deleted: true }),
-      'ui_notify': (message: string, options?: any) => ({ 
+      storage_delete: (_path: string) => ({ deleted: true }),
+      ui_notify: (_message: string, _options?: any) => ({
         id: `simulated-${Date.now()}`,
-        shown: true 
+        shown: true,
       }),
-      'ui_modal': (options?: any) => ({ 
+      ui_modal: (_options?: any) => ({
         id: `simulated-modal-${Date.now()}`,
         opened: true,
-        result: true
+        result: true,
       }),
-      'project_create': (project: any) => ({ 
+      project_create: (project: any) => ({
         ...project,
         id: `simulated-project-${Date.now()}`,
-        createdAt: Date.now()
+        createdAt: Date.now(),
       }),
-      'project_open': (projectId: string) => ({ 
-        project: { 
-          id: projectId, 
+      project_open: (_projectId: string) => ({
+        project: {
+          id: 'simulated-project-id',
           name: 'Simulated Project',
-          simulated: true
+          simulated: true,
         },
-        opened: true
+        opened: true,
       }),
-      'project_save': (project: any) => ({ saved: true }),
-      'project_delete': (projectId: string) => ({ deleted: true }),
-      'auth_login': (credentials: any) => ({ 
-        user: { 
+      project_save: (_project: any) => ({ saved: true }),
+      project_delete: (_projectId: string) => ({ deleted: true }),
+      auth_login: (credentials: any) => ({
+        user: {
           id: 'simulated-user',
           email: credentials.email,
-          name: 'Simulated User'
+          name: 'Simulated User',
         },
         token: 'simulated-token',
-        session: { expiresAt: Date.now() + 86400000 }
+        session: { expiresAt: Date.now() + 86400000 },
       }),
-      'auth_logout': () => ({ loggedOut: true }),
-      'auth_register': (userData: any) => ({ 
-        user: { 
+      auth_logout: () => ({ loggedOut: true }),
+      auth_register: (userData: any) => ({
+        user: {
           id: 'simulated-new-user',
           email: userData.email,
-          name: userData.name || 'New User'
+          name: userData.name || 'New User',
         },
         token: 'simulated-new-token',
-        session: { expiresAt: Date.now() + 86400000 }
-      })
+        session: { expiresAt: Date.now() + 86400000 },
+      }),
     };
 
     const simulation = simulations[method];
@@ -216,7 +227,7 @@ export class WasmRuntime implements RuntimeCore {
   private updateCallMetrics(startTime: number, hadError: boolean): void {
     const callTime = performance.now() - startTime;
     this.totalCallTime += callTime;
-    
+
     if (hadError) {
       this.errorCount++;
     }

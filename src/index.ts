@@ -2,6 +2,14 @@ import { ModuleLoader } from './core/loader';
 import { loadConfig, setConfig } from './core/config';
 import { EnterpriseConfig } from './types';
 
+// Import module classes for direct export
+import { Ai } from '../packages/modules/ai/src/index';
+import { Storage } from '../packages/modules/storage/src/index';
+import { UIManager } from '../packages/modules/ui/src/index';
+import { AuthManager } from '../packages/modules/auth/src/index';
+import { ProjectManager } from '../packages/modules/project/src/index';
+import { SDK } from '../packages/modules/sdk/src/index';
+
 export class EnterpriseSDK {
   private loader: ModuleLoader | null = null;
   private config: EnterpriseConfig;
@@ -121,6 +129,14 @@ export class EnterpriseSDK {
   }
 }
 
+// Factory function for creating SDK instances
+export async function createEnterprise(config?: Partial<EnterpriseConfig>): Promise<EnterpriseSDK> {
+  const sdk = new EnterpriseSDK(config);
+  await sdk.initialize();
+  return sdk;
+}
+
+// Legacy singleton instance
 const Enterprise = new EnterpriseSDK();
 
 if (typeof window !== 'undefined') {
@@ -131,8 +147,39 @@ if (typeof global !== 'undefined') {
   (global as any).Enterprise = Enterprise;
 }
 
-export { EnterpriseSDK, Enterprise };
+// Core exports
+export { Enterprise };
+
+// Module class exports for direct usage
+export { Ai, Storage, UIManager, AuthManager, ProjectManager, SDK };
+
+// Module type exports
+export type {
+  AIEnhanceOptions,
+  AIGenerateOptions,
+  AIAnalyzeOptions,
+  AIEnhanceResult,
+  AIGenerateResult,
+  AIAnalyzeResult,
+} from '../packages/modules/ai/src/index';
+
+export type {
+  StorageSaveOptions,
+  StorageLoadOptions,
+  StorageFileInfo,
+} from '../packages/modules/storage/src/index';
+
+export type { UIComponent, Theme } from '../packages/modules/ui/src/index';
+
+export type { AuthConfig, User } from '../packages/modules/auth/src/index';
+
+export type { Project, Task } from '../packages/modules/project/src/index';
+
+export type { SDKMetaInfo, SDKSelfReferenceOptions } from '../packages/modules/sdk/src/index';
+
+// Utility exports
 export * from './types';
 export * from './hooks';
 
+// Default export
 export default Enterprise;

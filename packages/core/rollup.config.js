@@ -9,24 +9,23 @@ export default defineConfig([
       {
         file: 'dist/index.js',
         format: 'cjs',
-        sourcemap: true
+        sourcemap: true,
       },
       {
         file: 'dist/index.esm.js',
         format: 'es',
-        sourcemap: true
-      }
+        sourcemap: true,
+      },
     ],
     plugins: [
       nodeResolve({
-        preferBuiltins: true
+        preferBuiltins: true,
       }),
       typescript({
         tsconfig: './tsconfig.json',
-        declaration: false,
+        declaration: true,
         declarationDir: 'dist',
-        rootDir: 'src'
-      })
+      }),
     ],
     external: [
       '@skygenesisenterprise/shared',
@@ -34,7 +33,7 @@ export default defineConfig([
       '@skygenesisenterprise/module-storage',
       '@skygenesisenterprise/module-ui',
       '@skygenesisenterprise/module-project',
-      '@skygenesisenterprise/module-auth'
-    ]
-  }
+      '@skygenesisenterprise/module-auth',
+    ],
+  },
 ]);

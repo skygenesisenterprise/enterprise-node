@@ -74,11 +74,11 @@ export class Ai {
 
   async init(): Promise<void> {
     // this.logger.info('ai', 'Initializing AI module...');
-    
+
     try {
       // Initialize AI-specific resources
       // await this.runtime.call('ai_init', this.config.modules.ai);
-      
+
       this.isInitializedModule = true;
       // this.logger.info('ai', 'AI module initialized successfully');
     } catch (error) {
@@ -89,7 +89,7 @@ export class Ai {
 
   async destroy(): Promise<void> {
     // this.logger.info('ai', 'Destroying AI module...');
-    
+
     try {
       // await this.runtime.call('ai_destroy');
       this.isInitializedModule = false;
@@ -104,11 +104,11 @@ export class Ai {
   }
 
   async enhance(
-    image: File | ArrayBuffer | string, 
+    image: File | ArrayBuffer | string,
     options: AIEnhanceOptions = {}
   ): Promise<AIEnhanceResult> {
     this.ensureInitialized();
-    
+
     // const startTime = performance.now();
     // this.logger.debug('ai', 'Enhancing image', { options });
 
@@ -122,8 +122,8 @@ export class Ai {
       // });
 
       // const processingTime = performance.now() - startTime;
-      
-      // this.logger.info('ai', 'Image enhanced successfully', { 
+
+      // this.logger.info('ai', 'Image enhanced successfully', {
       //   processingTime,
       //   quality: options.quality || 'high'
       // });
@@ -136,21 +136,20 @@ export class Ai {
           enhancedSize: 0,
           processingTime: 0,
           algorithm: 'euse-enhance-v0.1.0',
-          quality: options.quality || 'high'
-        }
+          quality: options.quality || 'high',
+        },
       };
     } catch (error) {
       // this.logger.error('ai', 'Failed to enhance image', { error });
-      throw new Error(`AI enhance failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `AI enhance failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
-  async generate(
-    prompt: string, 
-    options: AIGenerateOptions = {}
-  ): Promise<AIGenerateResult> {
+  async generate(prompt: string, options: AIGenerateOptions = {}): Promise<AIGenerateResult> {
     this.ensureInitialized();
-    
+
     // const startTime = performance.now();
     // this.logger.debug('ai', 'Generating text', { prompt: prompt.substring(0, 100), options });
 
@@ -166,8 +165,8 @@ export class Ai {
       // });
 
       // const processingTime = performance.now() - startTime;
-      
-      // this.logger.info('ai', 'Text generated successfully', { 
+
+      // this.logger.info('ai', 'Text generated successfully', {
       //   processingTime,
       //   model: options.model || 'euse-generate-v0.1.0',
       //   tokens: result.usage?.totalTokens || 0
@@ -178,26 +177,25 @@ export class Ai {
         usage: {
           promptTokens: prompt.length,
           completionTokens: 50,
-          totalTokens: prompt.length + 50
+          totalTokens: prompt.length + 50,
         },
         metadata: {
           model: options.model || 'euse-generate-v0.1.0',
           processingTime: 0,
-          finishReason: 'completed'
-        }
+          finishReason: 'completed',
+        },
       };
     } catch (error) {
       // this.logger.error('ai', 'Failed to generate text', { error });
-      throw new Error(`AI generate failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `AI generate failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
-  async analyze(
-    data: any, 
-    options: AIAnalyzeOptions = {}
-  ): Promise<AIAnalyzeResult> {
+  async analyze(_data: any, options: AIAnalyzeOptions = {}): Promise<AIAnalyzeResult> {
     this.ensureInitialized();
-    
+
     // const startTime = performance.now();
     // this.logger.debug('ai', 'Analyzing data', { type: options.type, dataType: typeof data });
 
@@ -209,8 +207,8 @@ export class Ai {
       // });
 
       // const processingTime = performance.now() - startTime;
-      
-      // this.logger.info('ai', 'Data analyzed successfully', { 
+
+      // this.logger.info('ai', 'Data analyzed successfully', {
       //   processingTime,
       //   analysisType: options.type || 'comprehensive',
       //   insightsCount: result.insights?.length || 0
@@ -222,12 +220,14 @@ export class Ai {
         metadata: {
           analysisType: options.type || 'comprehensive',
           processingTime: 0,
-          model: 'euse-analyze-v0.1.0'
-        }
+          model: 'euse-analyze-v0.1.0',
+        },
       };
     } catch (error) {
       // this.logger.error('ai', 'Failed to analyze data', { error });
-      throw new Error(`AI analyze failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `AI analyze failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -249,21 +249,21 @@ export class Ai {
             id: 'euse-generate-v0.1.0',
             name: 'EUSE Generate',
             type: 'text',
-            capabilities: ['text-generation', 'completion', 'chat']
+            capabilities: ['text-generation', 'completion', 'chat'],
           },
           {
             id: 'euse-enhance-v0.1.0',
             name: 'EUSE Enhance',
             type: 'image',
-            capabilities: ['image-enhancement', 'upscale', 'denoise']
+            capabilities: ['image-enhancement', 'upscale', 'denoise'],
           },
           {
             id: 'euse-analyze-v0.1.0',
             name: 'EUSE Analyze',
             type: 'multimodal',
-            capabilities: ['sentiment-analysis', 'entity-extraction', 'summarization']
-          }
-        ]
+            capabilities: ['sentiment-analysis', 'entity-extraction', 'summarization'],
+          },
+        ],
       };
     } catch (error) {
       // this.logger.error('ai', 'Failed to get models', { error });
@@ -285,9 +285,9 @@ export const manifest = {
   author: 'Sky Genesis Enterprise',
   dependencies: [],
   exports: {
-    '.': './index.js'
+    '.': './index.js',
   },
-  runtime: 'hybrid' as const
+  runtime: 'hybrid' as const,
 };
 
 export default Ai;

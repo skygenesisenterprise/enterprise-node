@@ -16,17 +16,10 @@
     "resolveJsonModule": true,
     "types": ["node", "react", "react-dom"],
     "paths": {
-      "@skygenesisenterprise/shared": ["../../shared/src"],
-      "@skygenesisenterprise/core": ["../../core/src"]
+      "@skygenesisenterprise/shared": ["../../shared/src/index.ts"],
+      "@skygenesisenterprise/enterprise": ["../../core/src/index.ts"]
     }
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }

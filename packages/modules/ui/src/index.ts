@@ -12,10 +12,10 @@ export interface Theme {
 }
 
 export class UIManager {
-  private theme: Theme;
+  private _theme: Theme;
 
-  constructor(theme: Theme) {
-    this.theme = theme;
+  constructor(_theme: Theme) {
+    this._theme = _theme;
   }
 
   createComponent(config: Omit<UIComponent, 'id'>): UIComponent {
@@ -31,7 +31,7 @@ export class UIManager {
   }
 
   private generateId(): string {
-    return Math.random().toString(36).substr(2, 9);
+    return Math.random().toString(36).substring(2, 11);
   }
 }
 

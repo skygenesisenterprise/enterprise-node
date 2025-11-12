@@ -10,7 +10,7 @@ export async function devCommand(options: { port: string; host: string }) {
   try {
     // Détecter le framework et démarrer le serveur approprié
     const framework = await detectFramework();
-    
+
     let command: string[];
     switch (framework) {
       case 'nextjs':
@@ -32,7 +32,7 @@ export async function devCommand(options: { port: string; host: string }) {
     // Démarrer le processus
     const child = spawn(command[0], command.slice(1), {
       stdio: 'inherit',
-      cwd: process.cwd()
+      cwd: process.cwd(),
     });
 
     child.on('error', (error) => {
@@ -50,7 +50,6 @@ export async function devCommand(options: { port: string; host: string }) {
       child.kill('SIGTERM');
       process.exit(0);
     });
-
   } catch (error) {
     spinner.fail('Erreur lors du démarrage');
     console.error(chalk.red('Erreur:'), error instanceof Error ? error.message : error);
@@ -60,15 +59,14 @@ export async function devCommand(options: { port: string; host: string }) {
 
 async function detectFramework(): Promise<string> {
   const fs = await import('fs-extra');
-  const cwd = process.cwd();
 
   // Vérifier Next.js
-  if (await fs.pathExists('next.config.js') || await fs.pathExists('next.config.ts')) {
+  if ((await fs.pathExists('next.config.js')) || (await fs.pathExists('next.config.ts'))) {
     return 'nextjs';
   }
 
   // Vérifier React (Vite)
-  if (await fs.pathExists('vite.config.js') || await fs.pathExists('vite.config.ts')) {
+  if ((await fs.pathExists('vite.config.js')) || (await fs.pathExists('vite.config.ts'))) {
     return 'react';
   }
 

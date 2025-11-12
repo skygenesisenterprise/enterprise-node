@@ -12,22 +12,20 @@ export class EnterpriseSDK {
   // private logger = Logger.getInstance();
   // private diagnostics = DiagnosticsCollector.getInstance();
 
-  constructor(userConfig?: any) {
+  constructor(_userConfig?: any) {
     // if (userConfig) {
     //   setConfig(userConfig);
     // }
     // this.config = loadConfig();
-    
     // // Configure logger based on config
     // this.logger.setDebugMode(this.config.debug || false);
-    
     // this.logger.info('enterprise', 'Enterprise SDK instance created');
     // this.diagnostics.recordEvent('sdk.instance.created', { config: this.config });
   }
 
   async initialize(): Promise<void> {
     if (this.isInitialized) {
-      this.logger.warn('enterprise', 'SDK already initialized');
+      // this.logger.warn('enterprise', 'SDK already initialized');
       return;
     }
 
@@ -62,7 +60,9 @@ export class EnterpriseSDK {
       //   'enterprise',
       //   { cause: error }
       // );
-      throw new Error(`Failed to initialize Enterprise SDK: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to initialize Enterprise SDK: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     } finally {
       this.initializationPromise = null;
     }
@@ -155,7 +155,7 @@ export class EnterpriseSDK {
     return {};
   }
 
-  updateConfig(updates: any): void {
+  updateConfig(_updates: any): void {
     // this.config = { ...this.config, ...updates };
     // setConfig(updates);
     // this.logger.setDebugMode(this.config.debug || false);
@@ -184,7 +184,7 @@ export class EnterpriseSDK {
     return JSON.stringify({ diagnostics: 'placeholder' }, null, 2);
   }
 
-  async reloadModule(name: string): Promise<void> {
+  async reloadModule(_name: string): Promise<void> {
     this.ensureInitialized();
     // await this.loader!.reloadModule(name);
     // this.diagnostics.recordEvent('sdk.module.reloaded', { module: name });
@@ -235,7 +235,7 @@ if (typeof global !== 'undefined') {
   (global as any).Enterprise = Enterprise;
 }
 
-export { EnterpriseSDK, Enterprise };
+export { Enterprise };
 // export * from '@skygenesisenterprise/shared';
 // export * from './runtime/wasm-runtime';
 // export * from './loader/module-loader';

@@ -1,5 +1,16 @@
-import { ModuleInterface } from '@skygenesisenterprise/shared';
-import { EnterpriseSDK } from '@skygenesisenterprise/enterprise-node';
+// import { ModuleInterface } from '@skygenesisenterprise/shared';
+// import { EnterpriseSDK } from '@skygenesisenterprise/enterprise-node';
+
+interface ModuleInterface {
+  name: string;
+  version: string;
+  init(): Promise<void>;
+  destroy(): Promise<void>;
+}
+
+declare class EnterpriseSDK {
+  // Placeholder for EnterpriseSDK type
+}
 
 export interface SDKMetaInfo {
   version: string;

@@ -26,9 +26,9 @@ export class ProjectManager {
       id: this.generateId(),
       ...data,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
-    
+
     this.projects.set(project.id, project);
     this.tasks.set(project.id, []);
     return project;
@@ -40,13 +40,13 @@ export class ProjectManager {
 
   createTask(projectId: string, data: Omit<Task, 'id' | 'projectId'>): Task | null {
     if (!this.projects.has(projectId)) return null;
-    
+
     const task: Task = {
       id: this.generateId(),
       projectId,
-      ...data
+      ...data,
     };
-    
+
     const tasks = this.tasks.get(projectId) || [];
     tasks.push(task);
     this.tasks.set(projectId, tasks);
@@ -58,7 +58,7 @@ export class ProjectManager {
   }
 
   private generateId(): string {
-    return Math.random().toString(36).substr(2, 9);
+    return Math.random().toString(36).substring(2, 11);
   }
 }
 

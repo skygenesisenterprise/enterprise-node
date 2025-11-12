@@ -42,7 +42,7 @@ export class Storage {
 
   async init(): Promise<void> {
     // this.logger.info('storage', 'Initializing Storage module...');
-    
+
     try {
       // await this.runtime.call('storage_init', this.config.modules.storage);
       this.isInitializedModule = true;
@@ -55,7 +55,7 @@ export class Storage {
 
   async destroy(): Promise<void> {
     // this.logger.info('storage', 'Destroying Storage module...');
-    
+
     try {
       // await this.runtime.call('storage_destroy');
       this.cache.clear();
@@ -71,18 +71,18 @@ export class Storage {
   }
 
   async save(
-    file: File | ArrayBuffer | string, 
+    file: File | ArrayBuffer | string,
     options: StorageSaveOptions = {}
   ): Promise<{ path: string; size: number; hash: string }> {
     this.ensureInitialized();
-    
+
     // const startTime = performance.now();
     // this.logger.debug('storage', 'Saving file', { options });
 
     try {
       const path = options.path || `/storage/${Date.now()}_${this.getFileName(file)}`;
       const size = this.getFileSize(file);
-      
+
       // const result = await this.runtime.call('storage_save', file, {
       //   path,
       //   metadata: options.metadata,
@@ -96,34 +96,36 @@ export class Storage {
         this.cache.set(path, {
           data: file,
           metadata: options.metadata,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         });
       }
 
       // const processingTime = performance.now() - startTime;
-      // this.logger.info('storage', 'File saved successfully', { 
-      //   path, 
-      //   size, 
-      //   processingTime 
+      // this.logger.info('storage', 'File saved successfully', {
+      //   path,
+      //   size,
+      //   processingTime
       // });
 
       return {
         path: path,
         size,
-        hash: this.generateHash(file)
+        hash: this.generateHash(file),
       };
     } catch (error) {
       // this.logger.error('storage', 'Failed to save file', { error });
-      throw new Error(`Storage save failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Storage save failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
   async load(
-    filePath: string, 
+    filePath: string,
     options: StorageLoadOptions = {}
   ): Promise<{ data: any; metadata?: any }> {
     this.ensureInitialized();
-    
+
     // this.logger.debug('storage', 'Loading file', { filePath, options });
 
     try {
@@ -134,7 +136,7 @@ export class Storage {
           // this.logger.debug('storage', 'File loaded from cache', { filePath });
           return {
             data: cached.data,
-            metadata: cached.metadata
+            metadata: cached.metadata,
           };
         }
       }
@@ -147,23 +149,25 @@ export class Storage {
       // });
 
       // this.logger.info('storage', 'File loaded successfully', { filePath });
-      
+
       throw new Error('File not found');
     } catch (error) {
       // this.logger.error('storage', 'Failed to load file', { error, filePath });
-      throw new Error(`Storage load failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Storage load failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
   async delete(filePath: string): Promise<{ deleted: boolean }> {
     this.ensureInitialized();
-    
+
     // this.logger.debug('storage', 'Deleting file', { filePath });
 
     try {
       this.cache.delete(filePath);
       // await this.runtime.call('storage_delete', filePath);
-      
+
       // this.logger.info('storage', 'File deleted successfully', { filePath });
       return { deleted: true };
     } catch (error) {
@@ -172,14 +176,14 @@ export class Storage {
     }
   }
 
-  async list(directory?: string): Promise<{
+  async list(_directory?: string): Promise<{
     files: StorageFileInfo[];
   }> {
     this.ensureInitialized();
 
     try {
       // const result = await this.runtime.call('storage_list', directory);
-      
+
       // Combine with cached files
       const cachedFiles = Array.from(this.cache.entries()).map(([path, cached]) => ({
         path,
@@ -187,13 +191,13 @@ export class Storage {
         hash: this.generateHash(cached.data),
         createdAt: cached.timestamp,
         modifiedAt: cached.timestamp,
-        metadata: cached.metadata
+        metadata: cached.metadata,
       }));
 
       const allFiles = [...cachedFiles];
-      
+
       return {
-        files: allFiles.sort((a, b) => b.modifiedAt - a.modifiedAt)
+        files: allFiles.sort((a, b) => b.modifiedAt - a.modifiedAt),
       };
     } catch (error) {
       // this.logger.error('storage', 'Failed to list files', { error, directory });
@@ -208,7 +212,7 @@ export class Storage {
       if (this.cache.has(filePath)) {
         return true;
       }
-      
+
       // const result = await this.runtime.call('storage_exists', filePath);
       return false;
     } catch (error) {
@@ -233,14 +237,14 @@ export class Storage {
       return {
         totalFiles: 0,
         totalSize: 0,
-        cacheSize
+        cacheSize,
       };
     } catch (error) {
       // this.logger.error('storage', 'Failed to get storage stats', { error });
       return {
         totalFiles: 0,
         totalSize: 0,
-        cacheSize: 0
+        cacheSize: 0,
       };
     }
   }
@@ -282,9 +286,9 @@ export const manifest = {
   author: 'Sky Genesis Enterprise',
   dependencies: [],
   exports: {
-    '.': './index.js'
+    '.': './index.js',
   },
-  runtime: 'hybrid' as const
+  runtime: 'hybrid' as const,
 };
 
 export default Storage;

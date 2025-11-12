@@ -11,11 +11,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "build": "rollup -c rollup.config.cjs",
+    "dev": "rollup -c rollup.config.cjs -w",
     "test": "vitest",
-    "typecheck": "tsc --noEmit",
-    "clean": "rimraf dist"
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "sdk",

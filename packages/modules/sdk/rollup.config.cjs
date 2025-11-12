@@ -1,9 +1,6 @@
-import { resolve } from 'path';
-import { fileURLToPath } from 'url';
+const { resolve } = require('path');
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
-
-export default {
+module.exports = {
   input: resolve(__dirname, 'src/index.ts'),
   output: [
     {
@@ -22,5 +19,5 @@ export default {
       tsconfig: resolve(__dirname, 'tsconfig.json'),
     }),
   ],
-  external: ['@skygenesisenterprise/shared', '@skygenesisenterprise/enterprise-node'],
+  external: ['@skygenesisenterprise/shared'],
 };

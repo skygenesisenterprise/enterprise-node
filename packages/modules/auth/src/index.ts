@@ -13,16 +13,16 @@ export interface User {
 export class AuthManager {
   private config: AuthConfig;
 
-  constructor(config: AuthConfig) {
-    this.config = config;
+  constructor(_config: AuthConfig) {
+    this.config = _config;
   }
 
-  async authenticate(credentials: Record<string, any>): Promise<User | null> {
+  async authenticate(_credentials: Record<string, any>): Promise<User | null> {
     // Implementation placeholder
     return null;
   }
 
-  async authorize(user: User, resource: string, action: string): Promise<boolean> {
+  async authorize(user: User, _resource: string, _action: string): Promise<boolean> {
     // Implementation placeholder
     return user.roles.includes('admin');
   }

@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import path from 'path';
 
 export async function initCommand(options: { force: boolean; typescript: boolean }) {
-  console.log(chalk.blue.bold('🔧 Initialisation d\'Enterprise SDK'));
+  console.log(chalk.blue.bold("🔧 Initialisation d'Enterprise SDK"));
 
   try {
     const cwd = process.cwd();
@@ -21,13 +21,13 @@ export async function initCommand(options: { force: boolean; typescript: boolean
     const dependencies = {
       '@skygenesisenterprise/enterprise': '^0.1.0',
       '@skygenesisenterprise/react': '^0.1.0',
-      ...packageJson.dependencies
+      ...packageJson.dependencies,
     };
 
     const devDependencies = {
       '@skygenesisenterprise/cli': '^0.1.0',
       '@skygenesisenterprise/eslint-config': '^0.1.0',
-      ...packageJson.devDependencies
+      ...packageJson.devDependencies,
     };
 
     packageJson.dependencies = dependencies;
@@ -36,9 +36,9 @@ export async function initCommand(options: { force: boolean; typescript: boolean
     // Ajouter les scripts
     packageJson.scripts = {
       ...packageJson.scripts,
-      'dev': 'enterprise dev',
-      'build': 'enterprise build',
-      'enterprise:doctor': 'enterprise doctor'
+      dev: 'enterprise dev',
+      build: 'enterprise build',
+      'enterprise:doctor': 'enterprise doctor',
     };
 
     // Écrire le package.json mis à jour
@@ -46,18 +46,20 @@ export async function initCommand(options: { force: boolean; typescript: boolean
 
     // Créer enterprise.config.ts
     const configPath = path.join(cwd, 'enterprise.config.ts');
-    
+
     if (!(await fs.pathExists(configPath)) || options.force) {
       const configContent = generateConfig(options.typescript);
       await fs.writeFile(configPath, configContent);
       console.log(chalk.green('✓ enterprise.config.ts créé'));
     } else {
-      console.log(chalk.yellow('⚠ enterprise.config.ts existe déjà (utilisez --force pour écraser)'));
+      console.log(
+        chalk.yellow('⚠ enterprise.config.ts existe déjà (utilisez --force pour écraser)')
+      );
     }
 
     // Créer .eslintrc.js
     const eslintPath = path.join(cwd, '.eslintrc.js');
-    
+
     if (!(await fs.pathExists(eslintPath)) || options.force) {
       const eslintContent = generateEslintConfig();
       await fs.writeFile(eslintPath, eslintContent);
@@ -70,16 +72,13 @@ export async function initCommand(options: { force: boolean; typescript: boolean
     console.log(chalk.cyan('\nProchaines étapes:'));
     console.log('  npm install');
     console.log('  npm run dev');
-
   } catch (error) {
     console.error(chalk.red('Erreur:'), error instanceof Error ? error.message : error);
     process.exit(1);
   }
 }
 
-function generateConfig(typescript: boolean): string {
-  const ext = typescript ? 'ts' : 'js';
-  
+function generateConfig(_typescript: boolean): string {
   return `import { EnterpriseConfig } from '@skygenesisenterprise/enterprise';
 
 const config: EnterpriseConfig = {

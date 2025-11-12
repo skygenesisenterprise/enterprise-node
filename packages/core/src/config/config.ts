@@ -15,23 +15,23 @@ export function loadConfig(): EnterpriseConfig {
       storage: true,
       ui: true,
       project: true,
-      auth: true
+      auth: true,
     },
     runtime: {
       wasmPath: '/wasm/euse_core.wasm',
       enableWasm: true,
-      maxMemoryMB: 512
+      maxMemoryMB: 512,
     },
     framework: 'auto',
     debug: false,
     telemetry: {
       enabled: false,
-      endpoint: 'https://telemetry.skygenesisenterprise.com'
+      endpoint: 'https://telemetry.skygenesisenterprise.com',
     },
     performance: {
       enableProfiling: false,
-      enableMetrics: true
-    }
+      enableMetrics: true,
+    },
   };
 
   try {
@@ -48,9 +48,9 @@ export function loadConfig(): EnterpriseConfig {
           '../../../enterprise.config',
           '../../enterprise.config',
           '../enterprise.config',
-          './enterprise.config'
+          './enterprise.config',
         ];
-        
+
         let userConfig = null;
         for (const path of possiblePaths) {
           try {
@@ -60,17 +60,20 @@ export function loadConfig(): EnterpriseConfig {
             // Continue to next path
           }
         }
-        
+
         if (userConfig) {
-          config = { ...defaultConfig, ...userConfig.default || userConfig };
-          logger.debug('config', `Loaded configuration from ${possiblePaths.find(p => {
-            try {
-              require.resolve(p);
-              return true;
-            } catch {
-              return false;
-            }
-          })}`);
+          config = { ...defaultConfig, ...(userConfig.default || userConfig) };
+          logger.debug(
+            'config',
+            `Loaded configuration from ${possiblePaths.find((p) => {
+              try {
+                require.resolve(p);
+                return true;
+              } catch {
+                return false;
+              }
+            })}`
+          );
         } else {
           config = defaultConfig;
           logger.debug('config', 'No user config found, using defaults');
@@ -91,15 +94,19 @@ export function loadConfig(): EnterpriseConfig {
   }
 
   // Validate configuration
-  validateConfig(config);
-  
-  return config;
+  if (config) {
+    validateConfig(config);
+  }
+
+  return config!;
 }
 
 export function setConfig(userConfig: Partial<EnterpriseConfig>): void {
   const currentConfig = loadConfig();
   config = { ...currentConfig, ...userConfig };
-  validateConfig(config);
+  if (config) {
+    validateConfig(config);
+  }
   logger.debug('config', 'Configuration updated', { config });
 }
 
@@ -116,7 +123,10 @@ function validateConfig(config: EnterpriseConfig): void {
 
   // Validate runtime
   if (config.runtime) {
-    if (config.runtime.maxMemoryMB && (config.runtime.maxMemoryMB < 64 || config.runtime.maxMemoryMB > 4096)) {
+    if (
+      config.runtime.maxMemoryMB &&
+      (config.runtime.maxMemoryMB < 64 || config.runtime.maxMemoryMB > 4096)
+    ) {
       throw new Error('Invalid configuration: maxMemoryMB must be between 64 and 4096');
     }
   }
@@ -124,7 +134,9 @@ function validateConfig(config: EnterpriseConfig): void {
   // Validate framework
   const validFrameworks = ['react', 'svelte', 'nextjs', 'vue', 'auto'];
   if (config.framework && !validFrameworks.includes(config.framework)) {
-    throw new Error(`Invalid configuration: framework must be one of ${validFrameworks.join(', ')}`);
+    throw new Error(
+      `Invalid configuration: framework must be one of ${validFrameworks.join(', ')}`
+    );
   }
 
   // Validate telemetry
@@ -150,36 +162,36 @@ export function getConfigSchema(): any {
           storage: { type: 'boolean' },
           ui: { type: 'boolean' },
           project: { type: 'boolean' },
-          auth: { type: 'boolean' }
-        }
+          auth: { type: 'boolean' },
+        },
       },
       runtime: {
         type: 'object',
         properties: {
           wasmPath: { type: 'string' },
           enableWasm: { type: 'boolean' },
-          maxMemoryMB: { type: 'number', minimum: 64, maximum: 4096 }
-        }
+          maxMemoryMB: { type: 'number', minimum: 64, maximum: 4096 },
+        },
       },
       framework: {
         type: 'string',
-        enum: ['react', 'svelte', 'nextjs', 'vue', 'auto']
+        enum: ['react', 'svelte', 'nextjs', 'vue', 'auto'],
       },
       debug: { type: 'boolean' },
       telemetry: {
         type: 'object',
         properties: {
           enabled: { type: 'boolean' },
-          endpoint: { type: 'string', format: 'uri' }
-        }
+          endpoint: { type: 'string', format: 'uri' },
+        },
       },
       performance: {
         type: 'object',
         properties: {
           enableProfiling: { type: 'boolean' },
-          enableMetrics: { type: 'boolean' }
-        }
-      }
-    }
+          enableMetrics: { type: 'boolean' },
+        },
+      },
+    },
   };
 }
