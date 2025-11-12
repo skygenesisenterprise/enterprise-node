@@ -1,7 +1,7 @@
 {
-  "name": "@skygenesisenterprise/module-ai",
+  "name": "@skygenesisenterprise/module-project",
   "version": "0.1.0",
-  "description": "Enterprise AI Module - Intelligence artificielle et génération",
+  "description": "Enterprise Project Module - Gestion de projets et tâches",
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
@@ -16,12 +16,12 @@
     "clean": "rimraf dist"
   },
   "keywords": [
-    "ai",
+    "project",
     "enterprise",
     "module",
-    "generation",
-    "enhancement",
-    "sky-genesis"
+    "management",
+    "tasks",
+    "skygenesisenterprise"
   ],
   "author": "Sky Genesis Enterprise",
   "license": "MIT",
@@ -39,7 +39,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/skygenesisenterprise/enterprise.git",
-    "directory": "packages/modules/ai"
+    "directory": "packages/modules/project"
   },
   "publishConfig": {
     "access": "public"

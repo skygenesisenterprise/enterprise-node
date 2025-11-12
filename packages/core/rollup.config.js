@@ -23,13 +23,18 @@ export default defineConfig([
       }),
       typescript({
         tsconfig: './tsconfig.json',
-        declaration: true,
+        declaration: false,
         declarationDir: 'dist',
         rootDir: 'src'
       })
     ],
     external: [
-      '@skygenesisenterprise/shared'
+      '@skygenesisenterprise/shared',
+      '@skygenesisenterprise/module-ai',
+      '@skygenesisenterprise/module-storage',
+      '@skygenesisenterprise/module-ui',
+      '@skygenesisenterprise/module-project',
+      '@skygenesisenterprise/module-auth'
     ]
   }
 ]);

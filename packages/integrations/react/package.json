@@ -29,10 +29,11 @@
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "@skygenesisenterprise/shared": "workspace:*",
-    "@skygenesisenterprise/enterprise": "workspace:*"
+    "@skygenesisenterprise/enterprise": "workspace:*",
+    "@skygenesisenterprise/shared": "workspace:*"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^29.0.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-typescript": "^11.0.0",
     "@types/react": "^18.0.0",

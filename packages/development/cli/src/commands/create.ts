@@ -95,7 +95,7 @@ export async function createCommand(name: string, options: CreateOptions) {
       console.log(`  ${chalk.gray('2.')} npm install`);
     }
     
-    console.log(`  ${chalk.gray(options.install ? '2' : '3'}.} npm run dev`);
+    console.log(`  ${chalk.gray(options.install ? '2' : '3')}. npm run dev`);
     console.log(chalk.cyan('\nDocumentation: https://enterprise.skygenesis.com/docs'));
 
   } catch (error) {

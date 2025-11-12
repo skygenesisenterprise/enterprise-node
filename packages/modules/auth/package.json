@@ -1,7 +1,7 @@
 {
-  "name": "@skygenesisenterprise/module-ai",
+  "name": "@skygenesisenterprise/module-auth",
   "version": "0.1.0",
-  "description": "Enterprise AI Module - Intelligence artificielle et génération",
+  "description": "Enterprise Auth Module - Authentification et autorisation",
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
@@ -16,12 +16,12 @@
     "clean": "rimraf dist"
   },
   "keywords": [
-    "ai",
+    "auth",
     "enterprise",
     "module",
-    "generation",
-    "enhancement",
-    "sky-genesis"
+    "authentication",
+    "authorization",
+    "skygenesisenterprise"
   ],
   "author": "Sky Genesis Enterprise",
   "license": "MIT",
@@ -39,7 +39,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/skygenesisenterprise/enterprise.git",
-    "directory": "packages/modules/ai"
+    "directory": "packages/modules/auth"
   },
   "publishConfig": {
     "access": "public"

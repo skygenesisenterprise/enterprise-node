@@ -1,6 +1,6 @@
-import { ModuleInterface, EnterpriseConfig } from '@skygenesisenterprise/shared';
-import { WasmRuntime } from '@skygenesisenterprise/core';
-import { Logger } from '@skygenesisenterprise/shared';
+// import { ModuleInterface, EnterpriseConfig } from '@skygenesisenterprise/shared';
+// import { WasmRuntime } from '@skygenesisenterprise/core';
+// import { Logger } from '@skygenesisenterprise/shared';
 
 export interface StorageSaveOptions {
   path?: string;
@@ -26,43 +26,43 @@ export interface StorageFileInfo {
   metadata?: any;
 }
 
-export class Storage implements ModuleInterface {
+export class Storage {
   name = 'storage';
   version = '0.1.0';
-  private runtime: WasmRuntime;
-  private config: EnterpriseConfig;
-  private logger = Logger.getInstance();
+  // private runtime: WasmRuntime;
+  // private config: EnterpriseConfig;
+  // private logger = Logger.getInstance();
   private cache: Map<string, any> = new Map();
   private isInitializedModule = false;
 
-  constructor(runtime: WasmRuntime, config: EnterpriseConfig) {
-    this.runtime = runtime;
-    this.config = config;
+  constructor() {
+    // this.runtime = runtime;
+    // this.config = config;
   }
 
   async init(): Promise<void> {
-    this.logger.info('storage', 'Initializing Storage module...');
+    // this.logger.info('storage', 'Initializing Storage module...');
     
     try {
-      await this.runtime.call('storage_init', this.config.modules.storage);
+      // await this.runtime.call('storage_init', this.config.modules.storage);
       this.isInitializedModule = true;
-      this.logger.info('storage', 'Storage module initialized successfully');
+      // this.logger.info('storage', 'Storage module initialized successfully');
     } catch (error) {
-      this.logger.error('storage', 'Failed to initialize Storage module', { error });
+      // this.logger.error('storage', 'Failed to initialize Storage module', { error });
       throw error;
     }
   }
 
   async destroy(): Promise<void> {
-    this.logger.info('storage', 'Destroying Storage module...');
+    // this.logger.info('storage', 'Destroying Storage module...');
     
     try {
-      await this.runtime.call('storage_destroy');
+      // await this.runtime.call('storage_destroy');
       this.cache.clear();
       this.isInitializedModule = false;
-      this.logger.info('storage', 'Storage module destroyed');
+      // this.logger.info('storage', 'Storage module destroyed');
     } catch (error) {
-      this.logger.error('storage', 'Error destroying Storage module', { error });
+      // this.logger.error('storage', 'Error destroying Storage module', { error });
     }
   }
 
@@ -76,21 +76,21 @@ export class Storage implements ModuleInterface {
   ): Promise<{ path: string; size: number; hash: string }> {
     this.ensureInitialized();
     
-    const startTime = performance.now();
-    this.logger.debug('storage', 'Saving file', { options });
+    // const startTime = performance.now();
+    // this.logger.debug('storage', 'Saving file', { options });
 
     try {
       const path = options.path || `/storage/${Date.now()}_${this.getFileName(file)}`;
       const size = this.getFileSize(file);
       
-      const result = await this.runtime.call('storage_save', file, {
-        path,
-        metadata: options.metadata,
-        encryption: options.encryption || false,
-        compression: options.compression || false,
-        cache: options.cache !== false,
-        ...options
-      });
+      // const result = await this.runtime.call('storage_save', file, {
+      //   path,
+      //   metadata: options.metadata,
+      //   encryption: options.encryption || false,
+      //   compression: options.compression || false,
+      //   cache: options.cache !== false,
+      //   ...options
+      // });
 
       if (options.cache !== false) {
         this.cache.set(path, {
@@ -100,20 +100,20 @@ export class Storage implements ModuleInterface {
         });
       }
 
-      const processingTime = performance.now() - startTime;
-      this.logger.info('storage', 'File saved successfully', { 
-        path, 
-        size, 
-        processingTime 
-      });
+      // const processingTime = performance.now() - startTime;
+      // this.logger.info('storage', 'File saved successfully', { 
+      //   path, 
+      //   size, 
+      //   processingTime 
+      // });
 
       return {
-        path: result.path || path,
+        path: path,
         size,
-        hash: result.hash || this.generateHash(file)
+        hash: this.generateHash(file)
       };
     } catch (error) {
-      this.logger.error('storage', 'Failed to save file', { error });
+      // this.logger.error('storage', 'Failed to save file', { error });
       throw new Error(`Storage save failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -124,14 +124,14 @@ export class Storage implements ModuleInterface {
   ): Promise<{ data: any; metadata?: any }> {
     this.ensureInitialized();
     
-    this.logger.debug('storage', 'Loading file', { filePath, options });
+    // this.logger.debug('storage', 'Loading file', { filePath, options });
 
     try {
       // Check cache first
       if (options.cache !== false) {
         const cached = this.cache.get(filePath);
         if (cached) {
-          this.logger.debug('storage', 'File loaded from cache', { filePath });
+          // this.logger.debug('storage', 'File loaded from cache', { filePath });
           return {
             data: cached.data,
             metadata: cached.metadata
@@ -139,21 +139,18 @@ export class Storage implements ModuleInterface {
         }
       }
 
-      const result = await this.runtime.call('storage_load', filePath, {
-        decrypt: options.decrypt || false,
-        cache: options.cache !== false,
-        version: options.version,
-        ...options
-      });
+      // const result = await this.runtime.call('storage_load', filePath, {
+      //   decrypt: options.decrypt || false,
+      //   cache: options.cache !== false,
+      //   version: options.version,
+      //   ...options
+      // });
 
-      this.logger.info('storage', 'File loaded successfully', { filePath });
+      // this.logger.info('storage', 'File loaded successfully', { filePath });
       
-      return {
-        data: result.data || result,
-        metadata: result.metadata
-      };
+      throw new Error('File not found');
     } catch (error) {
-      this.logger.error('storage', 'Failed to load file', { error, filePath });
+      // this.logger.error('storage', 'Failed to load file', { error, filePath });
       throw new Error(`Storage load failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -161,16 +158,16 @@ export class Storage implements ModuleInterface {
   async delete(filePath: string): Promise<{ deleted: boolean }> {
     this.ensureInitialized();
     
-    this.logger.debug('storage', 'Deleting file', { filePath });
+    // this.logger.debug('storage', 'Deleting file', { filePath });
 
     try {
       this.cache.delete(filePath);
-      await this.runtime.call('storage_delete', filePath);
+      // await this.runtime.call('storage_delete', filePath);
       
-      this.logger.info('storage', 'File deleted successfully', { filePath });
+      // this.logger.info('storage', 'File deleted successfully', { filePath });
       return { deleted: true };
     } catch (error) {
-      this.logger.error('storage', 'Failed to delete file', { error, filePath });
+      // this.logger.error('storage', 'Failed to delete file', { error, filePath });
       return { deleted: false };
     }
   }
@@ -181,7 +178,7 @@ export class Storage implements ModuleInterface {
     this.ensureInitialized();
 
     try {
-      const result = await this.runtime.call('storage_list', directory);
+      // const result = await this.runtime.call('storage_list', directory);
       
       // Combine with cached files
       const cachedFiles = Array.from(this.cache.entries()).map(([path, cached]) => ({
@@ -193,13 +190,13 @@ export class Storage implements ModuleInterface {
         metadata: cached.metadata
       }));
 
-      const allFiles = [...(result.files || []), ...cachedFiles];
+      const allFiles = [...cachedFiles];
       
       return {
         files: allFiles.sort((a, b) => b.modifiedAt - a.modifiedAt)
       };
     } catch (error) {
-      this.logger.error('storage', 'Failed to list files', { error, directory });
+      // this.logger.error('storage', 'Failed to list files', { error, directory });
       return { files: [] };
     }
   }
@@ -212,10 +209,10 @@ export class Storage implements ModuleInterface {
         return true;
       }
       
-      const result = await this.runtime.call('storage_exists', filePath);
-      return result.exists || false;
+      // const result = await this.runtime.call('storage_exists', filePath);
+      return false;
     } catch (error) {
-      this.logger.error('storage', 'Failed to check file existence', { error, filePath });
+      // this.logger.error('storage', 'Failed to check file existence', { error, filePath });
       return false;
     }
   }
@@ -228,18 +225,18 @@ export class Storage implements ModuleInterface {
     this.ensureInitialized();
 
     try {
-      const result = await this.runtime.call('storage_stats');
+      // const result = await this.runtime.call('storage_stats');
       const cacheSize = Array.from(this.cache.values()).reduce((total, cached) => {
         return total + this.getFileSize(cached.data);
       }, 0);
 
       return {
-        totalFiles: result.totalFiles || 0,
-        totalSize: result.totalSize || 0,
+        totalFiles: 0,
+        totalSize: 0,
         cacheSize
       };
     } catch (error) {
-      this.logger.error('storage', 'Failed to get storage stats', { error });
+      // this.logger.error('storage', 'Failed to get storage stats', { error });
       return {
         totalFiles: 0,
         totalSize: 0,
@@ -250,7 +247,7 @@ export class Storage implements ModuleInterface {
 
   clearCache(): void {
     this.cache.clear();
-    this.logger.debug('storage', 'Cache cleared');
+    // this.logger.debug('storage', 'Cache cleared');
   }
 
   private getFileName(file: any): string {

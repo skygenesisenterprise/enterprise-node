@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { EnterpriseSDK, EnterpriseConfig } from '@skygenesisenterprise/core';
+import { EnterpriseSDK, EnterpriseConfig } from '@skygenesisenterprise/enterprise';
 
 export interface UseEnterpriseOptions {
   autoInitialize?: boolean;

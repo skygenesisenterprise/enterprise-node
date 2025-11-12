@@ -1,16 +1,20 @@
 import { defineConfig } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const pkg = require('./package.json');
 
 export default defineConfig([
   {
-    input: 'src/index.tsx',
+    input: 'src/index.ts',
     output: [
       {
         file: 'dist/index.js',
         format: 'cjs',
-        sourcemap: true
+        sourcemap: true,
+        banner: '#!/usr/bin/env node'
       },
       {
         file: 'dist/index.esm.js',
@@ -22,20 +26,13 @@ export default defineConfig([
       nodeResolve({
         preferBuiltins: true
       }),
-      commonjs(),
       typescript({
         tsconfig: './tsconfig.json',
         declaration: true,
         declarationDir: 'dist',
-        rootDir: 'src',
-        jsx: 'react-jsx'
+        rootDir: 'src'
       })
     ],
-    external: [
-      'react',
-      'react-dom',
-      '@skygenesisenterprise/shared',
-      '@skygenesisenterprise/enterprise'
-    ]
+    external: Object.keys(pkg.dependencies || {}).concat(Object.keys(pkg.peerDependencies || {}))
   }
 ]);
