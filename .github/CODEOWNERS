@@ -1,0 +1,47 @@
+# Code owners for security and quality control
+
+# Global owners - require review from maintainers
+* @skygenesisenterprise/owners
+
+# Security-critical files
+.github/ @skygenesisenterprise/owners
+.github/workflows/ @skygenesisenterprise/owners
+.github/codeql-config.yml @skygenesisenterprise/owners
+.github/dependabot.yml @skygenesisenterprise/owners
+.github/CODEOWNERS @skygenesisenterprise/owners
+
+# API security
+api/src/core/ @skygenesisenterprise/owners
+api/src/middlewares/ @skygenesisenterprise/owners
+api/src/services/ @skygenesisenterprise/owners
+
+# Infrastructure security
+infrastructure/ @skygenesisenterprise/owners
+infrastructure/kubernetes/ @skygenesisenterprise/owners
+infrastructure/terraform/ @skygenesisenterprise/owners
+
+# Frontend
+app/ @skygenesisenterprise/owners
+app/components/ @skygenesisenterprise/owners
+
+# Documentation
+docs/ @skygenesisenterprise/owners
+runbooks/ @skygenesisenterprise/owners
+
+# Tests
+api/src/tests/ @skygenesisenterprise/owners
+**/*.test.* @skygenesisenterprise/owners
+**/*.spec.* @skygenesisenterprise/owners
+
+# Configuration files
+*.config.* @skygenesisenterprise/owners
+*.toml @skygenesisenterprise/owners
+*.json @skygenesisenterprise/owners
+*.yml @skygenesisenterprise/owners
+*.yaml @skygenesisenterprise/owners
+
+# Require security review for changes to these patterns
+/SECURITY.md @skygenesisenterprise/owners
+/package.json @skygenesisenterprise/owners
+/Cargo.toml @skygenesisenterprise/owners
+/Dockerfile* @skygenesisenterprise/owners

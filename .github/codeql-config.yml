@@ -1,0 +1,24 @@
+name: "CodeQL Configuration"
+
+disable-default-queries: false
+
+queries:
+  - uses: security-and-quality
+  - uses: security-experimental
+
+paths-ignore:
+  - node_modules
+  - target
+  - .next
+  - coverage
+  - docs
+
+paths:
+  - api/src
+  - app
+
+query-filters:
+  - exclude:
+      problem.severity:
+        - warning
+        - recommendation

@@ -1,0 +1,92 @@
+# Dependabot configuration for automated dependency updates
+# Security-focused configuration with military-grade practices
+
+version: 2
+updates:
+  # Frontend (root)
+  - package-ecosystem: "npm"
+    directory: "/" # root of project (frontend)
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "security-team"
+    assignees:
+      - "maintainer"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      security-updates:
+        applies-to: security-updates
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Backend (api)
+  - package-ecosystem: "npm"
+    directory: "/api"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "security-team"
+    assignees:
+      - "maintainer"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      security-updates:
+        applies-to: security-updates
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Rust dependencies
+  - package-ecosystem: "cargo"
+    directory: "/api"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "security-team"
+    assignees:
+      - "maintainer"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      security-updates:
+        applies-to: security-updates
+        update-types:
+          - "minor"
+          - "patch"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "security-team"
+    assignees:
+      - "maintainer"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
+  # Docker
+  - package-ecosystem: "docker"
+    directory: "/infrastructure/docker"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "security-team"
+    assignees:
+      - "maintainer"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
