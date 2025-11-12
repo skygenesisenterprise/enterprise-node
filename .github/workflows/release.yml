@@ -5,7 +5,6 @@ on:
     tags:
       - 'v*'
 
-# Permissions nécessaires
 permissions:
   contents: write   # pour checkout et releases
   packages: write   # pour npm publish
@@ -99,9 +98,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-# ------------------------
-# Upsert GitHub Release
-# ------------------------
+  # ------------------------
+  # Upsert GitHub Release
+  # ------------------------
   release:
     name: Upsert GitHub Release
     runs-on: ubuntu-latest
@@ -110,32 +109,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create release notes
-        run: |
-          cat > ./release-notes.md <<EOF
-          ## Release ${{ github.ref_name }}
-
-          ### Installation
-          \`\`\`bash
-          npm install @skygenesisenterprise/enterprise@${{ github.ref_name }}
-          \`\`\`
-
-          ### Verification
-          \`\`\`bash
-          npm view @skygenesisenterprise/enterprise@${{ github.ref_name }}
-          \`\`\`
-          EOF
-
       - name: Upsert release (create or edit)
         run: |
           if gh release view "${{ github.ref_name }}" >/dev/null 2>&1; then
-            echo "Release exists — updating notes"
-            gh release edit "${{ github.ref_name }}" --notes-file ./release-notes.md
+            echo "Release exists — skipping creation"
           else
             echo "Release missing — creating"
             gh release create "${{ github.ref_name }}" \
-              --notes-file ./release-notes.md \
               --draft=false \
-              --prerelease=${{ contains(github.ref_name, '-') }}
+              --prerelease=$( [[ "${{ github.ref_name }}" == *-* ]] && echo true || echo false )
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
