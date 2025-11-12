@@ -1,0 +1,15 @@
+{
+  "name": "enterprise-node",
+  "version": "1.0.0",
+  "description": "A cross-runtime creative SDK for Nodejs by Sky Genesis Enterprise — for building the next generation of intelligent creative systems.”",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
