@@ -5,9 +5,9 @@ on:
     tags:
       - 'v*'
 
-# Permissions nécessaires pour publier et créer une release
+# Permissions nécessaires
 permissions:
-  contents: write   # pour create-release et checkout
+  contents: write   # pour checkout et releases
   packages: write   # pour npm publish
 
 jobs:
@@ -81,7 +81,7 @@ jobs:
       - name: Extract version from tag
         id: version
         run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
+          VERSION=${GITHUB_REF#refs/tags/}
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
@@ -99,24 +99,44 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
+# ------------------------
+# Upsert GitHub Release
+# ------------------------
+  release:
+    name: Upsert GitHub Release
+    runs-on: ubuntu-latest
+    needs: publish
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+  
+      - name: Create release notes
+        run: |
+          cat > ./release-notes.md <<EOF
+          ## Release ${{ github.ref_name }}
+  
+          ### Installation
+          \`\`\`bash
+          npm install @skygenesisenterprise/enterprise@${{ github.ref_name }}
+          \`\`\`
+  
+          ### Verification
+          \`\`\`bash
+          npm view @skygenesisenterprise/enterprise@${{ github.ref_name }}
+          \`\`\`
+          EOF
+  
+      - name: Upsert release (create or edit)
+        run: |
+          if gh release view "${{ github.ref_name }}" >/dev/null 2>&1; then
+            echo "Release exists — updating notes"
+            gh release edit "${{ github.ref_name }}" --notes-file ./release-notes.md
+          else
+            echo "Release missing — creating"
+            gh release create "${{ github.ref_name }}" \
+              --notes-file ./release-notes.md \
+              --draft=false \
+              --prerelease=${{ contains(github.ref_name, '-') }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ steps.version.outputs.version }}
-          release_name: Release v${{ steps.version.outputs.version }}
-          body: |
-            ## Release v${{ steps.version.outputs.version }}
-            
-            ### Installation
-            ```bash
-            npm install @skygenesisenterprise/enterprise@${{ steps.version.outputs.version }}
-            ```
-            
-            ### Verification
-            ```bash
-            npm view @skygenesisenterprise/enterprise@${{ steps.version.outputs.version }}
-            ```
-          draft: false
-          prerelease: ${{ contains(steps.version.outputs.version, '-') }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
