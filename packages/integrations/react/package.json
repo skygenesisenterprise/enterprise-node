@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@skygenesisenterprise/shared": "workspace:*",
-    "@skygenesisenterprise/core": "workspace:*"
+    "@skygenesisenterprise/enterprise": "workspace:*"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.0.0",
