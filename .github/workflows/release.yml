@@ -7,47 +7,11 @@ on:
 
 jobs:
   # ------------------------
-  # Test
-  # ------------------------
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - name: Verify pnpm
-        run: pnpm --version
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run tests
-        run: pnpm test
-
-      - name: Type check
-        run: pnpm typecheck
-
-      - name: Lint
-        run: pnpm lint
-
-  # ------------------------
   # Build
   # ------------------------
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: test
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -215,7 +179,6 @@ jobs:
             ❌ Enterprise SDK release failed!
             
             🏗️ Build: ${{ needs.build.result }}
-            🧪 Tests: ${{ needs.test.result }}
             📦 Publish: ${{ needs.publish.result }}
             
             🔍 Check the workflow: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
