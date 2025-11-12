@@ -1,8 +1,9 @@
 {
   "name": "@skygenesisenterprise/module-storage",
-  "version": "0.1.0",
+  "version": "1.0.9",
   "description": "Enterprise Storage Module - Gestion de fichiers et stockage",
   "type": "module",
+  "private": false,
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",

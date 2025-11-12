@@ -1,8 +1,8 @@
 {
   "name": "@skygenesisenterprise/enterprise-node",
-  "version": "0.1.0",
+  "version": "1.0.9",
   "description": "Enterprise SDK Monorepo - Le runtime web du SDK universel Enterprise de Sky Genesis Enterprise",
-  "private": true,
+  "private": false,
   "workspaces": [
     "packages/*",
     "packages/modules/*",
