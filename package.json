@@ -1,15 +1,64 @@
 {
-  "name": "enterprise-node",
-  "version": "1.0.0",
-  "description": "A cross-runtime creative SDK for Nodejs by Sky Genesis Enterprise — for building the next generation of intelligent creative systems.”",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
+  "name": "@skygenesisenterprise/enterprise-node",
+  "version": "0.1.0",
+  "description": "Enterprise SDK Monorepo - Le runtime web du SDK universel Enterprise de Sky Genesis Enterprise",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "packages/modules/*",
+    "packages/integrations/*",
+    "packages/development/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build --filter=!@skygenesisenterprise/cli && changeset publish",
+    "postinstall": "husky install",
+    "prepare": "husky install"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "sdk",
+    "enterprise",
+    "monorepo",
+    "wasm",
+    "ai",
+    "storage",
+    "ui",
+    "auth",
+    "project-management",
+    "sky-genesis"
+  ],
+  "author": "Sky Genesis Enterprise",
+  "license": "MIT",
+  "devDependencies": {
+    "@changesets/cli": "^2.26.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.0.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0",
+    "turbo": "^1.10.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.10.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skygenesisenterprise/enterprise.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

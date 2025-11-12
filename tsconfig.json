@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@skygenesisenterprise/shared": ["packages/shared/src"],
+      "@skygenesisenterprise/core": ["packages/core/src"],
+      "@skygenesisenterprise/module-ai": ["packages/modules/ai/src"],
+      "@skygenesisenterprise/module-storage": ["packages/modules/storage/src"],
+      "@skygenesisenterprise/module-ui": ["packages/modules/ui/src"],
+      "@skygenesisenterprise/module-project": ["packages/modules/project/src"],
+      "@skygenesisenterprise/module-auth": ["packages/modules/auth/src"],
+      "@skygenesisenterprise/react": ["packages/integrations/react/src"],
+      "@skygenesisenterprise/svelte": ["packages/integrations/svelte/src"],
+      "@skygenesisenterprise/nextjs": ["packages/integrations/nextjs/src"],
+      "@skygenesisenterprise/cli": ["packages/development/cli/src"],
+      "@skygenesisenterprise/eslint-config": ["packages/development/eslint-config/src"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "packages/*/src/**/*",
+    "packages/modules/*/src/**/*",
+    "packages/integrations/*/src/**/*",
+    "packages/development/*/src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}

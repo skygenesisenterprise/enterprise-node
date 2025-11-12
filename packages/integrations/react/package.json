@@ -1,0 +1,55 @@
+{
+  "name": "@skygenesisenterprise/react",
+  "version": "0.1.0",
+  "description": "Enterprise React Integration - Hooks et composants React",
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "react",
+    "enterprise",
+    "hooks",
+    "integration",
+    "sky-genesis"
+  ],
+  "author": "Sky Genesis Enterprise",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "dependencies": {
+    "@skygenesisenterprise/shared": "workspace:*",
+    "@skygenesisenterprise/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "rimraf": "^5.0.0",
+    "rollup": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skygenesisenterprise/enterprise.git",
+    "directory": "packages/integrations/react"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
