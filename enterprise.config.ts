@@ -6,14 +6,27 @@ const config: EnterpriseConfig = {
     storage: true,
     ui: true,
     project: true,
-    auth: true
+    auth: true,
   },
   runtime: {
     wasmPath: '/wasm/euse_core.wasm',
-    enableWasm: true
+    enableWasm: true,
   },
   framework: 'auto',
-  debug: process.env.NODE_ENV === 'development'
+  debug: false,
+  branding: {
+    logo: {
+      path: './assets/enterprise.png',
+      width: 200,
+      height: 60,
+      alt: 'Sky Genesis Enterprise',
+      format: 'png',
+    },
+    companyName: 'Sky Genesis Enterprise',
+    primaryColor: '#007acc',
+    secondaryColor: '#004466',
+    theme: 'auto',
+  },
 };
 
 export default config;

@@ -21,7 +21,7 @@ export class UIManager {
   createComponent(config: Omit<UIComponent, 'id'>): UIComponent {
     return {
       id: this.generateId(),
-      ...config
+      ...config,
     };
   }
 
@@ -36,3 +36,4 @@ export class UIManager {
 }
 
 export * from './types';
+export * from './logo';

@@ -1,3 +1,19 @@
+export interface LogoConfig {
+  path: string;
+  width?: number;
+  height?: number;
+  alt?: string;
+  format?: 'png' | 'svg' | 'jpg' | 'jpeg' | 'webp';
+}
+
+export interface BrandingConfig {
+  logo?: LogoConfig;
+  companyName?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  theme?: 'light' | 'dark' | 'auto';
+}
+
 export interface EnterpriseConfig {
   modules: {
     ai?: boolean;
@@ -12,6 +28,7 @@ export interface EnterpriseConfig {
   };
   framework?: 'react' | 'svelte' | 'nextjs' | 'auto';
   debug?: boolean;
+  branding?: BrandingConfig;
 }
 
 export interface ModuleInterface {

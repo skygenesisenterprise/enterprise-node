@@ -1,4 +1,5 @@
 import { writable, derived, get } from 'svelte/store';
+import { brandingManager } from '../../packages/shared/src/branding';
 
 interface EnterpriseState {
   isInitialized: boolean;
@@ -12,30 +13,30 @@ function createEnterpriseStore() {
     isInitialized: false,
     isLoading: false,
     error: null,
-    enterprise: null
+    enterprise: null,
   });
 
   return {
     subscribe,
     initialize: async (config?: any) => {
-      update(state => ({ ...state, isLoading: true, error: null }));
+      update((state) => ({ ...state, isLoading: true, error: null }));
 
       try {
         const Enterprise = (await import('../index')).Enterprise;
         const instance = new Enterprise(config);
         await instance.initialize();
-        
+
         set({
           isInitialized: true,
           isLoading: false,
           error: null,
-          enterprise: instance
+          enterprise: instance,
         });
       } catch (err) {
-        update(state => ({
+        update((state) => ({
           ...state,
           isLoading: false,
-          error: err instanceof Error ? err : new Error('Failed to initialize Enterprise')
+          error: err instanceof Error ? err : new Error('Failed to initialize Enterprise'),
         }));
       }
     },
@@ -44,18 +45,18 @@ function createEnterpriseStore() {
         isInitialized: false,
         isLoading: false,
         error: null,
-        enterprise: null
+        enterprise: null,
       });
-    }
+    },
   };
 }
 
 export const enterpriseStore = createEnterpriseStore();
 
-export const isInitialized = derived(enterpriseStore, $enterprise => $enterprise.isInitialized);
-export const isLoading = derived(enterpriseStore, $enterprise => $enterprise.isLoading);
-export const error = derived(enterpriseStore, $enterprise => $enterprise.error);
-export const enterprise = derived(enterpriseStore, $enterprise => $enterprise.enterprise);
+export const isInitialized = derived(enterpriseStore, ($enterprise) => $enterprise.isInitialized);
+export const isLoading = derived(enterpriseStore, ($enterprise) => $enterprise.isLoading);
+export const error = derived(enterpriseStore, ($enterprise) => $enterprise.error);
+export const enterprise = derived(enterpriseStore, ($enterprise) => $enterprise.enterprise);
 
 export function useAi() {
   const isProcessing = writable(false);
@@ -88,9 +89,10 @@ export function useAi() {
         isProcessing.set(false);
       }
     },
-    isAvailable: derived([isInitialized, enterprise], ([$isInitialized, $enterprise]) => 
-      $isInitialized && !!$enterprise?.ai
-    )
+    isAvailable: derived(
+      [isInitialized, enterprise],
+      ([$isInitialized, $enterprise]) => $isInitialized && !!$enterprise?.ai
+    ),
   };
 }
 
@@ -120,19 +122,19 @@ export function useStorage() {
 
       return await $enterprise.storage.load(path);
     },
-    isAvailable: derived([isInitialized, enterprise], ([$isInitialized, $enterprise]) => 
-      $isInitialized && !!$enterprise?.storage
-    )
+    isAvailable: derived(
+      [isInitialized, enterprise],
+      ([$isInitialized, $enterprise]) => $isInitialized && !!$enterprise?.storage
+    ),
   };
 }
 
 export function useAuth() {
   const isAuthenticating = writable(false);
-  const user = derived(enterprise, $enterprise => 
-    $enterprise?.auth?.getCurrentUser?.() || null
-  );
-  const isAuthenticated = derived(enterprise, $enterprise => 
-    $enterprise?.auth?.isAuthenticated?.() || false
+  const user = derived(enterprise, ($enterprise) => $enterprise?.auth?.getCurrentUser?.() || null);
+  const isAuthenticated = derived(
+    enterprise,
+    ($enterprise) => $enterprise?.auth?.isAuthenticated?.() || false
   );
 
   return {
@@ -178,9 +180,59 @@ export function useAuth() {
         isAuthenticating.set(false);
       }
     },
-    isAvailable: derived([isInitialized, enterprise], ([$isInitialized, $enterprise]) => 
-      $isInitialized && !!$enterprise?.auth
-    )
+    isAvailable: derived(
+      [isInitialized, enterprise],
+      ([$isInitialized, $enterprise]) => $isInitialized && !!$enterprise?.auth
+    ),
+  };
+}
+
+export function useBranding() {
+  const logoUrl = writable<string | null>(null);
+  const config = writable<any>(null);
+  const isLoading = writable(false);
+
+  const loadBranding = async () => {
+    isLoading.set(true);
+    try {
+      const logo = await brandingManager.getLogoUrl();
+      const brandingConfig = brandingManager.getConfig();
+
+      logoUrl.set(logo);
+      config.set(brandingConfig);
+      brandingManager.applyTheme();
+    } catch (error) {
+      console.error('Failed to load branding:', error);
+    } finally {
+      isLoading.set(false);
+    }
+  };
+
+  const refreshLogo = async () => {
+    isLoading.set(true);
+    try {
+      brandingManager.clearCache();
+      const logo = await brandingManager.getLogoUrl();
+      logoUrl.set(logo);
+    } catch (error) {
+      console.error('Failed to refresh logo:', error);
+    } finally {
+      isLoading.set(false);
+    }
+  };
+
+  loadBranding();
+
+  return {
+    logoUrl,
+    config,
+    isLoading,
+    refreshLogo,
+    getTheme: () => brandingManager.getTheme(),
+    getPrimaryColor: () => brandingManager.getPrimaryColor(),
+    getSecondaryColor: () => brandingManager.getSecondaryColor(),
+    getCompanyName: () => brandingManager.getCompanyName(),
+    applyTheme: () => brandingManager.applyTheme(),
   };
 }
 
@@ -225,9 +277,10 @@ export function useProject() {
 
       return await $enterprise.project.save(projectId);
     },
-    isAvailable: derived([isInitialized, enterprise], ([$isInitialized, $enterprise]) => 
-      $isInitialized && !!$enterprise?.project
-    )
+    isAvailable: derived(
+      [isInitialized, enterprise],
+      ([$isInitialized, $enterprise]) => $isInitialized && !!$enterprise?.project
+    ),
   };
 }
 
@@ -262,8 +315,9 @@ export function useUi() {
 
       return await $enterprise.ui.toast(message, type);
     },
-    isAvailable: derived([isInitialized, enterprise], ([$isInitialized, $enterprise]) => 
-      $isInitialized && !!$enterprise?.ui
-    )
+    isAvailable: derived(
+      [isInitialized, enterprise],
+      ([$isInitialized, $enterprise]) => $isInitialized && !!$enterprise?.ui
+    ),
   };
 }
