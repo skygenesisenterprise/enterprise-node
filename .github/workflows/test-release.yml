@@ -1,0 +1,241 @@
+name: Test Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to test (e.g., 1.1.4)'
+        required: true
+        type: string
+      test_environment:
+        description: 'Test environment'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - node
+          - browser
+          - react
+          - nextjs
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  # ------------------------
+  # Test Release in Multiple Environments
+  # ------------------------
+  test-release:
+    name: Test Release ${{ github.event.inputs.version || github.ref_name }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment:
+          - node
+          - browser
+          - react
+          - nextjs
+        include:
+          - environment: node
+            test_file: test-node-environment.ts
+            setup_command: 'pnpm install && pnpm build'
+          - environment: browser
+            test_file: test-browser-environment.ts
+            setup_command: 'pnpm install && pnpm build'
+          - environment: react
+            test_file: test-react-environment.ts
+            setup_command: 'pnpm install && pnpm build'
+          - environment: nextjs
+            test_file: test-nextjs-environment.ts
+            setup_command: 'pnpm install && pnpm build'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=${{ github.event.inputs.version || github.ref_name }}
+          VERSION=${VERSION#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Create test environment
+        run: |
+          mkdir -p /tmp/test-release-${{ matrix.environment }}
+          cd /tmp/test-release-${{ matrix.environment }}
+
+      - name: Test in ${{ matrix.environment }} environment
+        run: |
+          cd /tmp/test-release-${{ matrix.environment }}
+
+          # Create test project
+          node ${{ github.workspace }}/scripts/create-test-project.js \
+            --version ${{ steps.version.outputs.version }} \
+            --environment ${{ matrix.environment }} \
+            --name test-${{ matrix.environment }}-${{ steps.version.outputs.version }}
+
+          # Install and test
+          cd test-${{ matrix.environment }}-${{ steps.version.outputs.version }}
+          npm install
+          npm run test:release
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.environment }}-${{ steps.version.outputs.version }}
+          path: |
+            /tmp/test-release-${{ matrix.environment }}/test-*.log
+            /tmp/test-release-${{ matrix.environment }}/coverage/
+          retention-days: 7
+
+  # ------------------------
+  # Integration Tests
+  # ------------------------
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: test-release
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=${{ github.event.inputs.version || github.ref_name }}
+          VERSION=${VERSION#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Run integration tests
+        run: |
+          pnpm install
+          pnpm build
+          pnpm test:integration -- --version=${{ steps.version.outputs.version }}
+
+      - name: Generate test report
+        run: |
+          node scripts/generate-test-report.js \
+            --version ${{ steps.version.outputs.version }} \
+            --output test-report-${{ steps.version.outputs.version }}.json
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-${{ steps.version.outputs.version }}
+          path: test-report-${{ steps.version.outputs.version }}.json
+          retention-days: 30
+
+  # ------------------------
+  # Performance Benchmarks
+  # ------------------------
+  performance-tests:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    needs: test-release
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=${{ github.event.inputs.version || github.ref_name }}
+          VERSION=${VERSION#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Run performance benchmarks
+        run: |
+          pnpm install
+          pnpm build
+          pnpm test:performance -- --version=${{ steps.version.outputs.version }}
+
+      - name: Upload performance results
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-results-${{ steps.version.outputs.version }}
+          path: performance-results-${{ steps.version.outputs.version }}.json
+          retention-days: 30
+
+  # ------------------------
+  # Create Test Summary
+  # ------------------------
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [test-release, integration-tests, performance-tests]
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create test summary
+        run: |
+          node scripts/create-test-summary.js \
+            --version ${{ github.event.inputs.version || github.ref_name }} \
+            --artifacts-dir .
+
+      - name: Comment on PR/Release
+        if: github.event_name == 'push'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('test-summary.md', 'utf8');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+
+      - name: Upload summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-summary-${{ github.event.inputs.version || github.ref_name }}
+          path: test-summary.md
+          retention-days: 90

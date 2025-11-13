@@ -1,0 +1,25 @@
+{
+  "name": "enterprise-sdk-example",
+  "version": "1.0.0",
+  "description": "Exemple d'utilisation du SDK Enterprise",
+  "type": "module",
+  "scripts": {
+    "start": "node example.js",
+    "dev": "node --watch example.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "@skygenesisenterprise/enterprise-node": "^1.1.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "enterprise",
+    "sdk",
+    "example",
+    "demo"
+  ],
+  "author": "Sky Genesis Enterprise",
+  "license": "MIT"
+}
