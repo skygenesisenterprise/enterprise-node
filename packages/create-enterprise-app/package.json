@@ -2,6 +2,7 @@
   "name": "create-enterprise-app",
   "version": "1.0.0",
   "description": "Create Enterprise SDK applications with one command",
+  "type": "module",
   "main": "./dist/index.js",
   "bin": {
     "create-enterprise-app": "./dist/bin/create-enterprise-app.js"
@@ -60,6 +61,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   }
 }

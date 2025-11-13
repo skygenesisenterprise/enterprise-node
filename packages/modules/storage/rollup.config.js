@@ -9,28 +9,26 @@ export default defineConfig([
       {
         file: 'dist/index.js',
         format: 'cjs',
-        sourcemap: true
+        sourcemap: true,
+        exports: 'named',
       },
       {
         file: 'dist/index.esm.js',
         format: 'es',
-        sourcemap: true
-      }
+        sourcemap: true,
+      },
     ],
     plugins: [
       nodeResolve({
-        preferBuiltins: true
+        preferBuiltins: true,
       }),
       typescript({
         tsconfig: './tsconfig.json',
         declaration: true,
         declarationDir: 'dist',
-        rootDir: 'src'
-      })
+        rootDir: 'src',
+      }),
     ],
-    external: [
-      '@skygenesisenterprise/shared',
-      '@skygenesisenterprise/core'
-    ]
-  }
+    external: ['@skygenesisenterprise/shared', '@skygenesisenterprise/core'],
+  },
 ]);

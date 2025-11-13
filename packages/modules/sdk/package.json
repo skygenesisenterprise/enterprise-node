@@ -2,7 +2,6 @@
   "name": "@skygenesisenterprise/module-sdk",
   "version": "0.1.0",
   "description": "Enterprise SDK Module - Auto-référence et méta-sdk",
-  "type": "module",
   "private": false,
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
@@ -14,7 +13,8 @@
     "build": "rollup -c rollup.config.cjs",
     "dev": "rollup -c rollup.config.cjs -w",
     "test": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
   },
   "keywords": [
     "sdk",
@@ -44,5 +44,9 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   }
 }
