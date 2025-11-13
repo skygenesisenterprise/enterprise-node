@@ -1,14 +1,41 @@
 import chalk from 'chalk';
 
-export const infoCommand = async () => {
-  console.log(chalk.blue('📦 Enterprise SDK'));
-  console.log(chalk.gray('Informations sur le SDK Enterprise\n'));
+export class InfoCommand {
+  private options: any;
+  private globalOptions: any;
 
-  console.log(`Version: ${chalk.cyan('0.1.0')}`);
-  console.log(`Author: ${chalk.cyan('Sky Genesis Enterprise')}`);
-  console.log(`License: ${chalk.cyan('MIT')}`);
-  
-  console.log(chalk.yellow('\n📚 Documentation: https://enterprise.skygenesis.com/docs'));
-  console.log(chalk.yellow('🐛 Issues: https://github.com/skygenesisenterprise/enterprise/issues'));
-  console.log(chalk.yellow('💬 Support: https://discord.gg/skygenesis'));
-};
+  constructor(options: any, globalOptions: any) {
+    this.options = options;
+    this.globalOptions = globalOptions;
+  }
+
+  async execute(): Promise<void> {
+    console.log(chalk.blue.bold('📋 Enterprise SDK Information'));
+
+    const info = {
+      Version: '0.1.0',
+      'Node.js': process.version,
+      Plateforme: process.platform,
+      Architecture: process.arch,
+      Répertoire: process.cwd(),
+      CLI: '@skygenesisenterprise/cli',
+    };
+
+    if (this.options.json) {
+      console.log(JSON.stringify(info, null, 2));
+    } else {
+      Object.entries(info).forEach(([key, value]) => {
+        console.log(chalk.cyan(`${key}:`) + ` ${value}`);
+      });
+
+      console.log(chalk.gray('\nDocumentation: https://enterprise.skygenesis.com/docs'));
+      console.log(chalk.gray('GitHub: https://github.com/skygenesisenterprise/enterprise'));
+    }
+  }
+}
+
+// Export function for backward compatibility
+export async function infoCommand() {
+  const command = new InfoCommand({}, {});
+  await command.execute();
+}

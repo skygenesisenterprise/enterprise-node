@@ -1,4 +1,9 @@
-import { ModuleInterface, ModuleManifest, EnterpriseConfig, FrameworkType } from '@skygenesisenterprise/shared';
+import {
+  ModuleInterface,
+  ModuleManifest,
+  EnterpriseConfig,
+  FrameworkType,
+} from '@skygenesisenterprise/shared';
 import { WasmRuntime } from '../runtime/wasm-runtime';
 import { Logger } from '@skygenesisenterprise/shared';
 import { detectFramework } from '@skygenesisenterprise/shared';
@@ -19,7 +24,7 @@ export class ModuleLoader {
 
   async initialize(): Promise<void> {
     this.logger.info('loader', `Initializing Enterprise SDK for framework: ${this.framework}`);
-    
+
     if (this.config.runtime?.enableWasm !== false) {
       await this.runtime.initialize();
     }
@@ -28,26 +33,34 @@ export class ModuleLoader {
 
     // Load modules based on configuration
     if (this.config.modules.ai) {
-      modulePromises.push(this.loadModule('ai', () => import('@skygenesisenterprise/module-ai')));
+      // modulePromises.push(this.loadModule('ai', () => import('@skygenesisenterprise/module-ai')));
+      console.log('AI module loading temporarily disabled');
     }
     if (this.config.modules.storage) {
-      modulePromises.push(this.loadModule('storage', () => import('@skygenesisenterprise/module-storage')));
+      // modulePromises.push(this.loadModule('storage', () => import('@skygenesisenterprise/module-storage')));
+      console.log('Storage module loading temporarily disabled');
     }
     if (this.config.modules.ui) {
-      modulePromises.push(this.loadModule('ui', () => import('@skygenesisenterprise/module-ui')));
+      // modulePromises.push(this.loadModule('ui', () => import('@skygenesisenterprise/module-ui')));
+      console.log('UI module loading temporarily disabled');
     }
     if (this.config.modules.project) {
-      modulePromises.push(this.loadModule('project', () => import('@skygenesisenterprise/module-project')));
+      // modulePromises.push(this.loadModule('project', () => import('@skygenesisenterprise/module-project')));
+      console.log('Project module loading temporarily disabled');
     }
     if (this.config.modules.auth) {
-      modulePromises.push(this.loadModule('auth', () => import('@skygenesisenterprise/module-auth')));
+      // modulePromises.push(this.loadModule('auth', () => import('@skygenesisenterprise/module-auth')));
+      console.log('Auth module loading temporarily disabled');
     }
 
     await Promise.all(modulePromises);
 
     if (this.config.debug) {
       this.logger.info('loader', `Enterprise SDK initialized successfully`);
-      this.logger.info('loader', `Loaded modules: ${Array.from(this.loadedModules.keys()).join(', ')}`);
+      this.logger.info(
+        'loader',
+        `Loaded modules: ${Array.from(this.loadedModules.keys()).join(', ')}`
+      );
       this.logger.info('loader', `Framework detected: ${this.framework}`);
     }
   }
@@ -55,11 +68,12 @@ export class ModuleLoader {
   private async loadModule(name: string, importFn: () => Promise<any>): Promise<void> {
     try {
       this.logger.debug('loader', `Loading module: ${name}`);
-      
+
       const moduleExports = await importFn();
       const manifest = moduleExports.manifest || this.getDefaultManifest(name);
-      const ModuleClass = moduleExports.default || moduleExports[name.charAt(0).toUpperCase() + name.slice(1)];
-      
+      const ModuleClass =
+        moduleExports.default || moduleExports[name.charAt(0).toUpperCase() + name.slice(1)];
+
       if (ModuleClass && typeof ModuleClass === 'function') {
         // Check dependencies
         if (manifest.dependencies) {
@@ -72,10 +86,10 @@ export class ModuleLoader {
 
         const moduleInstance = new ModuleClass(this.runtime, this.config);
         await moduleInstance.init();
-        
+
         this.loadedModules.set(name, moduleInstance);
         this.moduleManifests.set(name, manifest);
-        
+
         this.logger.info('loader', `Module '${name}' loaded successfully (v${manifest.version})`);
       } else {
         throw new Error(`Invalid module export for '${name}'`);
@@ -94,9 +108,9 @@ export class ModuleLoader {
       author: 'Sky Genesis Enterprise',
       dependencies: [],
       exports: {
-        '.': './index.js'
+        '.': './index.js',
       },
-      runtime: 'hybrid'
+      runtime: 'hybrid',
     };
   }
 
@@ -142,11 +156,11 @@ export class ModuleLoader {
 
     // Reload based on module name
     const importMap: Record<string, () => Promise<any>> = {
-      'ai': () => import('@skygenesisenterprise/module-ai'),
-      'storage': () => import('@skygenesisenterprise/module-storage'),
-      'ui': () => import('@skygenesisenterprise/module-ui'),
-      'project': () => import('@skygenesisenterprise/module-project'),
-      'auth': () => import('@skygenesisenterprise/module-auth')
+      // ai: () => import('@skygenesisenterprise/module-ai'),
+      // storage: () => import('@skygenesisenterprise/module-storage'),
+      // ui: () => import('@skygenesisenterprise/module-ui'),
+      // project: () => import('@skygenesisenterprise/module-project'),
+      // auth: () => import('@skygenesisenterprise/module-auth')
     };
 
     if (importMap[name] && this.config.modules[name as keyof typeof this.config.modules]) {
@@ -156,7 +170,7 @@ export class ModuleLoader {
 
   async destroy(): Promise<void> {
     this.logger.info('loader', 'Destroying Enterprise SDK...');
-    
+
     for (const [name, module] of this.loadedModules) {
       try {
         await module.destroy();
@@ -165,11 +179,11 @@ export class ModuleLoader {
         this.logger.error('loader', `Error destroying module '${name}'`, { error });
       }
     }
-    
+
     this.loadedModules.clear();
     this.moduleManifests.clear();
     this.runtime.destroy();
-    
+
     this.logger.info('loader', 'Enterprise SDK destroyed');
   }
 
@@ -183,11 +197,11 @@ export class ModuleLoader {
       modules: Array.from(this.moduleManifests.entries()).map(([name, manifest]) => ({
         name,
         version: manifest.version,
-        initialized: this.loadedModules.get(name)?.isInitialized() || false
+        initialized: this.loadedModules.get(name)?.isInitialized() || false,
       })),
       runtime: this.runtime.getPerformanceMetrics(),
       framework: this.framework,
-      config: this.config
+      config: this.config,
     };
   }
 }

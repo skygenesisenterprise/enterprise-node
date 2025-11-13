@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { EnterpriseSDK, EnterpriseConfig } from '@skygenesisenterprise/enterprise';
+import { EnterpriseSDK, EnterpriseConfig } from '@skygenesisenterprise/enterprise-node';
 
 export interface UseEnterpriseOptions {
   autoInitialize?: boolean;
@@ -24,11 +24,11 @@ export function useEnterprise(options: UseEnterpriseOptions = {}) {
     try {
       const enterpriseSdk = new EnterpriseSDK(options.config);
       await enterpriseSdk.initialize();
-      
+
       sdkRef.current = enterpriseSdk;
       setSdk(enterpriseSdk);
       setIsInitialized(true);
-      
+
       options.onInitialized?.(enterpriseSdk);
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to initialize Enterprise');
@@ -65,7 +65,7 @@ export function useEnterprise(options: UseEnterpriseOptions = {}) {
     error,
     sdk,
     initialize,
-    destroy
+    destroy,
   };
 }
 
@@ -73,51 +73,60 @@ export function useAi() {
   const { sdk, isInitialized } = useEnterprise();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const enhance = useCallback(async (image: any, options?: any) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const enhance = useCallback(
+    async (image: any, options?: any) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    setIsProcessing(true);
-    try {
-      return await sdk.ai.enhance(image, options);
-    } finally {
-      setIsProcessing(false);
-    }
-  }, [sdk, isInitialized]);
+      setIsProcessing(true);
+      try {
+        return await sdk.ai.enhance(image, options);
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+    [sdk, isInitialized]
+  );
 
-  const generate = useCallback(async (prompt: string, options?: any) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const generate = useCallback(
+    async (prompt: string, options?: any) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    setIsProcessing(true);
-    try {
-      return await sdk.ai.generate(prompt, options);
-    } finally {
-      setIsProcessing(false);
-    }
-  }, [sdk, isInitialized]);
+      setIsProcessing(true);
+      try {
+        return await sdk.ai.generate(prompt, options);
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+    [sdk, isInitialized]
+  );
 
-  const analyze = useCallback(async (data: any, options?: any) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const analyze = useCallback(
+    async (data: any, options?: any) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    setIsProcessing(true);
-    try {
-      return await sdk.ai.analyze(data, options);
-    } finally {
-      setIsProcessing(false);
-    }
-  }, [sdk, isInitialized]);
+      setIsProcessing(true);
+      try {
+        return await sdk.ai.analyze(data, options);
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+    [sdk, isInitialized]
+  );
 
   return {
     enhance,
     generate,
     analyze,
     isProcessing,
-    isAvailable: isInitialized && !!sdk?.ai
+    isAvailable: isInitialized && !!sdk?.ai,
   };
 }
 
@@ -125,42 +134,54 @@ export function useStorage() {
   const { sdk, isInitialized } = useEnterprise();
   const [isUploading, setIsUploading] = useState(false);
 
-  const save = useCallback(async (file: any, options?: any) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const save = useCallback(
+    async (file: any, options?: any) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    setIsUploading(true);
-    try {
-      return await sdk.storage.save(file, options);
-    } finally {
-      setIsUploading(false);
-    }
-  }, [sdk, isInitialized]);
+      setIsUploading(true);
+      try {
+        return await sdk.storage.save(file, options);
+      } finally {
+        setIsUploading(false);
+      }
+    },
+    [sdk, isInitialized]
+  );
 
-  const load = useCallback(async (path: string, options?: any) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const load = useCallback(
+    async (path: string, options?: any) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    return await sdk.storage.load(path, options);
-  }, [sdk, isInitialized]);
+      return await sdk.storage.load(path, options);
+    },
+    [sdk, isInitialized]
+  );
 
-  const remove = useCallback(async (path: string) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const remove = useCallback(
+    async (path: string) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    return await sdk.storage.delete(path);
-  }, [sdk, isInitialized]);
+      return await sdk.storage.delete(path);
+    },
+    [sdk, isInitialized]
+  );
 
-  const list = useCallback(async (directory?: string) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const list = useCallback(
+    async (directory?: string) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    return await sdk.storage.list(directory);
-  }, [sdk, isInitialized]);
+      return await sdk.storage.list(directory);
+    },
+    [sdk, isInitialized]
+  );
 
   return {
     save,
@@ -168,7 +189,7 @@ export function useStorage() {
     remove,
     list,
     isUploading,
-    isAvailable: isInitialized && !!sdk?.storage
+    isAvailable: isInitialized && !!sdk?.storage,
   };
 }
 
@@ -178,21 +199,24 @@ export function useAuth() {
   const [user, setUser] = useState<any>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const login = useCallback(async (credentials: any) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const login = useCallback(
+    async (credentials: any) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    setIsAuthenticating(true);
-    try {
-      const result = await sdk.auth.login(credentials);
-      setUser(result.user);
-      setIsAuthenticated(true);
-      return result;
-    } finally {
-      setIsAuthenticating(false);
-    }
-  }, [sdk, isInitialized]);
+      setIsAuthenticating(true);
+      try {
+        const result = await sdk.auth.login(credentials);
+        setUser(result.user);
+        setIsAuthenticated(true);
+        return result;
+      } finally {
+        setIsAuthenticating(false);
+      }
+    },
+    [sdk, isInitialized]
+  );
 
   const logout = useCallback(async () => {
     if (!isInitialized || !sdk) {
@@ -209,21 +233,24 @@ export function useAuth() {
     }
   }, [sdk, isInitialized]);
 
-  const register = useCallback(async (userData: any) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const register = useCallback(
+    async (userData: any) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    setIsAuthenticating(true);
-    try {
-      const result = await sdk.auth.register(userData);
-      setUser(result.user);
-      setIsAuthenticated(true);
-      return result;
-    } finally {
-      setIsAuthenticating(false);
-    }
-  }, [sdk, isInitialized]);
+      setIsAuthenticating(true);
+      try {
+        const result = await sdk.auth.register(userData);
+        setUser(result.user);
+        setIsAuthenticated(true);
+        return result;
+      } finally {
+        setIsAuthenticating(false);
+      }
+    },
+    [sdk, isInitialized]
+  );
 
   useEffect(() => {
     if (isInitialized && sdk?.auth) {
@@ -241,7 +268,7 @@ export function useAuth() {
     user,
     isAuthenticated,
     isAuthenticating,
-    isAvailable: isInitialized && !!sdk?.auth
+    isAvailable: isInitialized && !!sdk?.auth,
   };
 }
 
@@ -249,43 +276,55 @@ export function useProject() {
   const { sdk, isInitialized } = useEnterprise();
   const [currentProject, setCurrentProject] = useState<any>(null);
 
-  const create = useCallback(async (name: string, options?: any) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const create = useCallback(
+    async (name: string, options?: any) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    return await sdk.project.create(name, options);
-  }, [sdk, isInitialized]);
+      return await sdk.project.create(name, options);
+    },
+    [sdk, isInitialized]
+  );
 
-  const open = useCallback(async (projectIdOrName: string) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const open = useCallback(
+    async (projectIdOrName: string) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    const result = await sdk.project.open(projectIdOrName);
-    setCurrentProject(result.project);
-    return result;
-  }, [sdk, isInitialized]);
+      const result = await sdk.project.open(projectIdOrName);
+      setCurrentProject(result.project);
+      return result;
+    },
+    [sdk, isInitialized]
+  );
 
-  const save = useCallback(async (projectId?: string) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const save = useCallback(
+    async (projectId?: string) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    return await sdk.project.save(projectId);
-  }, [sdk, isInitialized]);
+      return await sdk.project.save(projectId);
+    },
+    [sdk, isInitialized]
+  );
 
-  const remove = useCallback(async (projectId: string) => {
-    if (!isInitialized || !sdk) {
-      throw new Error('Enterprise not initialized');
-    }
+  const remove = useCallback(
+    async (projectId: string) => {
+      if (!isInitialized || !sdk) {
+        throw new Error('Enterprise not initialized');
+      }
 
-    const result = await sdk.project.delete(projectId);
-    if (currentProject?.id === projectId) {
-      setCurrentProject(null);
-    }
-    return result;
-  }, [sdk, isInitialized, currentProject]);
+      const result = await sdk.project.delete(projectId);
+      if (currentProject?.id === projectId) {
+        setCurrentProject(null);
+      }
+      return result;
+    },
+    [sdk, isInitialized, currentProject]
+  );
 
   useEffect(() => {
     if (isInitialized && sdk?.project) {
@@ -300,47 +339,56 @@ export function useProject() {
     save,
     remove,
     currentProject,
-    isAvailable: isInitialized && !!sdk?.project
+    isAvailable: isInitialized && !!sdk?.project,
   };
 }
 
 export function useUi() {
   const { sdk, isInitialized } = useEnterprise();
 
-  const notify = useCallback(async (message: string, options?: any) => {
-    if (!isInitialized || !sdk) {
-      console.warn('Enterprise not initialized, using fallback notification');
-      console.log(message);
-      return { id: 'fallback', shown: true };
-    }
+  const notify = useCallback(
+    async (message: string, options?: any) => {
+      if (!isInitialized || !sdk) {
+        console.warn('Enterprise not initialized, using fallback notification');
+        console.log(message);
+        return { id: 'fallback', shown: true };
+      }
 
-    return await sdk.ui.notify(message, options);
-  }, [sdk, isInitialized]);
+      return await sdk.ui.notify(message, options);
+    },
+    [sdk, isInitialized]
+  );
 
-  const modal = useCallback(async (options?: any) => {
-    if (!isInitialized || !sdk) {
-      console.warn('Enterprise not initialized, using fallback modal');
-      const result = window.confirm(options?.content || options?.title || 'Modal');
-      return { id: 'fallback', opened: true, result };
-    }
+  const modal = useCallback(
+    async (options?: any) => {
+      if (!isInitialized || !sdk) {
+        console.warn('Enterprise not initialized, using fallback modal');
+        const result = window.confirm(options?.content || options?.title || 'Modal');
+        return { id: 'fallback', opened: true, result };
+      }
 
-    return await sdk.ui.modal(options);
-  }, [sdk, isInitialized]);
+      return await sdk.ui.modal(options);
+    },
+    [sdk, isInitialized]
+  );
 
-  const toast = useCallback(async (message: string, type?: any) => {
-    if (!isInitialized || !sdk) {
-      console.log(`${type?.toUpperCase()}: ${message}`);
-      return { id: 'fallback', shown: true };
-    }
+  const toast = useCallback(
+    async (message: string, type?: any) => {
+      if (!isInitialized || !sdk) {
+        console.log(`${type?.toUpperCase()}: ${message}`);
+        return { id: 'fallback', shown: true };
+      }
 
-    return await sdk.ui.toast(message, type);
-  }, [sdk, isInitialized]);
+      return await sdk.ui.toast(message, type);
+    },
+    [sdk, isInitialized]
+  );
 
   return {
     notify,
     modal,
     toast,
-    isAvailable: isInitialized && !!sdk?.ui
+    isAvailable: isInitialized && !!sdk?.ui,
   };
 }
 
@@ -371,15 +419,11 @@ export function EnterpriseProvider({
   config,
   autoInitialize = true,
   onInitialized,
-  onError
+  onError,
 }: EnterpriseProviderProps) {
   const enterprise = useEnterprise({ config, autoInitialize, onInitialized, onError });
 
-  return (
-    <EnterpriseContext.Provider value={enterprise}>
-      {children}
-    </EnterpriseContext.Provider>
-  );
+  return <EnterpriseContext.Provider value={enterprise}>{children}</EnterpriseContext.Provider>;
 }
 
 export function useContext() {

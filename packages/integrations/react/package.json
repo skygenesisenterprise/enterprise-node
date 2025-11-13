@@ -31,7 +31,7 @@
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "@skygenesisenterprise/enterprise": "workspace:*",
+    "@skygenesisenterprise/enterprise-node": "workspace:*",
     "@skygenesisenterprise/shared": "workspace:*"
   },
   "devDependencies": {

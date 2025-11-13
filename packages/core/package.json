@@ -1,5 +1,5 @@
 {
-  "name": "@skygenesisenterprise/enterprise",
+  "name": "@skygenesisenterprise/enterprise-node",
   "version": "1.0.9",
   "description": "Enterprise SDK Core - Runtime universel pour applications intelligentes",
   "type": "module",

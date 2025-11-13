@@ -15,7 +15,7 @@
   "editor.suggestSelection": "first",
   "editor.acceptSuggestionOnCommitCharacter": true,
   "editor.suggestOnTriggerCharacters": true,
-  "editor.wordBasedSuggestions": true,
+  "editor.wordBasedSuggestions": "matchingDocuments",
   "files.associations": {
     "*.enterprise": "typescript"
   },

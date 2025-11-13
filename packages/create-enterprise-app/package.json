@@ -1,12 +1,10 @@
 {
-  "name": "@skygenesisenterprise/cli",
-  "version": "1.0.9",
-  "description": "Enterprise CLI - Outils en ligne de commande pour le SDK Enterprise",
-  "type": "module",
-  "private": false,
+  "name": "create-enterprise-app",
+  "version": "1.0.0",
+  "description": "Create Enterprise SDK applications with one command",
   "main": "./dist/index.js",
   "bin": {
-    "enterprise": "./dist/bin/enterprise.js"
+    "create-enterprise-app": "./dist/bin/create-enterprise-app.js"
   },
   "types": "./dist/index.d.ts",
   "files": [
@@ -24,27 +22,30 @@
     "cli",
     "enterprise",
     "sdk",
-    "tools",
+    "create-enterprise-app",
+    "generator",
     "sky-genesis"
   ],
   "author": "Sky Genesis Enterprise",
   "license": "MIT",
   "dependencies": {
-    "@skygenesisenterprise/enterprise-node": "workspace:*",
-    "@skygenesisenterprise/shared": "workspace:*",
     "commander": "^11.0.0",
-    "chalk": "^5.0.0",
+    "chalk": "^4.1.2",
     "inquirer": "^9.0.0",
-    "ora": "^7.0.0",
+    "ora": "^5.4.1",
     "fs-extra": "^11.0.0",
-    "glob": "^10.0.0"
+    "glob": "^10.0.0",
+    "cross-spawn": "^7.0.3",
+    "semver": "^7.5.4"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-typescript": "^11.0.0",
+    "@types/cross-spawn": "^6.0.6",
     "@types/fs-extra": "^11.0.0",
     "@types/inquirer": "^9.0.0",
     "@types/node": "^20.0.0",
+    "@types/semver": "^7.5.0",
     "rimraf": "^5.0.0",
     "rollup": "^4.0.0",
     "typescript": "^5.0.0",
@@ -53,9 +54,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/skygenesisenterprise/enterprise.git",
-    "directory": "packages/development/cli"
+    "directory": "packages/create-enterprise-app"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

@@ -236,7 +236,8 @@ if (typeof global !== 'undefined') {
 }
 
 export { Enterprise };
-// export * from '@skygenesisenterprise/shared';
+export { PluginManager } from './plugins/plugin-manager';
+export * from '@skygenesisenterprise/shared';
 // export * from './runtime/wasm-runtime';
 // export * from './loader/module-loader';
 // export * from './config/config';

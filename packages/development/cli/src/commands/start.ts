@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { spawn } from 'child_process';
 
-export class DevCommand {
+export class StartCommand {
   private options: any;
   private globalOptions: any;
 
@@ -12,9 +12,9 @@ export class DevCommand {
   }
 
   async execute(): Promise<void> {
-    console.log(chalk.blue.bold('🔥 Démarrage du serveur de développement Enterprise'));
+    console.log(chalk.blue.bold("🚀 Démarrage de l'application Enterprise en mode production"));
 
-    const spinner = ora('Démarrage du serveur...').start();
+    const spinner = ora('Démarrage du serveur de production...').start();
 
     try {
       // Détecter le framework et démarrer le serveur approprié
@@ -23,28 +23,28 @@ export class DevCommand {
       let command: string[];
       switch (framework) {
         case 'nextjs':
-          command = ['next', 'dev', '-p', this.options.port, '-H', this.options.host];
+          command = ['next', 'start', '-p', this.options.port, '-H', this.options.host];
           break;
         case 'react':
-          command = ['vite', '--port', this.options.port, '--host', this.options.host];
+          command = ['serve', '-s', 'dist', '-l', this.options.port];
           break;
         case 'svelte':
           command = [
             'npm',
             'run',
-            'dev',
+            'start',
             '--',
-            '--port',
-            this.options.port,
             '--host',
             this.options.host,
+            '--port',
+            this.options.port,
           ];
           break;
         default:
-          command = ['npm', 'run', 'dev'];
+          command = ['npm', 'run', 'start'];
       }
 
-      spinner.succeed(`Serveur démarré (${framework})`);
+      spinner.succeed(`Serveur de production démarré (${framework})`);
       console.log(chalk.cyan(`🌐 http://${this.options.host}:${this.options.port}`));
 
       // Démarrer le processus
@@ -107,10 +107,4 @@ export class DevCommand {
 
     return 'unknown';
   }
-}
-
-// Export function for backward compatibility
-export async function devCommand(options: { port: string; host: string }) {
-  const command = new DevCommand(options, {});
-  await command.execute();
 }

@@ -17,7 +17,7 @@
     "types": ["node", "react", "react-dom"],
     "paths": {
       "@skygenesisenterprise/shared": ["../../shared/src/index.ts"],
-      "@skygenesisenterprise/enterprise": ["../../core/src/index.ts"]
+      "@skygenesisenterprise/enterprise-node": ["../../core/src/index.ts"]
     }
   },
   "include": ["src/**/*"],
