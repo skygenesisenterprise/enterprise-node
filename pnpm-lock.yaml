@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@skygenesisenterprise/enterprise-node':
-        specifier: ^1.0.16
-        version: 1.0.16
     devDependencies:
       '@changesets/cli':
         specifier: ^2.29.7
@@ -1724,12 +1720,6 @@ packages:
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
-
-  /@skygenesisenterprise/enterprise-node@1.0.16:
-    resolution: {integrity: sha512-57lSV4x6MMOR7Gu8//r8zqdyWQGjyOu9Huvd5HbPNUIqzf7U5tR4O17ODa6ydlC88QwUT6RpNv9Lp7G7LSGnUg==}
-    engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
-    requiresBuild: true
-    dev: false
 
   /@smithy/abort-controller@4.2.5:
     resolution: {integrity: sha512-j7HwVkBw68YW8UmFRcjZOmssE77Rvk0GWAIN1oFBhsaovQmZWYCIcGa9/pwRB0ExI8Sk9MWNALTjftjHZea7VA==}

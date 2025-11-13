@@ -34,9 +34,6 @@
   ],
   "author": "Sky Genesis Enterprise",
   "license": "MIT",
-  "dependencies": {
-    "@skygenesisenterprise/enterprise-node": "^1.0.16"
-  },
   "main": "index.js",
   "types": "index.d.ts",
   "exports": {
