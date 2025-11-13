@@ -1,10 +1,11 @@
 import { defineConfig } from 'rollup';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import typescript from '@rollup/plugin-typescript';
 
 export default defineConfig([
   {
-    input: 'dist/index.js',
+    input: 'src/index.tsx',
     output: [
       {
         file: 'dist/index.js',
@@ -18,6 +19,11 @@ export default defineConfig([
       },
     ],
     plugins: [
+      typescript({
+        tsconfig: './tsconfig.json',
+        declaration: true,
+        declarationDir: 'dist',
+      }),
       nodeResolve({
         preferBuiltins: true,
       }),
@@ -27,7 +33,7 @@ export default defineConfig([
       'react',
       'react-dom',
       '@skygenesisenterprise/shared',
-      '@skygenesisenterprise/enterprise',
+      '@skygenesisenterprise/enterprise-node',
     ],
   },
 ]);
