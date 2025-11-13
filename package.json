@@ -18,9 +18,7 @@
     "clean": "turbo run clean",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build --filter=!@skygenesisenterprise/cli && changeset publish",
-    "postinstall": "husky install",
-    "prepare": "husky install"
+    "release": "turbo run build --filter=!@skygenesisenterprise/cli && changeset publish"
   },
   "keywords": [
     "sdk",
@@ -69,7 +67,6 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.57.1",
-    "husky": "^8.0.3",
     "lint-staged": "^15.5.2",
     "prettier": "^3.6.2",
     "rimraf": "^5.0.10",
