@@ -31,32 +31,32 @@ export class EnterpriseAutoComplete {
     const currentLine = this.getCurrentLine(lines, position);
     const beforeCursor = currentLine.substring(0, this.getColumnInLine(lines, position));
 
-    // Détection du contexte
-    if (beforeCursor.includes('import')) {
+    // Détection du contexte - utiliser des patterns plus précis
+    if (beforeCursor.match(/\bimport\b/)) {
       return this.getImportSuggestions(beforeCursor);
     }
 
-    if (beforeCursor.includes('new Enterprise')) {
+    if (beforeCursor.match(/new\s+Enterprise/)) {
       return this.getConstructorSuggestions(beforeCursor);
     }
 
-    if (beforeCursor.includes('.ai.')) {
+    if (beforeCursor.match(/\.ai\.$/)) {
       return this.getAISuggestions(beforeCursor);
     }
 
-    if (beforeCursor.includes('.storage.')) {
+    if (beforeCursor.match(/\.storage\.$/)) {
       return this.getStorageSuggestions(beforeCursor);
     }
 
-    if (beforeCursor.includes('.ui.')) {
+    if (beforeCursor.match(/\.ui\.$/)) {
       return this.getUISuggestions(beforeCursor);
     }
 
-    if (beforeCursor.includes('.auth.')) {
+    if (beforeCursor.match(/\.auth\.$/)) {
       return this.getAuthSuggestions(beforeCursor);
     }
 
-    if (beforeCursor.includes('.project.')) {
+    if (beforeCursor.match(/\.project\.$/)) {
       return this.getProjectSuggestions(beforeCursor);
     }
 
