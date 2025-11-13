@@ -26,8 +26,8 @@ export class InfoCommand {
         console.log(chalk.cyan(`${key}:`) + ` ${value}`);
       });
 
-      console.log(chalk.gray('\nDocumentation: https://enterprise.skygenesis.com/docs'));
-      console.log(chalk.gray('GitHub: https://github.com/skygenesisenterprise/enterprise'));
+      console.log(chalk.gray('\nDocumentation: https://wiki.skygenesisenterprise.com'));
+      console.log(chalk.gray('GitHub: https://github.com/skygenesisenterprise/enterprise-node'));
     }
   }
 }

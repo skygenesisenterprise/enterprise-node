@@ -17,20 +17,22 @@ export async function createCommand(name: string, options: CreateOptions) {
   try {
     // Validation du nom
     if (!/^[a-zA-Z0-9-_]+$/.test(name)) {
-      throw new Error('Le nom du projet ne doit contenir que des lettres, chiffres, tirets et underscores');
+      throw new Error(
+        'Le nom du projet ne doit contenir que des lettres, chiffres, tirets et underscores'
+      );
     }
 
     // Détermination du répertoire
     const targetDir = options.directory || path.join(process.cwd(), name);
-    
+
     if (await fs.pathExists(targetDir)) {
       const { overwrite } = await inquirer.prompt([
         {
           type: 'confirm',
           name: 'overwrite',
           message: `Le répertoire ${targetDir} existe déjà. Voulez-vous l'écraser ?`,
-          default: false
-        }
+          default: false,
+        },
       ]);
 
       if (!overwrite) {
@@ -55,9 +57,9 @@ export async function createCommand(name: string, options: CreateOptions) {
             { name: 'Svelte + TypeScript', value: 'svelte-ts' },
             { name: 'Next.js', value: 'nextjs' },
             { name: 'Node.js', value: 'node' },
-            { name: 'Minimal', value: 'minimal' }
-          ]
-        }
+            { name: 'Minimal', value: 'minimal' },
+          ],
+        },
       ]);
       template = selectedTemplate;
     }
@@ -76,13 +78,15 @@ export async function createCommand(name: string, options: CreateOptions) {
     // Installation des dépendances
     if (options.install) {
       const installSpinner = ora('Installation des dépendances...').start();
-      
+
       try {
         await installDependencies(targetDir);
         installSpinner.succeed('Dépendances installées!');
       } catch (error) {
-        installSpinner.fail('Erreur lors de l\'installation des dépendances');
-        console.log(chalk.yellow('Vous pouvez installer les dépendances manuellement avec: npm install'));
+        installSpinner.fail("Erreur lors de l'installation des dépendances");
+        console.log(
+          chalk.yellow('Vous pouvez installer les dépendances manuellement avec: npm install')
+        );
       }
     }
 
@@ -90,14 +94,13 @@ export async function createCommand(name: string, options: CreateOptions) {
     console.log(chalk.green.bold('\n✨ Projet créé avec succès!'));
     console.log(chalk.cyan('\nÉtapes suivantes:'));
     console.log(`  ${chalk.gray('1.')} cd ${name}`);
-    
+
     if (!options.install) {
       console.log(`  ${chalk.gray('2.')} npm install`);
     }
-    
-    console.log(`  ${chalk.gray(options.install ? '2' : '3')}. npm run dev`);
-    console.log(chalk.cyan('\nDocumentation: https://enterprise.skygenesis.com/docs'));
 
+    console.log(`  ${chalk.gray(options.install ? '2' : '3')}. npm run dev`);
+    console.log(chalk.cyan('\nDocumentation: https://wiki.skygenesisenterprise.com'));
   } catch (error) {
     console.error(chalk.red('Erreur:'), error instanceof Error ? error.message : error);
     process.exit(1);
@@ -106,7 +109,7 @@ export async function createCommand(name: string, options: CreateOptions) {
 
 async function createProject(targetDir: string, name: string, template: string) {
   const templateDir = path.join(__dirname, '../templates', template);
-  
+
   // Vérifier si le template existe
   if (!(await fs.pathExists(templateDir))) {
     throw new Error(`Template "${template}" non trouvé`);
@@ -125,11 +128,11 @@ async function createProject(targetDir: string, name: string, template: string) 
 
   // Remplacer les placeholders dans les fichiers
   const files = await glob('**/*', { cwd: targetDir, nodir: true });
-  
+
   for (const file of files) {
     const filePath = path.join(targetDir, file);
     const content = await fs.readFile(filePath, 'utf-8');
-    
+
     // Remplacer les placeholders
     const updatedContent = content
       .replace(/{{PROJECT_NAME}}/g, name)
@@ -142,11 +145,11 @@ async function createProject(targetDir: string, name: string, template: string) 
 
 async function installDependencies(targetDir: string) {
   const { spawn } = await import('child_process');
-  
+
   return new Promise<void>((resolve, reject) => {
     const process = spawn('npm', ['install'], {
       cwd: targetDir,
-      stdio: 'pipe'
+      stdio: 'pipe',
     });
 
     process.on('close', (code) => {
@@ -162,7 +165,5 @@ async function installDependencies(targetDir: string) {
 }
 
 function toPascalCase(str: string): string {
-  return str
-    .replace(/(?:^|[-_])(\w)/g, (_, char) => char.toUpperCase())
-    .replace(/[-_]/g, '');
+  return str.replace(/(?:^|[-_])(\w)/g, (_, char) => char.toUpperCase()).replace(/[-_]/g, '');
 }

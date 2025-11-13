@@ -249,7 +249,7 @@ Enterprise SDK
 
 ```bash
 # Clone the repository
-git clone https://github.com/skygenesisenterprise/enterprise.git
+git clone https://github.com/skygenesisenterprise/enterprise-node.git
 cd enterprise
 
 # Install dependencies
@@ -293,11 +293,7 @@ MIT © [Sky Genesis Enterprise](https://skygenesisenterprise.com)
 
 ## 🔗 Links
 
-- [Full Documentation](https://docs.skygenesisenterprise.com)
-- [GitHub Repository](https://github.com/skygenesisenterprise/enterprise)
-- [NPM Package](https://www.npmjs.com/package/@skygenesisenterprise/enterprise-node)
-- [Issues](https://github.com/skygenesisenterprise/enterprise/issues)
-- [Discussions](https://github.com/skygenesisenterprise/enterprise/discussions)
+- [Documentation](https://wiki.skygenesisenterprise.com/)
 
 ## 🌟 Star History
 

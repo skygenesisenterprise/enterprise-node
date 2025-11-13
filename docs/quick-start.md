@@ -352,10 +352,7 @@ Congratulations! You now have Enterprise SDK set up. Here's what to explore next
 
 ## 🆘 Need Help?
 
-- **Documentation**: [https://docs.skygenesisenterprise.com](https://docs.skygenesisenterprise.com)
-- **GitHub Issues**: [Report a problem](https://github.com/skygenesisenterprise/enterprise/issues)
-- **Discussions**: [Ask questions](https://github.com/skygenesisenterprise/enterprise/discussions)
-- **Discord**: [Join our community](https://discord.gg/skygenesis)
+- **Documentation**: [https://wiki.skygenesisenterprise.com/](https://wiki.skygenesisenterprise.com/)
 
 ## 🎉 You're Ready!
 

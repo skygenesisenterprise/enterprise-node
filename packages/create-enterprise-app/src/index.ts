@@ -167,7 +167,7 @@ async function createProject(projectName?: string, options: any = {}) {
     }
 
     console.log(chalk.green('\n✨ Happy coding! 🎉'));
-    console.log(chalk.gray('\nDocumentation: https://enterprise.skygenesis.com/docs'));
+    console.log(chalk.gray('\nDocumentation: https://wiki.skygenesisenterprise.com'));
     console.log(chalk.gray('GitHub: https://github.com/skygenesisenterprise/enterprise'));
   } catch (error) {
     spinner.fail('Failed to create project');
@@ -361,7 +361,7 @@ npm run dev
 
 ## Learn More
 
-- [Enterprise SDK Documentation](https://enterprise.skygenesis.com/docs)
+- [Enterprise SDK Documentation](https://wiki.skygenesisenterprise.com)
 - [GitHub Repository](https://github.com/skygenesisenterprise/enterprise)
 `;
 

@@ -4,7 +4,7 @@
 
 **Comprehensive documentation for the SkyGenesis Enterprise SDK**
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/skygenesis/enterprise-sdk)
+[![Version](https://img.shields.io/badge/version-1.0.9-blue.svg)](https://github.com/skygenesisenterprise/enterprise-node)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
@@ -752,10 +752,7 @@ await enterprise.loadModule('ai', aiConfig);
 
 ### Getting Help
 
-- 📖 [Documentation](./)
-- 🐛 [Issue Tracker](https://github.com/skygenesis/enterprise-sdk/issues)
-- 💬 [Discord Community](https://discord.gg/skygenesis)
-- 📧 [Email Support](mailto:support@skygenesis.com)
+- 📖 [Documentation](https://wiki.skygenesisenterprise.com/)
 
 [📖 Full Troubleshooting Guide](./troubleshooting.md)
 
@@ -767,7 +764,7 @@ We welcome contributions! Please see our [Contributing Guide](../CONTRIBUTING.md
 
 ```bash
 # Clone repository
-git clone https://github.com/skygenesis/enterprise-sdk.git
+git clone https://github.com/skygenesisenterprise/enterprise-node.git
 cd enterprise-sdk
 
 # Install dependencies
@@ -824,6 +821,6 @@ This project is licensed under the MIT License - see the [LICENSE](../LICENSE) f
 
 **Built with ❤️ by the SkyGenesis team**
 
-[Website](https://skygenesisenterprise.com) • [Documentation](./) • [GitHub](https://github.com/skygenesisenterprise/enterprise-node)
+[Documentation](https://wiki.skygenesisenterprise.com/)
 
 </div>
