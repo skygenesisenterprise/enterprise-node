@@ -1,0 +1,98 @@
+{
+  "Enterprise SDK Initialize": {
+    "prefix": "enterprise-init",
+    "body": [
+      "import { Enterprise } from '@skygenesisenterprise/enterprise-node';",
+      "",
+      "const enterprise = new Enterprise();",
+      "await enterprise.initialize();",
+      "$1"
+    ],
+    "description": "Initialize Enterprise SDK"
+  },
+  "AI Generate Text": {
+    "prefix": "ai-generate",
+    "body": [
+      "const result = await enterprise.ai.generate('${1:prompt}', {",
+      "  model: '${2:euse-generate-v0.1.0}',",
+      "  maxTokens: ${3:1000},",
+      "  temperature: ${4:0.7}",
+      "});",
+      "$5"
+    ],
+    "description": "Generate text using AI module"
+  },
+  "Storage Save File": {
+    "prefix": "storage-save",
+    "body": [
+      "const result = await enterprise.storage.save(${1:file}, {",
+      "  path: '${2:/storage/custom-path}',",
+      "  encryption: ${3:false},",
+      "  compression: ${4:false}",
+      "});",
+      "$5"
+    ],
+    "description": "Save file using storage module"
+  },
+  "Auth Manager Setup": {
+    "prefix": "auth-setup",
+    "body": [
+      "import { AuthManager } from '@skygenesisenterprise/enterprise-node';",
+      "",
+      "const auth = new AuthManager({",
+      "  provider: '${1:local}',",
+      "  credentials: ${2:{}}",
+      "});",
+      "$3"
+    ],
+    "description": "Setup authentication manager"
+  },
+  "Project Create": {
+    "prefix": "project-create",
+    "body": [
+      "const project = await enterprise.project.create({",
+      "  name: '${1:Project Name}',",
+      "  description: '${2:Project description}',",
+      "  status: '${3:active}'",
+      "});",
+      "$4"
+    ],
+    "description": "Create new project"
+  },
+  "UI Component Create": {
+    "prefix": "ui-component",
+    "body": [
+      "const component = enterprise.ui.createComponent({",
+      "  type: '${1:button}',",
+      "  props: {",
+      "    ${2:key}: '${3:value}'",
+      "  }",
+      "});",
+      "$4"
+    ],
+    "description": "Create UI component"
+  },
+  "Enterprise Config": {
+    "prefix": "enterprise-config",
+    "body": [
+      "const config = {",
+      "  modules: {",
+      "    ai: ${1:true},",
+      "    storage: ${2:true},",
+      "    ui: ${3:true},",
+      "    auth: ${4:true},",
+      "    project: ${5:true},",
+      "    sdk: ${6:true}",
+      "  },",
+      "  runtime: {",
+      "    wasmPath: '${7:./wasm/}',",
+      "    enableWasm: ${8:true}",
+      "  },",
+      "  framework: '${9:react}',",
+      "  debug: ${10:false}",
+      "};",
+      "$11"
+    ],
+    "description": "Complete enterprise configuration"
+  }
+}
