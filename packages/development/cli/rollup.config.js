@@ -1,6 +1,7 @@
 import { defineConfig } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
@@ -12,18 +13,15 @@ export default defineConfig([
     output: [
       {
         file: 'dist/index.js',
-        format: 'cjs',
-        sourcemap: true,
-      },
-      {
-        file: 'dist/index.esm.js',
         format: 'es',
         sourcemap: true,
       },
     ],
     plugins: [
+      commonjs(),
       nodeResolve({
         preferBuiltins: true,
+        browser: false,
       }),
       typescript({
         tsconfig: './tsconfig.json',
@@ -32,6 +30,14 @@ export default defineConfig([
         rootDir: 'src',
       }),
     ],
-    external: Object.keys(pkg.dependencies || {}).concat(Object.keys(pkg.peerDependencies || {})),
+    external: [
+      ...Object.keys(pkg.dependencies || {}),
+      ...Object.keys(pkg.peerDependencies || {}),
+      'fs/promises',
+      'path',
+      'child_process',
+      'os',
+      'url',
+    ],
   },
 ]);

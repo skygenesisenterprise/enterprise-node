@@ -15,6 +15,22 @@ import { PluginCommand } from './commands/plugin';
 import { DoctorCommand } from './commands/doctor';
 import { InfoCommand } from './commands/info';
 import { EnterpriseBuilderCommand } from './commands/enterprise-builder';
+import { UniversalDevCommand } from './commands/universal-dev';
+import { UniversalBuildCommand } from './commands/universal-build';
+import { UniversalStartCommand } from './commands/universal-start';
+import { UniversalPreviewCommand } from './commands/universal-preview';
+import { UniversalLintCommand } from './commands/universal-lint';
+import {
+  SDKDevCommand,
+  SDKBuildCommand,
+  SDKStartCommand,
+  SDKPreviewCommand,
+  SDKLintCommand,
+  SDKInitCommand,
+  SDKFmtCommand,
+  SDKTestCommand,
+  SDKUpgradeCommand,
+} from './commands/sdk';
 
 const program = new Command();
 
@@ -23,7 +39,7 @@ program
   .description('Enterprise SDK CLI - Outils unifiés pour le développement Enterprise')
   .version('1.0.0')
   .option('-v, --verbose', 'Mode verbeux')
-  .option('--config <path>', 'Chemin vers le fichier de configuration', './enterprise.config.js');
+  .option('--config <path>', 'Chemin vers le fichier de configuration', './enterprise.config.ts');
 
 // Commande de développement
 program
@@ -157,6 +173,203 @@ program
     await builderCommand.execute();
   });
 
+// ===== COMMANDES UNIVERSELLES SDK =====
+
+// Commande de développement universelle
+program
+  .command('universal-dev')
+  .alias('udev')
+  .description('Démarrer le serveur de développement (universel)')
+  .option('-p, --port <port>', 'Port du serveur', '3000')
+  .option('-h, --host <host>', 'Hôte du serveur', 'localhost')
+  .option('--hot', 'Activer le rechargement à chaud')
+  .option('--inspect', "Activer l'inspecteur de debug")
+  .option('--turbo', 'Activer le mode Turbo (Next.js)')
+  .option('--experimental', 'Activer les fonctionnalités expérimentales')
+  .action(async (options) => {
+    const devCommand = new UniversalDevCommand(options, program.opts());
+    await devCommand.execute();
+  });
+
+// Commande de build universelle
+program
+  .command('universal-build')
+  .alias('ubuild')
+  .description('Construire le projet pour la production (universel)')
+  .option('-o, --output <output>', 'Répertoire de sortie', 'dist')
+  .option('--target <target>', 'Cible de build', 'production')
+  .option('--analyze', 'Analyser le bundle')
+  .option('--minify', 'Minifier le code')
+  .option('--sourcemap', 'Générer les sourcemaps')
+  .option('--mode <mode>', 'Mode de build', 'production')
+  .option('--platform <platform>', 'Plateforme cible', 'browser')
+  .action(async (options) => {
+    const buildCommand = new UniversalBuildCommand(options, program.opts());
+    await buildCommand.execute();
+  });
+
+// Commande de start universelle
+program
+  .command('universal-start')
+  .alias('ustart')
+  .description('Démarrer le serveur de production (universel)')
+  .option('-p, --port <port>', 'Port du serveur', '3000')
+  .option('-h, --host <host>', 'Hôte du serveur', '0.0.0.0')
+  .option('--workers <count>', 'Nombre de workers', 'auto')
+  .option('--production', 'Forcer le mode production')
+  .option('--preview', 'Mode prévisualisation')
+  .action(async (options) => {
+    const startCommand = new UniversalStartCommand(options, program.opts());
+    await startCommand.execute();
+  });
+
+// Commande de prévisualisation universelle
+program
+  .command('universal-preview')
+  .alias('upreview')
+  .description('Prévisualiser le build de production (universel)')
+  .option('-p, --port <port>', 'Port du serveur', '4173')
+  .option('-h, --host <host>', 'Hôte du serveur', 'localhost')
+  .option('--open', 'Ouvrir automatiquement le navigateur')
+  .option('--output <output>', 'Répertoire de sortie')
+  .action(async (options) => {
+    const previewCommand = new UniversalPreviewCommand(options, program.opts());
+    await previewCommand.execute();
+  });
+
+// Commande de lint universelle
+program
+  .command('universal-lint')
+  .alias('ulint')
+  .description('Analyser et formater le code (universel)')
+  .option('--fix', 'Corriger automatiquement les erreurs')
+  .option('--cache', 'Utiliser le cache', true)
+  .option('--max-warnings <count>', "Nombre maximum d'avertissements")
+  .option('--quiet', 'Mode silencieux')
+  .option('--format <format>', 'Format de sortie', 'stylish')
+  .option('--output-file <file>', 'Fichier de sortie')
+  .action(async (options) => {
+    const lintCommand = new UniversalLintCommand(options, program.opts());
+    await lintCommand.execute();
+  });
+
+// ===== COMMANDES ENTERPRISE SDK =====
+
+// Commande init
+program
+  .command('init')
+  .description('Initialiser la configuration Enterprise SDK')
+  .option('--force', 'Forcer la réécriture de la configuration existante')
+  .action(async (options) => {
+    const initCommand = new SDKInitCommand(options, program.opts());
+    await initCommand.execute();
+  });
+
+// Commande dev
+program
+  .command('dev')
+  .description('Lancer le mode développement')
+  .option('-p, --port <port>', 'Port du serveur', '3000')
+  .option('-h, --host <host>', 'Hôte du serveur', 'localhost')
+  .option('--hot', 'Activer le rechargement à chaud')
+  .option('--inspect', "Activer l'inspecteur de debug")
+  .option('--turbo', 'Activer le mode Turbo (Next.js)')
+  .option('--experimental', 'Activer les fonctionnalités expérimentales')
+  .option('--env <environment>', 'Environnement cible')
+  .action(async (options) => {
+    const devCommand = new SDKDevCommand(options, program.opts());
+    await devCommand.execute();
+  });
+
+// Commande build
+program
+  .command('build')
+  .description('Construire pour la production')
+  .option('-o, --output <output>', 'Répertoire de sortie', 'dist')
+  .option('--target <target>', 'Cible de build', 'production')
+  .option('--analyze', 'Analyser le bundle')
+  .option('--minify', 'Minifier le code')
+  .option('--sourcemap', 'Générer les sourcemaps')
+  .option('--mode <mode>', 'Mode de build', 'production')
+  .option('--platform <platform>', 'Plateforme cible', 'browser')
+  .option('--experimental', 'Activer les fonctionnalités expérimentales')
+  .action(async (options) => {
+    const buildCommand = new SDKBuildCommand(options, program.opts());
+    await buildCommand.execute();
+  });
+
+// Commande start
+program
+  .command('start')
+  .description('Démarrer le serveur de production local')
+  .option('-p, --port <port>', 'Port du serveur', '3000')
+  .option('-h, --host <host>', 'Hôte du serveur', '0.0.0.0')
+  .option('--workers <count>', 'Nombre de workers', 'auto')
+  .option('--production', 'Forcer le mode production')
+  .option('--env <environment>', 'Environnement cible')
+  .action(async (options) => {
+    const startCommand = new SDKStartCommand(options, program.opts());
+    await startCommand.execute();
+  });
+
+// Commande lint
+program
+  .command('lint')
+  .description('Lint et vérifications')
+  .option('--fix', 'Corriger automatiquement les erreurs')
+  .option('--cache', 'Utiliser le cache', true)
+  .option('--max-warnings <count>', "Nombre maximum d'avertissements")
+  .option('--quiet', 'Mode silencieux')
+  .option('--format <format>', 'Format de sortie', 'stylish')
+  .option('--output-file <file>', 'Fichier de sortie')
+  .action(async (options) => {
+    const lintCommand = new SDKLintCommand(options, program.opts());
+    await lintCommand.execute();
+  });
+
+// Commande fmt
+program
+  .command('fmt')
+  .description('Formattage TS + Rust')
+  .option('--check', 'Vérifier le formatage sans modifier les fichiers')
+  .option('--rust-only', 'Formater uniquement les fichiers Rust')
+  .option('--ts-only', 'Formater uniquement les fichiers TypeScript')
+  .option('--files <files>', 'Fichiers spécifiques à formater')
+  .action(async (options) => {
+    const fmtCommand = new SDKFmtCommand(options, program.opts());
+    await fmtCommand.execute();
+  });
+
+// Commande test
+program
+  .command('test')
+  .description('Tests unifiés')
+  .option('--watch', 'Mode watch pour les tests')
+  .option('--coverage', 'Générer la couverture de code')
+  .option('--ui', 'Interface utilisateur pour les tests')
+  .option('--run-in-band', 'Exécuter les tests en série')
+  .option('--test-name-pattern <pattern>', 'Filtrer les tests par nom')
+  .option('--test-path-pattern <pattern>', 'Filtrer les tests par chemin')
+  .option('--verbose', 'Mode verbeux')
+  .action(async (options) => {
+    const testCommand = new SDKTestCommand(options, program.opts());
+    await testCommand.execute();
+  });
+
+// Commande upgrade
+program
+  .command('upgrade')
+  .description('Mise à jour du SDK')
+  .option('--check', 'Vérifier les mises à jour disponibles')
+  .option('--dry-run', 'Simuler la mise à jour sans appliquer')
+  .option('--force', 'Forcer la mise à jour sans confirmation')
+  .option('--latest', 'Mettre à jour vers la dernière version')
+  .option('--version <version>', 'Mettre à jour vers une version spécifique')
+  .action(async (options) => {
+    const upgradeCommand = new SDKUpgradeCommand(options, program.opts());
+    await upgradeCommand.execute();
+  });
+
 // Gestion des erreurs globales
 program.on('command:*', () => {
   console.error(chalk.red(`❌ Commande invalide: ${program.args.join(' ')}`));
@@ -183,19 +396,41 @@ if (!process.argv.slice(2).length) {
   console.log(chalk.cyan.bold('🚀 Enterprise SDK CLI'));
   console.log(chalk.gray('Outils unifiés pour le développement Enterprise\n'));
 
-  console.log(chalk.yellow('Commandes principales:'));
-  console.log('  enterprise new <name>     Créer un nouveau projet');
-  console.log('  enterprise dev              Démarrer le serveur de développement');
+  console.log(chalk.yellow('Commandes Enterprise SDK:'));
+  console.log('  enterprise init              Initialiser la configuration SDK');
+  console.log('  enterprise dev              Lancer le mode développement');
   console.log('  enterprise build            Construire pour la production');
-  console.log('  enterprise start            Démarrer en mode production');
-  console.log('  enterprise plugin          Gérer les plugins');
+  console.log('  enterprise start            Démarrer le serveur de production local');
+  console.log('  enterprise lint             Lint et vérifications');
+  console.log('  enterprise fmt              Formattage TS + Rust');
+  console.log('  enterprise test             Tests unifiés');
+  console.log('  enterprise upgrade           Mise à jour du SDK\n');
+
+  console.log(chalk.yellow('Commandes avancées:'));
+  console.log('  enterprise new <name>       Créer un nouveau projet');
+  console.log('  enterprise plugin           Gérer les plugins');
   console.log('  enterprise doctor           Vérifier la configuration');
-  console.log('  enterprise info             Afficher les informations\n');
+  console.log('  enterprise info              Afficher les informations');
+  console.log('  enterprise universal-dev    Développement universel (udev)');
+  console.log('  enterprise universal-build  Build universel (ubuild)');
+  console.log('  enterprise universal-start  Start universel (ustart)');
+  console.log('  enterprise universal-preview Preview universel (upreview)');
+  console.log('  enterprise universal-lint   Lint universel (ulint)\n');
 
   console.log(chalk.yellow('Exemples:'));
+  console.log('  enterprise init              Initialiser la configuration');
+  console.log('  enterprise dev --port 8080 --turbo');
+  console.log('  enterprise build --experimental');
+  console.log('  enterprise start --host 0.0.0.0');
+  console.log('  enterprise lint --fix');
+  console.log('  enterprise fmt --check');
+  console.log('  enterprise test --coverage');
+  console.log('  enterprise upgrade --check\n');
+
+  console.log(chalk.yellow('Exemples avancés:'));
   console.log('  enterprise new my-app --template mobile');
-  console.log('  enterprise dev --port 8080 --hot');
-  console.log('  enterprise build --analyze --minify');
+  console.log('  enterprise universal-dev --turbo --experimental');
+  console.log('  enterprise universal-build --analyze --platform node');
   console.log('  enterprise plugin install @enterprise/auth');
 
   program.outputHelp();
