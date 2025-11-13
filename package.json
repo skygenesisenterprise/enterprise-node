@@ -47,6 +47,14 @@
       "import": "./index.js",
       "require": "./index.js"
     },
+    "./autocomplete": {
+      "types": "./src/autocomplete-system.d.ts",
+      "import": "./src/autocomplete-system.js"
+    },
+    "./snippets": {
+      "types": "./src/autocomplete.d.ts",
+      "import": "./src/autocomplete.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
