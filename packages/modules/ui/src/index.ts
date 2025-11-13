@@ -12,11 +12,7 @@ export interface Theme {
 }
 
 export class UIManager {
-  private _theme: Theme;
-
-  constructor(_theme: Theme) {
-    this._theme = _theme;
-  }
+  constructor(_theme: Theme) {}
 
   createComponent(config: Omit<UIComponent, 'id'>): UIComponent {
     return {

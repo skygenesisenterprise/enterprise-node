@@ -1,18 +1,17 @@
 import { defineConfig } from 'rollup';
-import typescript from '@rollup/plugin-typescript';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 export default defineConfig([
   {
-    input: 'src/index.ts',
+    input: 'dist/index.js',
     output: [
       {
-        file: 'dist/index.js',
+        file: 'dist/index.bundle.js',
         format: 'cjs',
         sourcemap: true,
       },
       {
-        file: 'dist/index.esm.js',
+        file: 'dist/index.esm.bundle.js',
         format: 'es',
         sourcemap: true,
       },
@@ -20,11 +19,6 @@ export default defineConfig([
     plugins: [
       nodeResolve({
         preferBuiltins: true,
-      }),
-      typescript({
-        tsconfig: './tsconfig.json',
-        declaration: true,
-        declarationDir: 'dist',
       }),
     ],
     external: [

@@ -1,4 +1,4 @@
-declare module '@skygenesisenterprise/enterprise' {
+declare module '@skygenesisenterprise/enterprise-node' {
   export class EnterpriseSDK {
     constructor(userConfig?: any);
     initialize(): Promise<void>;
@@ -44,5 +44,15 @@ declare module '@skygenesisenterprise/enterprise' {
       enableProfiling: boolean;
       enableMetrics: boolean;
     };
+  }
+
+  export class PluginManager {
+    static getInstance(): PluginManager;
+    initialize(): Promise<void>;
+    getPlugins(): any[];
+    installPlugin(source: string): Promise<void>;
+    uninstallPlugin(name: string): Promise<void>;
+    activatePlugin(name: string): Promise<void>;
+    deactivatePlugin(name: string): Promise<void>;
   }
 }

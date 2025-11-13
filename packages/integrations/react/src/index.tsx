@@ -81,7 +81,7 @@ export function useAi() {
 
       setIsProcessing(true);
       try {
-        return await sdk.ai.enhance(image, options);
+        return await (sdk.ai as any).enhance(image, options);
       } finally {
         setIsProcessing(false);
       }
@@ -97,7 +97,7 @@ export function useAi() {
 
       setIsProcessing(true);
       try {
-        return await sdk.ai.generate(prompt, options);
+        return await (sdk.ai as any).generate(prompt, options);
       } finally {
         setIsProcessing(false);
       }
@@ -113,7 +113,7 @@ export function useAi() {
 
       setIsProcessing(true);
       try {
-        return await sdk.ai.analyze(data, options);
+        return await (sdk.ai as any).analyze(data, options);
       } finally {
         setIsProcessing(false);
       }
@@ -142,7 +142,7 @@ export function useStorage() {
 
       setIsUploading(true);
       try {
-        return await sdk.storage.save(file, options);
+        return await (sdk.storage as any).save(file, options);
       } finally {
         setIsUploading(false);
       }
@@ -156,7 +156,7 @@ export function useStorage() {
         throw new Error('Enterprise not initialized');
       }
 
-      return await sdk.storage.load(path, options);
+      return await (sdk.storage as any).load(path, options);
     },
     [sdk, isInitialized]
   );
@@ -167,7 +167,7 @@ export function useStorage() {
         throw new Error('Enterprise not initialized');
       }
 
-      return await sdk.storage.delete(path);
+      return await (sdk.storage as any).delete(path);
     },
     [sdk, isInitialized]
   );
@@ -178,7 +178,7 @@ export function useStorage() {
         throw new Error('Enterprise not initialized');
       }
 
-      return await sdk.storage.list(directory);
+      return await (sdk.storage as any).list(directory);
     },
     [sdk, isInitialized]
   );
@@ -207,7 +207,7 @@ export function useAuth() {
 
       setIsAuthenticating(true);
       try {
-        const result = await sdk.auth.login(credentials);
+        const result = await (sdk.auth as any).login(credentials);
         setUser(result.user);
         setIsAuthenticated(true);
         return result;
@@ -225,7 +225,7 @@ export function useAuth() {
 
     setIsAuthenticating(true);
     try {
-      await sdk.auth.logout();
+      await (sdk.auth as any).logout();
       setUser(null);
       setIsAuthenticated(false);
     } finally {
@@ -241,7 +241,7 @@ export function useAuth() {
 
       setIsAuthenticating(true);
       try {
-        const result = await sdk.auth.register(userData);
+        const result = await (sdk.auth as any).register(userData);
         setUser(result.user);
         setIsAuthenticated(true);
         return result;
@@ -254,8 +254,8 @@ export function useAuth() {
 
   useEffect(() => {
     if (isInitialized && sdk?.auth) {
-      const currentUser = sdk.auth.getCurrentUser?.();
-      const authenticated = sdk.auth.isAuthenticated?.();
+      const currentUser = (sdk.auth as any).getCurrentUser?.();
+      const authenticated = (sdk.auth as any).isAuthenticated?.();
       setUser(currentUser);
       setIsAuthenticated(authenticated || false);
     }
@@ -282,7 +282,7 @@ export function useProject() {
         throw new Error('Enterprise not initialized');
       }
 
-      return await sdk.project.create(name, options);
+      return await (sdk.project as any).create(name, options);
     },
     [sdk, isInitialized]
   );
@@ -293,7 +293,7 @@ export function useProject() {
         throw new Error('Enterprise not initialized');
       }
 
-      const result = await sdk.project.open(projectIdOrName);
+      const result = await (sdk.project as any).open(projectIdOrName);
       setCurrentProject(result.project);
       return result;
     },
@@ -306,7 +306,7 @@ export function useProject() {
         throw new Error('Enterprise not initialized');
       }
 
-      return await sdk.project.save(projectId);
+      return await (sdk.project as any).save(projectId);
     },
     [sdk, isInitialized]
   );
@@ -317,7 +317,7 @@ export function useProject() {
         throw new Error('Enterprise not initialized');
       }
 
-      const result = await sdk.project.delete(projectId);
+      const result = await (sdk.project as any).delete(projectId);
       if (currentProject?.id === projectId) {
         setCurrentProject(null);
       }
@@ -328,7 +328,7 @@ export function useProject() {
 
   useEffect(() => {
     if (isInitialized && sdk?.project) {
-      const current = sdk.project.getCurrentProject?.();
+      const current = (sdk.project as any).getCurrentProject?.();
       setCurrentProject(current);
     }
   }, [isInitialized, sdk]);
@@ -354,7 +354,7 @@ export function useUi() {
         return { id: 'fallback', shown: true };
       }
 
-      return await sdk.ui.notify(message, options);
+      return await (sdk.ui as any).notify(message, options);
     },
     [sdk, isInitialized]
   );
@@ -367,7 +367,7 @@ export function useUi() {
         return { id: 'fallback', opened: true, result };
       }
 
-      return await sdk.ui.modal(options);
+      return await (sdk.ui as any).modal(options);
     },
     [sdk, isInitialized]
   );
@@ -379,7 +379,7 @@ export function useUi() {
         return { id: 'fallback', shown: true };
       }
 
-      return await sdk.ui.toast(message, type);
+      return await (sdk.ui as any).toast(message, type);
     },
     [sdk, isInitialized]
   );

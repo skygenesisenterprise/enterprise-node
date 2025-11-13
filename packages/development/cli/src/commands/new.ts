@@ -7,12 +7,10 @@ import * as path from 'path';
 export class NewCommand {
   private name: string;
   private options: any;
-  private globalOptions: any;
 
-  constructor(name: string, options: any, globalOptions: any) {
+  constructor(name: string, options: any, _globalOptions: any) {
     this.name = name;
     this.options = options;
-    this.globalOptions = globalOptions;
   }
 
   async execute(): Promise<void> {

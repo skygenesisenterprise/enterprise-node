@@ -1,13 +1,7 @@
 import chalk from 'chalk';
 
 export class DoctorCommand {
-  private options: any;
-  private globalOptions: any;
-
-  constructor(options: any, globalOptions: any) {
-    this.options = options;
-    this.globalOptions = globalOptions;
-  }
+  constructor(_options: any, _globalOptions: any) {}
 
   async execute(): Promise<void> {
     console.log(chalk.blue.bold('🩺 Diagnostic du projet Enterprise'));

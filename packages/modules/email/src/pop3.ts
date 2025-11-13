@@ -47,7 +47,7 @@ export class Pop3Client extends EventEmitter {
   }
 
   async connect(): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise((_resolve, reject) => {
       const timeout = setTimeout(() => {
         reject(new Error('POP3 connection timeout'));
       }, this.config.timeout || 30000);
@@ -74,32 +74,30 @@ export class Pop3Client extends EventEmitter {
               this.emit('disconnected');
             }, 100);
           } else if (event === 'login') {
-            setTimeout(() => callback(true, 'OK'), 50);
+            setTimeout(() => callback('OK'), 50);
           } else if (event === 'stat') {
-            setTimeout(() => callback(true, '3 1024'), 50);
+            setTimeout(() => callback('3 1024'), 50);
           } else if (event === 'list') {
-            setTimeout(() => callback(true, '1 512\r\n2 256\r\n3 256\r\n.'), 50);
+            setTimeout(() => callback('1 512\r\n2 256\r\n3 256\r\n.'), 50);
           } else if (event === 'retr') {
             setTimeout(
               () =>
                 callback(
-                  true,
                   'From: test@example.com\r\nTo: user@example.com\r\nSubject: Test\r\n\r\nTest message'
                 ),
               50
             );
           } else if (event === 'top') {
             setTimeout(
-              () =>
-                callback(true, 'From: test@example.com\r\nTo: user@example.com\r\nSubject: Test'),
+              () => callback('From: test@example.com\r\nTo: user@example.com\r\nSubject: Test'),
               50
             );
           } else if (event === 'dele') {
-            setTimeout(() => callback(true, 'OK'), 50);
+            setTimeout(() => callback('OK'), 50);
           } else if (event === 'rset') {
-            setTimeout(() => callback(true, 'OK'), 50);
+            setTimeout(() => callback('OK'), 50);
           } else if (event === 'quit') {
-            setTimeout(() => callback(true, 'OK'), 50);
+            setTimeout(() => callback('OK'), 50);
           }
         },
         connect: () => {
@@ -107,7 +105,7 @@ export class Pop3Client extends EventEmitter {
             this.emit('connected');
           }, 50);
         },
-        login: (user: string, password: string) => {
+        login: (_user: string, _password: string) => {
           setTimeout(() => {
             this.emit('login', true);
           }, 50);
@@ -122,7 +120,7 @@ export class Pop3Client extends EventEmitter {
             this.emit('list', true, '1 512\r\n2 256\r\n3 256\r\n.');
           }, 50);
         },
-        retr: (id: number) => {
+        retr: (_id: number) => {
           setTimeout(() => {
             this.emit(
               'retr',
@@ -131,7 +129,7 @@ export class Pop3Client extends EventEmitter {
             );
           }, 50);
         },
-        top: (id: number, lines: number) => {
+        top: (_id: number, _lines: number) => {
           setTimeout(() => {
             this.emit(
               'top',
@@ -140,7 +138,7 @@ export class Pop3Client extends EventEmitter {
             );
           }, 50);
         },
-        dele: (id: number) => {
+        dele: (_id: number) => {
           setTimeout(() => {
             this.emit('dele', true, 'OK');
           }, 50);

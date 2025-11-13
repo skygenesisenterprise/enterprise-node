@@ -5,13 +5,11 @@ import { PluginManager } from '@skygenesisenterprise/enterprise-node';
 export class PluginCommand {
   private action: string;
   private options: any;
-  private globalOptions: any;
   private pluginManager: PluginManager;
 
-  constructor(action: string, options: any, globalOptions: any) {
+  constructor(action: string, options: any, _globalOptions: any) {
     this.action = action;
     this.options = options;
-    this.globalOptions = globalOptions;
     this.pluginManager = PluginManager.getInstance();
   }
 
@@ -51,7 +49,7 @@ export class PluginCommand {
     }
 
     console.log(chalk.yellow('\nPlugins installés:'));
-    plugins.forEach((plugin) => {
+    plugins.forEach((plugin: any) => {
       const status = this.getStatusIcon(plugin.status);
       const version = plugin.manifest.version;
       const description = plugin.manifest.description;

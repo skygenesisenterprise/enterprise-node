@@ -173,44 +173,28 @@ export class EmailManager {
       filteredMessages = filteredMessages.filter((msg) => msg.date >= options.since!);
     }
 
-    if (options.search) {
-      if (options.search.from) {
+    const search = options.search;
+    if (search) {
+      if (search.from) {
         filteredMessages = filteredMessages.filter((msg) =>
-          msg.from.toLowerCase().includes(options.search.from!.toLowerCase())
+          msg.from.toLowerCase().includes(search.from!.toLowerCase())
         );
       }
-      if (options.search.to) {
+      if (search.to) {
         filteredMessages = filteredMessages.filter((msg) =>
-          msg.to.some((to) => to.toLowerCase().includes(options.search.to!.toLowerCase()))
+          msg.to.some((to) => to.toLowerCase().includes(search.to!.toLowerCase()))
         );
       }
-      if (options.search.subject) {
+      if (search.subject) {
         filteredMessages = filteredMessages.filter((msg) =>
-          msg.subject.toLowerCase().includes(options.search.subject!.toLowerCase())
+          msg.subject.toLowerCase().includes(search.subject!.toLowerCase())
         );
       }
-      if (options.search.body) {
+      if (search.body) {
         filteredMessages = filteredMessages.filter(
           (msg) =>
-            (msg.text && msg.text.toLowerCase().includes(options.search.body!.toLowerCase())) ||
-            (msg.html && msg.html.toLowerCase().includes(options.search.body!.toLowerCase()))
-        );
-      }
-      if (options.search.to) {
-        filteredMessages = filteredMessages.filter((msg) =>
-          msg.to.some((to) => to.toLowerCase().includes(options.search.to!.toLowerCase()))
-        );
-      }
-      if (options.search.subject) {
-        filteredMessages = filteredMessages.filter((msg) =>
-          msg.subject.toLowerCase().includes(options.search.subject!.toLowerCase())
-        );
-      }
-      if (options.search.body) {
-        filteredMessages = filteredMessages.filter(
-          (msg) =>
-            (msg.text && msg.text.toLowerCase().includes(options.search.body!.toLowerCase())) ||
-            (msg.html && msg.html.toLowerCase().includes(options.search.body!.toLowerCase()))
+            (msg.text && msg.text.toLowerCase().includes(search.body!.toLowerCase())) ||
+            (msg.html && msg.html.toLowerCase().includes(search.body!.toLowerCase()))
         );
       }
     }

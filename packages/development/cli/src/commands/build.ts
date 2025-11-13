@@ -3,11 +3,9 @@ import ora from 'ora';
 
 export class BuildCommand {
   private options: any;
-  private globalOptions: any;
 
-  constructor(options: any, globalOptions: any) {
+  constructor(options: any, _globalOptions: any) {
     this.options = options;
-    this.globalOptions = globalOptions;
   }
 
   async execute(): Promise<void> {

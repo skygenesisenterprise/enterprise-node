@@ -1,0 +1,10 @@
+import { FrameworkType } from './types';
+export declare function detectFramework(): FrameworkType;
+export declare function generateId(prefix?: string): string;
+export declare function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (...args: Parameters<T>) => void;
+export declare function throttle<T extends (...args: any[]) => any>(func: T, limit: number): (...args: Parameters<T>) => void;
+export declare function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T;
+export declare function formatBytes(bytes: number, decimals?: number): string;
+export declare function sanitizeString(str: string): string;
+export declare function isValidUrl(string: string): boolean;
+export declare function getEnvironment(): 'development' | 'production' | 'test';

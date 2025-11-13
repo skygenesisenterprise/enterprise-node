@@ -7,10 +7,8 @@
 export class EnterpriseSDK {
   // private loader: ModuleLoader | null = null;
   // private config: EnterpriseConfig;
-  private isInitialized = false;
-  private initializationPromise: Promise<void> | null = null;
-  // private logger = Logger.getInstance();
-  // private diagnostics = DiagnosticsCollector.getInstance();
+  public _isInitialized = false;
+  public _initializationPromise: Promise<void> | null = null;
 
   constructor(_userConfig?: any) {
     // if (userConfig) {
@@ -24,17 +22,17 @@ export class EnterpriseSDK {
   }
 
   async initialize(): Promise<void> {
-    if (this.isInitialized) {
+    if (this._isInitialized) {
       // this.logger.warn('enterprise', 'SDK already initialized');
       return;
     }
 
-    if (this.initializationPromise) {
-      return this.initializationPromise;
+    if (this._initializationPromise) {
+      return this._initializationPromise;
     }
 
-    this.initializationPromise = this._initialize();
-    return this.initializationPromise;
+    this._initializationPromise = this._initialize();
+    return this._initializationPromise;
   }
 
   private async _initialize(): Promise<void> {
@@ -45,7 +43,7 @@ export class EnterpriseSDK {
       // this.loader = new ModuleLoader(this.config);
       // await this.loader.initialize();
 
-      this.isInitialized = true;
+      this._isInitialized = true;
       // this.logger.info('enterprise', 'Enterprise SDK initialized successfully');
       // this.diagnostics.recordEvent('sdk.initialize.completed', {
       //   modules: this.loader.getLoadedModules(),
@@ -64,7 +62,7 @@ export class EnterpriseSDK {
         `Failed to initialize Enterprise SDK: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
     } finally {
-      this.initializationPromise = null;
+      this._initializationPromise = null;
     }
   }
 
@@ -79,7 +77,7 @@ export class EnterpriseSDK {
     //   );
     // }
     // return module;
-    return null;
+    return null as any;
   }
 
   get storage() {
@@ -93,7 +91,7 @@ export class EnterpriseSDK {
     //   );
     // }
     // return module;
-    return null;
+    return null as any;
   }
 
   get ui() {
@@ -107,7 +105,7 @@ export class EnterpriseSDK {
     //   );
     // }
     // return module;
-    return null;
+    return null as any;
   }
 
   get project() {
@@ -121,7 +119,7 @@ export class EnterpriseSDK {
     //   );
     // }
     // return module;
-    return null;
+    return null as any;
   }
 
   get auth() {
@@ -135,7 +133,7 @@ export class EnterpriseSDK {
     //   );
     // }
     // return module;
-    return null;
+    return null as any;
   }
 
   get runtime() {
@@ -171,7 +169,7 @@ export class EnterpriseSDK {
     // }
 
     return {
-      initialized: this.isInitialized,
+      initialized: this._isInitialized,
       // sessionId: this.diagnostics.getSessionId(),
       // logs: this.logger.getLogs(),
       // telemetry: this.diagnostics.getEvents()
@@ -195,13 +193,13 @@ export class EnterpriseSDK {
     //   await this.loader.destroy();
     //   this.loader = null;
     // }
-    this.isInitialized = false;
+    this._isInitialized = false;
     // this.logger.info('enterprise', 'Enterprise SDK destroyed');
     // this.diagnostics.recordEvent('sdk.destroyed');
   }
 
   private ensureInitialized(): void {
-    if (!this.isInitialized) {
+    if (!this._isInitialized) {
       // throw new EnterpriseError(
       //   'Enterprise SDK not initialized. Call initialize() first.',
       //   'SDK_NOT_INITIALIZED',

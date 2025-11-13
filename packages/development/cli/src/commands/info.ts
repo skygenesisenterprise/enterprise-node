@@ -2,11 +2,9 @@ import chalk from 'chalk';
 
 export class InfoCommand {
   private options: any;
-  private globalOptions: any;
 
-  constructor(options: any, globalOptions: any) {
+  constructor(options: any, _globalOptions: any) {
     this.options = options;
-    this.globalOptions = globalOptions;
   }
 
   async execute(): Promise<void> {

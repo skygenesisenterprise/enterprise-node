@@ -11,11 +11,7 @@ export interface User {
 }
 
 export class AuthManager {
-  private config: AuthConfig;
-
-  constructor(_config: AuthConfig) {
-    this.config = _config;
-  }
+  constructor(_config: AuthConfig) {}
 
   async authenticate(_credentials: Record<string, any>): Promise<User | null> {
     // Implementation placeholder
