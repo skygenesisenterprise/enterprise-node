@@ -12,7 +12,7 @@
     "wasm"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rimraf dist && rollup -c",
     "dev": "rollup -c -w",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
