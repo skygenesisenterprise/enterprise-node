@@ -1,0 +1,55 @@
+{
+  "name": "@skygenesisenterprise/module-email",
+  "version": "1.0.0",
+  "description": "Enterprise Email Module - IMAP, SMTP and POP3 protocols support",
+  "type": "module",
+  "private": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "email",
+    "imap",
+    "smtp",
+    "pop3",
+    "enterprise",
+    "module",
+    "skygenesisenterprise"
+  ],
+  "author": "Sky Genesis Enterprise",
+  "license": "MIT",
+  "dependencies": {
+    "@skygenesisenterprise/shared": "workspace:*",
+    "nodemailer": "^6.9.0",
+    "node-imap": "^0.9.6",
+    "poplib": "^0.1.7"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/node": "^20.0.0",
+    "@types/nodemailer": "^6.4.0",
+    "rimraf": "^5.0.0",
+    "rollup": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skygenesisenterprise/enterprise-node.git",
+    "directory": "packages/modules/email"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
