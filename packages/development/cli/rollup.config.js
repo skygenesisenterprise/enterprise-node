@@ -14,25 +14,24 @@ export default defineConfig([
         file: 'dist/index.js',
         format: 'cjs',
         sourcemap: true,
-        banner: '#!/usr/bin/env node'
       },
       {
         file: 'dist/index.esm.js',
         format: 'es',
-        sourcemap: true
-      }
+        sourcemap: true,
+      },
     ],
     plugins: [
       nodeResolve({
-        preferBuiltins: true
+        preferBuiltins: true,
       }),
       typescript({
         tsconfig: './tsconfig.json',
         declaration: true,
         declarationDir: 'dist',
-        rootDir: 'src'
-      })
+        rootDir: 'src',
+      }),
     ],
-    external: Object.keys(pkg.dependencies || {}).concat(Object.keys(pkg.peerDependencies || {}))
-  }
+    external: Object.keys(pkg.dependencies || {}).concat(Object.keys(pkg.peerDependencies || {})),
+  },
 ]);

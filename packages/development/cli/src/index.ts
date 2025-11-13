@@ -14,6 +14,7 @@ import { NewCommand } from './commands/new';
 import { PluginCommand } from './commands/plugin';
 import { DoctorCommand } from './commands/doctor';
 import { InfoCommand } from './commands/info';
+import { EnterpriseBuilderCommand } from './commands/enterprise-builder';
 
 const program = new Command();
 
@@ -145,6 +146,15 @@ program
   .action(async (options) => {
     const infoCommand = new InfoCommand(options, program.opts());
     await infoCommand.execute();
+  });
+
+// Commande .enterprise builder
+program
+  .command('enterprise-builder')
+  .description('.enterprise Build System')
+  .action(async () => {
+    const builderCommand = new EnterpriseBuilderCommand({}, program.opts());
+    await builderCommand.execute();
   });
 
 // Gestion des erreurs globales

@@ -28,3 +28,15 @@
 - Use Turbo for build orchestration and caching
 - WASM runtime with JS fallbacks for compatibility
 - Module-based architecture with clear separation of concerns
+
+## Testing Requirements
+
+- **MANDATORY**: Every code modification or addition must include corresponding tests
+- Write unit tests for new functions, classes, and components
+- Add integration tests for new features and modules
+- Test error cases and edge conditions
+- Use descriptive test names that explain what is being tested
+- Follow the existing test patterns using Vitest
+- Run `pnpm test` before committing to ensure all tests pass
+- Aim for high test coverage on new code (minimum 80%)
+- Test framework-specific integrations (Next.js, React, etc.) when applicable

@@ -236,7 +236,5 @@ if (typeof global !== 'undefined') {
 export { Enterprise };
 export { PluginManager } from './plugins/plugin-manager';
 export * from '@skygenesisenterprise/shared';
-// export * from './runtime/wasm-runtime';
-// export * from './loader/module-loader';
-// export * from './config/config';
-// export * from './diagnostics/diagnostics';
+export * from './build-system';
+export { EnterpriseBuilder } from './builder';
