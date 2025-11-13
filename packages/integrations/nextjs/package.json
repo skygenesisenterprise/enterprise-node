@@ -1,0 +1,67 @@
+{
+  "name": "@skygenesisenterprise/nextjs",
+  "version": "1.0.9",
+  "description": "Enterprise Next.js Integration - Bridge transparent pour Next.js",
+  "type": "module",
+  "private": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rimraf dist && rollup -c",
+    "dev": "rollup -c -w",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "nextjs",
+    "enterprise",
+    "bridge",
+    "integration",
+    "sky-genesis",
+    "app-router",
+    "pages-router"
+  ],
+  "author": "Sky Genesis Enterprise",
+  "license": "MIT",
+  "peerDependencies": {
+    "next": ">=13.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "dependencies": {
+    "@skygenesisenterprise/enterprise-node": "workspace:*",
+    "@skygenesisenterprise/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "next": "^14.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "rimraf": "^5.0.0",
+    "rollup": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skygenesisenterprise/enterprise.git",
+    "directory": "packages/integrations/nextjs"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

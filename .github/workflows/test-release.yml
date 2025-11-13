@@ -1,15 +1,23 @@
-name: Test Release
+name: Test Release (Dev)
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+      - develop
+      - 'release/*'
+      - 'feature/*'
+  pull_request:
+    branches:
+      - main
+      - develop
   workflow_dispatch:
     inputs:
       version:
         description: 'Version to test (e.g., 1.1.4)'
-        required: true
+        required: false
         type: string
+        default: 'dev'
       test_environment:
         description: 'Test environment'
         required: true
@@ -71,10 +79,22 @@ jobs:
       - name: Extract version
         id: version
         run: |
-          VERSION=${{ github.event.inputs.version || github.ref_name }}
-          VERSION=${VERSION#refs/tags/v}
+          if [ "${{ github.event.inputs.version }}" != "" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          elif [ "${{ github.ref_type }}" == "branch" ]; then
+            # Pour les branches, utiliser le nom de la branche ou "dev"
+            BRANCH_NAME=$(echo ${{ github.ref_name }} | sed 's/refs\/heads\///')
+            if [[ "$BRANCH_NAME" == release/* ]]; then
+              VERSION=$(echo $BRANCH_NAME | sed 's/release\///')
+            else
+              VERSION="dev"
+            fi
+          else
+            VERSION="dev"
+          fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Testing version: $VERSION"
 
       - name: Install dependencies
         run: pnpm install
@@ -136,8 +156,19 @@ jobs:
       - name: Extract version
         id: version
         run: |
-          VERSION=${{ github.event.inputs.version || github.ref_name }}
-          VERSION=${VERSION#refs/tags/v}
+          if [ "${{ github.event.inputs.version }}" != "" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          elif [ "${{ github.ref_type }}" == "branch" ]; then
+            # Pour les branches, utiliser le nom de la branche ou "dev"
+            BRANCH_NAME=$(echo ${{ github.ref_name }} | sed 's/refs\/heads\///')
+            if [[ "$BRANCH_NAME" == release/* ]]; then
+              VERSION=$(echo $BRANCH_NAME | sed 's/release\///')
+            else
+              VERSION="dev"
+            fi
+          else
+            VERSION="dev"
+          fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Run integration tests
@@ -183,8 +214,19 @@ jobs:
       - name: Extract version
         id: version
         run: |
-          VERSION=${{ github.event.inputs.version || github.ref_name }}
-          VERSION=${VERSION#refs/tags/v}
+          if [ "${{ github.event.inputs.version }}" != "" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          elif [ "${{ github.ref_type }}" == "branch" ]; then
+            # Pour les branches, utiliser le nom de la branche ou "dev"
+            BRANCH_NAME=$(echo ${{ github.ref_name }} | sed 's/refs\/heads\///')
+            if [[ "$BRANCH_NAME" == release/* ]]; then
+              VERSION=$(echo $BRANCH_NAME | sed 's/release\///')
+            else
+              VERSION="dev"
+            fi
+          else
+            VERSION="dev"
+          fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Run performance benchmarks
@@ -212,10 +254,28 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
 
+      - name: Extract version for summary
+        id: summary_version
+        run: |
+          if [ "${{ github.event.inputs.version }}" != "" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          elif [ "${{ github.ref_type }}" == "branch" ]; then
+            # Pour les branches, utiliser le nom de la branche ou "dev"
+            BRANCH_NAME=$(echo ${{ github.ref_name }} | sed 's/refs\/heads\///')
+            if [[ "$BRANCH_NAME" == release/* ]]; then
+              VERSION=$(echo $BRANCH_NAME | sed 's/release\///')
+            else
+              VERSION="dev"
+            fi
+          else
+            VERSION="dev"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Create test summary
         run: |
           node scripts/create-test-summary.js \
-            --version ${{ github.event.inputs.version || github.ref_name }} \
+            --version ${{ steps.summary_version.outputs.version }} \
             --artifacts-dir .
 
       - name: Comment on PR/Release
@@ -236,6 +296,6 @@ jobs:
       - name: Upload summary
         uses: actions/upload-artifact@v4
         with:
-          name: test-summary-${{ github.event.inputs.version || github.ref_name }}
+          name: test-summary-${{ steps.summary_version.outputs.version }}
           path: test-summary.md
           retention-days: 90

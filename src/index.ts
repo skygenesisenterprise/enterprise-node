@@ -10,6 +10,22 @@ import { AuthManager } from '../packages/modules/auth/src/index';
 import { ProjectManager } from '../packages/modules/project/src/index';
 import { SDK } from '../packages/modules/sdk/src/index';
 
+// Import Next.js bridge (lazy loading pour éviter les erreurs côté serveur)
+let nextjsBridge: any = null;
+const loadNextjsBridge = async () => {
+  if (!nextjsBridge && typeof window !== 'undefined') {
+    try {
+      // Import dynamique pour éviter les erreurs de build
+      const bridgeModule = await import('../packages/integrations/nextjs/src/index');
+      nextjsBridge = bridgeModule;
+    } catch (error) {
+      // Next.js bridge non disponible, silent fail
+      console.debug('Next.js bridge not available');
+    }
+  }
+  return nextjsBridge;
+};
+
 export class EnterpriseSDK {
   private loader: ModuleLoader | null = null;
   private config: EnterpriseConfig;
@@ -105,6 +121,12 @@ export class EnterpriseSDK {
     return this.loader!.getFramework();
   }
 
+  get nextjs() {
+    this.ensureInitialized();
+    // Retourner le bridge Next.js si disponible
+    return loadNextjsBridge();
+  }
+
   getConfig(): EnterpriseConfig {
     return { ...this.config };
   }
@@ -180,6 +202,9 @@ export type { SDKMetaInfo, SDKSelfReferenceOptions } from '../packages/modules/s
 // Utility exports
 export * from './types';
 export * from './hooks';
+
+// Next.js bridge exports (lazy loading)
+export const getNextjsBridge = () => loadNextjsBridge();
 
 // Default export
 export default Enterprise;
