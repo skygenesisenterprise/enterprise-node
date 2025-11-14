@@ -1,5 +1,5 @@
-'use client';
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
+// 'use client' - This directive is for Next.js App Router
 import { useEffect } from 'react';
 import { useNextjsEnterprise } from '../hooks';
 /**

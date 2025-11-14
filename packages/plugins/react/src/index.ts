@@ -3,15 +3,135 @@
  * Plugin React officiel pour Enterprise SDK
  */
 
-import {
-  EnterprisePlugin,
-  PluginManifest,
-  PluginContext,
-  PluginCommand,
-  PluginConfigSchema,
-} from '../../../../../enterprise-node/index';
-import { spawn } from 'child_process';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+// Types locaux pour éviter les problèmes d'imports
+interface PluginManifest {
+  name: string;
+  version: string;
+  description: string;
+  author?: string;
+  homepage?: string;
+  repository?: string;
+  keywords?: string[];
+  main: string;
+  exports?: Record<string, string>;
+  dependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
+  engines?: {
+    node?: string;
+    npm?: string;
+  };
+  category: 'framework' | 'module' | 'tooling' | 'integration';
+  tags: string[];
+  supports: string[];
+  configSchema?: PluginConfigSchema;
+  hooks?: PluginHook[];
+  enterprise?: {
+    certified?: boolean;
+    recommended?: boolean;
+    deprecated?: boolean;
+    experimental?: boolean;
+  };
+}
+
+interface PluginConfigSchema {
+  type: 'object';
+  properties: Record<
+    string,
+    {
+      type: 'string' | 'number' | 'boolean' | 'array' | 'object';
+      description?: string;
+      default?: any;
+      required?: boolean;
+      enum?: any[];
+      minimum?: number;
+      maximum?: number;
+    }
+  >;
+  required?: string[];
+}
+
+interface PluginHook {
+  name: string;
+  description: string;
+  timing: 'before' | 'after' | 'around' | 'instead';
+  event: string;
+  priority?: number;
+}
+
+interface PluginContext {
+  config: any;
+  env: 'development' | 'production' | 'test';
+  cwd: string;
+  rootDir: string;
+  srcDir: string;
+  distDir: string;
+  framework?: string;
+  modules: string[];
+  logger: PluginLogger;
+  utils: PluginUtils;
+}
+
+interface PluginLogger {
+  debug(message: string, ...args: any[]): void;
+  info(message: string, ...args: any[]): void;
+  warn(message: string, ...args: any[]): void;
+  error(message: string, ...args: any[]): void;
+  success(message: string, ...args: any[]): void;
+}
+
+interface PluginUtils {
+  readFile(path: string): Promise<string>;
+  writeFile(path: string, content: string): Promise<void>;
+  exists(path: string): Promise<boolean>;
+  getPackageJson(): Promise<any>;
+  updatePackageJson(updates: any): Promise<void>;
+  exec(
+    command: string,
+    options?: any
+  ): Promise<{
+    stdout: string;
+    stderr: string;
+  }>;
+  detectFramework(): Promise<string | null>;
+  getConfig(): Promise<any>;
+  setConfig(path: string, value: any): Promise<void>;
+}
+
+interface EnterprisePlugin {
+  readonly manifest: PluginManifest;
+  initialize(context: PluginContext): Promise<void>;
+  destroy(): Promise<void>;
+  onBeforeBuild?(context: PluginContext): Promise<void>;
+  onAfterBuild?(context: PluginContext): Promise<void>;
+  onBeforeDev?(context: PluginContext): Promise<void>;
+  onAfterDev?(context: PluginContext): Promise<void>;
+  onBeforeTest?(context: PluginContext): Promise<void>;
+  onAfterTest?(context: PluginContext): Promise<void>;
+  getCommands?(): PluginCommand[];
+  getConfigSchema?(): PluginConfigSchema;
+  validateConfig?(config: any): boolean | string;
+  onModuleLoad?(moduleName: string, moduleInstance: any): Promise<void>;
+  onModuleUnload?(moduleName: string): Promise<void>;
+}
+
+interface PluginCommand {
+  name: string;
+  description: string;
+  category?: 'build' | 'dev' | 'test' | 'deploy' | 'util';
+  options?: PluginCommandOption[];
+  handler: (args: any, context: PluginContext) => Promise<void>;
+}
+
+interface PluginCommandOption {
+  name: string;
+  description: string;
+  type: 'string' | 'number' | 'boolean';
+  required?: boolean;
+  default?: any;
+  choices?: string[];
+}
+import { spawn } from 'node:child_process';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
 export class ReactPlugin implements EnterprisePlugin {
   readonly manifest: PluginManifest = {

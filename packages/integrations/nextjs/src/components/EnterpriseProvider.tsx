@@ -1,4 +1,4 @@
-'use client';
+// 'use client' - This directive is for Next.js App Router
 
 import { useEffect, useState, ReactNode } from 'react';
 import { useNextjsEnterprise } from '../hooks';

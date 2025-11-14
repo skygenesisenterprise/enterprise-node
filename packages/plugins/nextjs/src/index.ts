@@ -3,7 +3,7 @@
  * Plugin Next.js officiel pour Enterprise SDK
  */
 
-// Import types directly from core package source
+// Import types from core package source
 import {
   EnterprisePlugin,
   PluginManifest,

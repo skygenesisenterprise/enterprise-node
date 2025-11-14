@@ -47,7 +47,13 @@ export default defineConfig([
       // Handle CommonJS modules
       commonjs(),
     ],
-    external: ['next', 'react', 'react-dom', '@skygenesisenterprise/enterprise-node'],
+    external: [
+      'next',
+      'react',
+      'react-dom',
+      '@skygenesisenterprise/enterprise-node',
+      '../../../core/src/plugin-system/types',
+    ],
   },
   // Type definitions
   {
@@ -63,6 +69,12 @@ export default defineConfig([
         },
       }),
     ],
-    external: ['next', 'react', 'react-dom', '@skygenesisenterprise/enterprise-node'],
+    external: [
+      'next',
+      'react',
+      'react-dom',
+      '@skygenesisenterprise/enterprise-node',
+      '../../../core/src/plugin-system/types',
+    ],
   },
 ]);

@@ -26,8 +26,16 @@ export default defineConfig([
         declaration: true,
         declarationDir: 'dist',
         rootDir: 'src',
+        exclude: ['../../../core/src/plugin-system/types.ts'],
       }),
     ],
-    external: ['react', 'react-dom', '@skygenesisenterprise/enterprise-node'],
+    external: [
+      'react',
+      'react-dom',
+      '@skygenesisenterprise/enterprise-node',
+      '../../../core/src/plugin-system/types',
+      'child_process',
+      'fs',
+    ],
   },
 ]);

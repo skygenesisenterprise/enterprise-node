@@ -26,6 +26,7 @@ export default defineConfig([
         declaration: true,
         declarationDir: 'dist',
         rootDir: 'src',
+        outputToFilesystem: false,
       }),
     ],
     external: ['@capacitor/core', '@capacitor/cli', '@skygenesisenterprise/enterprise-node'],

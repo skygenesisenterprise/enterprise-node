@@ -15,7 +15,10 @@
     "jsx": "react-jsx",
     "declaration": true,
     "outDir": "dist",
-    "composite": true
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
