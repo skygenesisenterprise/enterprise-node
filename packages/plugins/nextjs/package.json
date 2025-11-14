@@ -1,0 +1,177 @@
+{
+  "name": "@skygenesisenterprise/plugin-nextjs",
+  "version": "1.0.0",
+  "description": "Plugin Next.js officiel pour Enterprise SDK",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Sky Genesis Enterprise",
+  "homepage": "https://enterprise.skygenesis.dev/plugins/nextjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skygenesisenterprise/enterprise-node",
+    "directory": "packages/plugins/nextjs"
+  },
+  "keywords": [
+    "nextjs",
+    "enterprise",
+    "plugin",
+    "ssr",
+    "ssg"
+  ],
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "peerDependencies": {
+    "@skygenesisenterprise/enterprise-node": "^1.0.0"
+  },
+  "scripts": {
+    "build": "rimraf dist && rollup -c",
+    "dev": "rollup -c -w",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "enterprise": {
+    "plugin": {
+      "name": "nextjs",
+      "version": "1.0.0",
+      "description": "Plugin Next.js officiel pour Enterprise SDK",
+      "author": "Sky Genesis Enterprise",
+      "homepage": "https://enterprise.skygenesis.dev/plugins/nextjs",
+      "repository": "https://github.com/skygenesisenterprise/enterprise-node",
+      "keywords": [
+        "nextjs",
+        "enterprise",
+        "plugin",
+        "ssr",
+        "ssg"
+      ],
+      "main": "dist/index.js",
+      "category": "framework",
+      "tags": [
+        "nextjs",
+        "ssr",
+        "ssg",
+        "react",
+        "framework"
+      ],
+      "supports": [
+        "nextjs",
+        "react"
+      ],
+      "certified": true,
+      "recommended": true,
+      "deprecated": false,
+      "experimental": false,
+      "configSchema": {
+        "type": "object",
+        "properties": {
+          "runtime": {
+            "type": "string",
+            "description": "Runtime Next.js",
+            "enum": [
+              "nodejs",
+              "edge"
+            ],
+            "default": "nodejs"
+          },
+          "swcMinify": {
+            "type": "boolean",
+            "description": "Utiliser SWC pour la minification",
+            "default": true
+          },
+          "experimental": {
+            "type": "object",
+            "description": "Fonctionnalités expérimentales",
+            "properties": {
+              "appDir": {
+                "type": "boolean",
+                "description": "Activer le App Router",
+                "default": true
+              },
+              "serverComponentsExternalPackages": {
+                "type": "array",
+                "description": "Packages externes pour les Server Components",
+                "default": []
+              }
+            }
+          },
+          "images": {
+            "type": "object",
+            "description": "Configuration des images",
+            "properties": {
+              "domains": {
+                "type": "array",
+                "description": "Domaines externes pour les images",
+                "default": []
+              },
+              "formats": {
+                "type": "array",
+                "description": "Formats d'image supportés",
+                "default": [
+                  "image/webp",
+                  "image/avif"
+                ]
+              }
+            }
+          },
+          "features": {
+            "type": "object",
+            "description": "Fonctionnalités Enterprise",
+            "properties": {
+              "analytics": {
+                "type": "boolean",
+                "description": "Activer l'analytics Enterprise",
+                "default": true
+              },
+              "performance": {
+                "type": "boolean",
+                "description": "Activer le monitoring de performance",
+                "default": true
+              },
+              "errorBoundary": {
+                "type": "boolean",
+                "description": "Activer les Error Boundaries Enterprise",
+                "default": true
+              }
+            }
+          }
+        }
+      },
+      "hooks": [
+        {
+          "name": "nextjs-init",
+          "description": "Initialisation de Next.js",
+          "timing": "before",
+          "event": "init",
+          "priority": 10
+        },
+        {
+          "name": "nextjs-build",
+          "description": "Build Next.js",
+          "timing": "around",
+          "event": "build",
+          "priority": 10
+        },
+        {
+          "name": "nextjs-dev",
+          "description": "Serveur de développement Next.js",
+          "timing": "around",
+          "event": "dev",
+          "priority": 10
+        },
+        {
+          "name": "nextjs-export",
+          "description": "Export statique Next.js",
+          "timing": "around",
+          "event": "export",
+          "priority": 10
+        }
+      ]
+    }
+  }
+}

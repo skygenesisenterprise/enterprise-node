@@ -43,5 +43,9 @@ export type { SDKMetaInfo, SDKSelfReferenceOptions } from './packages/modules/sd
 // Hook exports
 export * from './src/hooks';
 
+// Plugin System exports
+export * from './packages/core/src/plugin-system/types';
+export { PluginManager } from './packages/core/src/plugin-system/plugin-manager';
+
 // Default export - the main SDK instance
 export { default } from './src/index';

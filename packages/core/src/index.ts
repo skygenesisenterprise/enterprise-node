@@ -234,7 +234,8 @@ if (typeof global !== 'undefined') {
 }
 
 export { Enterprise };
-export { PluginManager } from './plugins/plugin-manager';
+export { PluginManager } from './plugin-system/plugin-manager';
+export * from './plugin-system/types';
 export * from '@skygenesisenterprise/shared';
 export * from './build-system';
 export { EnterpriseBuilder } from './builder';

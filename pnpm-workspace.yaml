@@ -3,3 +3,4 @@ packages:
   - 'packages/modules/*'
   - 'packages/integrations/*'
   - 'packages/development/*'
+  - 'packages/plugins/*'

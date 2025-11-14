@@ -11,6 +11,9 @@ interface EnterpriseConfig {
     auth?: boolean;
     sdk?: boolean;
   };
+  plugins?: {
+    [key: string]: any;
+  };
   runtime?: {
     wasmPath?: string;
     enableWasm?: boolean;
@@ -214,4 +217,9 @@ export class ConfigLoader {
   getRuntime() {
     return this.config?.runtime || {};
   }
+}
+
+// Export convenience function
+export async function loadConfig(configPath?: string): Promise<EnterpriseConfig> {
+  return ConfigLoader.getInstance().loadConfig(configPath);
 }

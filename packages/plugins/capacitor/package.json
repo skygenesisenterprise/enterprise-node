@@ -1,0 +1,203 @@
+{
+  "name": "@skygenesisenterprise/plugin-capacitor",
+  "version": "1.0.0",
+  "description": "Plugin CapacitorJS officiel pour Enterprise SDK",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Sky Genesis Enterprise",
+  "homepage": "https://enterprise.skygenesis.dev/plugins/capacitor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skygenesisenterprise/enterprise-node",
+    "directory": "packages/plugins/capacitor"
+  },
+  "keywords": [
+    "capacitor",
+    "enterprise",
+    "plugin",
+    "mobile",
+    "ios",
+    "android"
+  ],
+  "dependencies": {
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/cli": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@skygenesisenterprise/enterprise-node": "^1.0.0"
+  },
+  "scripts": {
+    "build": "rimraf dist && rollup -c",
+    "dev": "rollup -c -w",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "enterprise": {
+    "plugin": {
+      "name": "capacitor",
+      "version": "1.0.0",
+      "description": "Plugin CapacitorJS officiel pour Enterprise SDK",
+      "author": "Sky Genesis Enterprise",
+      "homepage": "https://enterprise.skygenesis.dev/plugins/capacitor",
+      "repository": "https://github.com/skygenesisenterprise/enterprise-node",
+      "keywords": [
+        "capacitor",
+        "enterprise",
+        "plugin",
+        "mobile",
+        "ios",
+        "android"
+      ],
+      "main": "dist/index.js",
+      "category": "framework",
+      "tags": [
+        "capacitor",
+        "mobile",
+        "ios",
+        "android",
+        "native"
+      ],
+      "supports": [
+        "react",
+        "vue",
+        "angular",
+        "svelte"
+      ],
+      "certified": true,
+      "recommended": true,
+      "deprecated": false,
+      "experimental": false,
+      "configSchema": {
+        "type": "object",
+        "properties": {
+          "platforms": {
+            "type": "array",
+            "description": "Plateformes mobiles à cibler",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ios",
+                "android",
+                "web"
+              ]
+            },
+            "default": [
+              "ios",
+              "android",
+              "web"
+            ]
+          },
+          "appId": {
+            "type": "string",
+            "description": "Identifiant de l'application",
+            "pattern": "^[a-z0-9.]+$"
+          },
+          "appName": {
+            "type": "string",
+            "description": "Nom de l'application",
+            "default": "Enterprise App"
+          },
+          "webDir": {
+            "type": "string",
+            "description": "Répertoire de build web",
+            "default": "dist"
+          },
+          "server": {
+            "type": "object",
+            "description": "Configuration du serveur de développement",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL du serveur",
+                "default": "http://localhost:3000"
+              },
+              "cleartext": {
+                "type": "boolean",
+                "description": "Autoriser le trafic non chiffré",
+                "default": false
+              }
+            }
+          },
+          "plugins": {
+            "type": "object",
+            "description": "Plugins Capacitor",
+            "properties": {
+              "camera": {
+                "type": "boolean",
+                "description": "Plugin Camera",
+                "default": false
+              },
+              "geolocation": {
+                "type": "boolean",
+                "description": "Plugin Geolocation",
+                "default": false
+              },
+              "pushNotifications": {
+                "type": "boolean",
+                "description": "Plugin Push Notifications",
+                "default": false
+              },
+              "storage": {
+                "type": "boolean",
+                "description": "Plugin Storage",
+                "default": true
+              }
+            }
+          },
+          "features": {
+            "type": "object",
+            "description": "Fonctionnalités Enterprise",
+            "properties": {
+              "analytics": {
+                "type": "boolean",
+                "description": "Activer l'analytics mobile",
+                "default": true
+              },
+              "crashReporting": {
+                "type": "boolean",
+                "description": "Activer le rapport de crashes",
+                "default": true
+              },
+              "performance": {
+                "type": "boolean",
+                "description": "Activer le monitoring de performance",
+                "default": true
+              },
+              "offlineSupport": {
+                "type": "boolean",
+                "description": "Activer le support hors ligne",
+                "default": true
+              }
+            }
+          }
+        }
+      },
+      "hooks": [
+        {
+          "name": "capacitor-init",
+          "description": "Initialisation de Capacitor",
+          "timing": "before",
+          "event": "init",
+          "priority": 10
+        },
+        {
+          "name": "capacitor-build",
+          "description": "Build mobile",
+          "timing": "around",
+          "event": "build",
+          "priority": 10
+        },
+        {
+          "name": "capacitor-run",
+          "description": "Exécution sur mobile",
+          "timing": "around",
+          "event": "run",
+          "priority": 10
+        }
+      ]
+    }
+  }
+}

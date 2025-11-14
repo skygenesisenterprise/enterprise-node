@@ -1,0 +1,144 @@
+{
+  "name": "@skygenesisenterprise/plugin-react",
+  "version": "1.0.0",
+  "description": "Plugin React officiel pour Enterprise SDK",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Sky Genesis Enterprise",
+  "homepage": "https://enterprise.skygenesis.dev/plugins/react",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skygenesisenterprise/enterprise-node",
+    "directory": "packages/plugins/react"
+  },
+  "keywords": [
+    "react",
+    "enterprise",
+    "plugin",
+    "ui",
+    "components"
+  ],
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "peerDependencies": {
+    "@skygenesisenterprise/enterprise-node": "^1.0.0"
+  },
+  "scripts": {
+    "build": "rimraf dist && rollup -c",
+    "dev": "rollup -c -w",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "enterprise": {
+    "plugin": {
+      "name": "react",
+      "version": "1.0.0",
+      "description": "Plugin React officiel pour Enterprise SDK",
+      "author": "Sky Genesis Enterprise",
+      "homepage": "https://enterprise.skygenesis.dev/plugins/react",
+      "repository": "https://github.com/skygenesisenterprise/enterprise-node",
+      "keywords": [
+        "react",
+        "enterprise",
+        "plugin",
+        "ui",
+        "components"
+      ],
+      "main": "dist/index.js",
+      "category": "framework",
+      "tags": [
+        "react",
+        "ui",
+        "components",
+        "frontend"
+      ],
+      "supports": [
+        "react",
+        "native"
+      ],
+      "certified": true,
+      "recommended": true,
+      "deprecated": false,
+      "experimental": false,
+      "configSchema": {
+        "type": "object",
+        "properties": {
+          "strictMode": {
+            "type": "boolean",
+            "description": "Activer React Strict Mode",
+            "default": true
+          },
+          "concurrentMode": {
+            "type": "boolean",
+            "description": "Activer React Concurrent Mode",
+            "default": false
+          },
+          "profiler": {
+            "type": "boolean",
+            "description": "Activer React Profiler",
+            "default": false
+          },
+          "devTools": {
+            "type": "boolean",
+            "description": "Activer React DevTools",
+            "default": true
+          },
+          "hotReload": {
+            "type": "boolean",
+            "description": "Activer le rechargement à chaud",
+            "default": true
+          },
+          "components": {
+            "type": "object",
+            "description": "Configuration des composants Enterprise",
+            "properties": {
+              "theme": {
+                "type": "string",
+                "description": "Thème par défaut",
+                "enum": [
+                  "light",
+                  "dark",
+                  "auto"
+                ],
+                "default": "auto"
+              },
+              "branding": {
+                "type": "boolean",
+                "description": "Appliquer le branding Enterprise",
+                "default": true
+              }
+            }
+          }
+        }
+      },
+      "hooks": [
+        {
+          "name": "react-init",
+          "description": "Initialisation de React",
+          "timing": "before",
+          "event": "init",
+          "priority": 10
+        },
+        {
+          "name": "react-build",
+          "description": "Build React",
+          "timing": "around",
+          "event": "build",
+          "priority": 10
+        },
+        {
+          "name": "react-dev",
+          "description": "Serveur de développement React",
+          "timing": "around",
+          "event": "dev",
+          "priority": 10
+        }
+      ]
+    }
+  }
+}
