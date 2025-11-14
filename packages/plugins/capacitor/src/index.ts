@@ -3,13 +3,13 @@
  * Plugin CapacitorJS officiel pour Enterprise SDK
  */
 
-import {
+import type {
   EnterprisePlugin,
   PluginManifest,
   PluginContext,
   PluginCommand,
   PluginConfigSchema,
-} from '@skygenesisenterprise/enterprise-node';
+} from './types';
 
 export class CapacitorPlugin implements EnterprisePlugin {
   readonly manifest: PluginManifest = {

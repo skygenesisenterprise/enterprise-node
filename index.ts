@@ -47,5 +47,14 @@ export * from './src/hooks';
 export * from './packages/core/src/plugin-system/types';
 export { PluginManager } from './packages/core/src/plugin-system/plugin-manager';
 
+// Plugin types for direct import
+export type {
+  EnterprisePlugin,
+  PluginManifest,
+  PluginContext,
+  PluginCommand,
+  PluginConfigSchema,
+} from './packages/core/src/plugin-system/types';
+
 // Default export - the main SDK instance
 export { default } from './src/index';

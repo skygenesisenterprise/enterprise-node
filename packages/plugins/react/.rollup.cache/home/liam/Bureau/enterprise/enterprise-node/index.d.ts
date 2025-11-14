@@ -10,4 +10,5 @@ export type { SDKMetaInfo, SDKSelfReferenceOptions } from './packages/modules/sd
 export * from './src/hooks';
 export * from './packages/core/src/plugin-system/types';
 export { PluginManager } from './packages/core/src/plugin-system/plugin-manager';
+export type { EnterprisePlugin, PluginManifest, PluginContext, PluginCommand, PluginConfigSchema, } from './packages/core/src/plugin-system/types';
 export { default } from './src/index';

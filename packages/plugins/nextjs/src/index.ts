@@ -3,13 +3,14 @@
  * Plugin Next.js officiel pour Enterprise SDK
  */
 
-import {
+// Import types directly from core package source
+import type {
   EnterprisePlugin,
   PluginManifest,
   PluginContext,
   PluginCommand,
   PluginConfigSchema,
-} from '@skygenesisenterprise/enterprise-node';
+} from '../../../core/src/plugin-system/types';
 
 export class NextJSPlugin implements EnterprisePlugin {
   readonly manifest: PluginManifest = {
