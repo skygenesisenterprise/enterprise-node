@@ -4,7 +4,7 @@
  */
 
 // Import types directly from core package source
-import type {
+import {
   EnterprisePlugin,
   PluginManifest,
   PluginContext,

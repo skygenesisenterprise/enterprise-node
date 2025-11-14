@@ -3,7 +3,7 @@
  * Plugin CapacitorJS officiel pour Enterprise SDK
  */
 
-import type {
+import {
   EnterprisePlugin,
   PluginManifest,
   PluginContext,
