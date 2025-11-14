@@ -1,0 +1,84 @@
+# 🐳 Enterprise SDK CLI - Dockerfile optimisé pour la CLI
+# Image légère pour les commandes CLI du SDK @skygenesisenterprise/enterprise-node
+
+# ---- Étape 1: Build ----
+FROM node:20-alpine AS builder
+
+# Configuration de base
+WORKDIR /app
+
+# Copier les fichiers de configuration
+COPY package*.json pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml ./
+COPY turbo.json ./
+
+# Installer pnpm et les dépendances
+RUN npm install -g pnpm
+RUN pnpm install --frozen-lockfile
+
+# Copier le code source
+COPY . .
+
+# Builder tous les packages
+RUN pnpm build
+
+# ---- Étape 2: Image CLI ----
+FROM node:20-alpine AS cli
+
+# Métadonnées
+LABEL maintainer="Enterprise SDK Team"
+LABEL description="Sky Genesis Enterprise SDK CLI - Command Line Interface"
+LABEL version="${VERSION}"
+LABEL source="https://github.com/skygenesisenterprise/enterprise-node"
+
+# Arguments de build
+ARG VERSION
+ARG BUILD_DATE
+ARG VCS_REF
+
+# Métadonnées dynamiques
+LABEL org.opencontainers.image.title="Enterprise SDK CLI"
+LABEL org.opencontainers.image.description="Sky Genesis Enterprise SDK CLI - Command Line Interface"
+LABEL org.opencontainers.image.vendor="Sky Genesis Enterprise"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.source="https://github.com/skygenesisenterprise/enterprise-node"
+LABEL org.opencontainers.image.version="${VERSION}"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.revision="${VCS_REF}"
+
+# Variables d'environnement
+ENV NODE_ENV=production
+ENV CLI_DEBUG=false
+
+# Répertoire de travail
+WORKDIR /app
+
+# Copier uniquement les fichiers nécessaires pour la CLI
+COPY --from=builder /app/packages/development/cli/dist ./cli
+COPY --from=builder /app/packages/core/dist ./core
+COPY --from=builder /app/packages/shared/dist ./shared
+COPY --from=builder /app/packages/create-enterprise-app/dist ./create-enterprise-app
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/pnpm-lock.yaml ./
+
+# Installer pnpm en production (uniquement les dépendances requises)
+RUN npm install -g pnpm && \
+    pnpm install --frozen-lockfile --prod && \
+    pnpm store prune
+
+# Créer un utilisateur non-root pour la sécurité
+RUN addgroup -g 1001 -S enterprise && \
+    adduser -S enterprise -u 1001
+
+# Changer le propriétaire des fichiers
+RUN chown -R enterprise:enterprise /app
+USER enterprise
+
+# Ajouter le CLI au PATH
+ENV PATH="/app/cli:$PATH"
+
+# Point d'entrée pour la CLI
+ENTRYPOINT ["node", "/app/cli/index.js"]
+
+# Commande par défaut (afficher l'aide)
+CMD ["--help"]

@@ -1,29 +1,88 @@
-# 🐳 Docker Guide pour Enterprise SDK
+# 🐳 Enterprise SDK Docker Images
 
-Ce guide explique comment utiliser les images Docker pour le SDK `@skygenesisenterprise/enterprise-node`.
+Cette documentation décrit les différentes images Docker disponibles pour le Sky Genesis Enterprise SDK.
 
-## 📋 Images Disponibles
+## 📦 Images Disponibles
 
-### 1. **Image de Base** (`skygenesisenterprise/enterprise-node:latest`)
+### Images Principales
 
-- **Usage**: Runtime de base pour le SDK
-- **Taille**: Optimisée pour la production
-- **Modules**: Tous les modules disponibles
-- **Sécurité**: Utilisateur non-root
+| Image                                                             | Description            | Target        | Cas d'usage                          |
+| ----------------------------------------------------------------- | ---------------------- | ------------- | ------------------------------------ |
+| `ghcr.io/skygenesisenterprise/enterprise-node:latest-base`        | Image de base du SDK   | `base`        | Runtime pour applications Enterprise |
+| `ghcr.io/skygenesisenterprise/enterprise-node:latest-demo`        | Image avec exemples    | `demo`        | Démonstration et tests               |
+| `ghcr.io/skygenesisenterprise/enterprise-node:latest-development` | Image de développement | `development` | Développement et debugging           |
+| `ghcr.io/skygenesisenterprise/enterprise-node-cli:latest`         | CLI standalone         | `cli`         | Ligne de commande                    |
 
-### 2. **Image Demo** (`skygenesisenterprise/enterprise-node:1.1.4-demo`)
+### Images Légataires (pour compatibilité)
 
-- **Usage**: Démonstration complète du SDK
-- **Contient**: Exemples et tests de tous les modules
-- **Idéal**: Présentations et évaluations
+| Image                                             | Description   | Équivalent moderne                                                |
+| ------------------------------------------------- | ------------- | ----------------------------------------------------------------- |
+| `skygenesisenterprise/enterprise-node:latest`     | Image de base | `ghcr.io/skygenesisenterprise/enterprise-node:latest-base`        |
+| `skygenesisenterprise/enterprise-node:1.1.4-demo` | Image demo    | `ghcr.io/skygenesisenterprise/enterprise-node:v1.1.4-demo`        |
+| `skygenesisenterprise/enterprise-node:1.1.4-dev`  | Image dev     | `ghcr.io/skygenesisenterprise/enterprise-node:v1.1.4-development` |
 
-### 3. **Image Dev** (`skygenesisenterprise/enterprise-node:1.1.4-dev`)
+### Tags de Version
 
-- **Usage**: Développement et debugging
-- **Contient**: Dépendances de dev, outils de debug
-- **Ports**: 3000 (app), 9229 (debug)
+Les images sont tagguées selon plusieurs patterns :
+
+- `v1.2.3-base` : Version spécifique, variante base
+- `v1.2-base` : Version majeure.minor, variante base
+- `v1-base` : Version majeure, variante base
+- `latest-base` : Dernière version, variante base
+- `v1.2.3-cli` : Version spécifique, CLI
 
 ## 🚀 Utilisation Rapide
+
+### Image Base (GitHub Container Registry)
+
+```bash
+# Pull de l'image
+docker pull ghcr.io/skygenesisenterprise/enterprise-node:latest-base
+
+# Lancement avec configuration
+docker run -d \
+  --name enterprise-sdk \
+  -e NODE_ENV=production \
+  -e SDK_DEBUG=false \
+  -p 3000:3000 \
+  ghcr.io/skygenesisenterprise/enterprise-node:latest-base
+```
+
+### CLI Docker
+
+```bash
+# Pull de l'image CLI
+docker pull ghcr.io/skygenesisenterprise/enterprise-node-cli:latest
+
+# Créer un nouveau projet
+docker run --rm -v $(pwd):/app \
+  ghcr.io/skygenesisenterprise/enterprise-node-cli:latest \
+  create my-enterprise-app
+
+# Lancer les commandes CLI
+docker run --rm -v $(pwd):/app \
+  ghcr.io/skygenesisenterprise/enterprise-node-cli:latest \
+  --help
+```
+
+### Image de Développement
+
+```bash
+# Pour le développement avec rechargement à chaud
+docker run -it --rm \
+  -v $(pwd):/app \
+  -p 3000:3000 \
+  ghcr.io/skygenesisenterprise/enterprise-node:latest-development
+```
+
+### Ancien Docker Hub (compatibilité)
+
+```bash
+# Images legacy sur Docker Hub
+docker pull skygenesisenterprise/enterprise-node:latest
+docker pull skygenesisenterprise/enterprise-node:1.1.4-demo
+docker pull skygenesisenterprise/enterprise-node:1.1.4-dev
+```
 
 ### Avec le Script Automatisé
 
@@ -60,7 +119,7 @@ docker-compose --profile nextjs up enterprise-nextjs
 docker-compose --profile quickstart up enterprise-quickstart
 ```
 
-### Avec Docker Direct
+### Avec Docker Direct (legacy)
 
 ```bash
 # Image de base

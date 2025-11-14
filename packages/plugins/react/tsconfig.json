@@ -17,8 +17,7 @@
     "outDir": "dist",
     "composite": true,
     "module": "ESNext",
-    "moduleResolution": "bundler",
-    "types": ["node"]
+    "moduleResolution": "bundler"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

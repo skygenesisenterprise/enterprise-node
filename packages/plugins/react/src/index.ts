@@ -130,8 +130,8 @@ interface PluginCommandOption {
   default?: any;
   choices?: string[];
 }
-import { spawn } from 'node:child_process';
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { spawn } from 'child_process';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 
 export class ReactPlugin implements EnterprisePlugin {
   readonly manifest: PluginManifest = {

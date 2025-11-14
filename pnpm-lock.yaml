@@ -630,6 +630,9 @@ importers:
       '@skygenesisenterprise/enterprise-node':
         specifier: ^1.0.9
         version: 1.1.4
+      '@types/node':
+        specifier: ^20.19.25
+        version: 20.19.25
       rimraf:
         specifier: ^5.0.5
         version: 5.0.10

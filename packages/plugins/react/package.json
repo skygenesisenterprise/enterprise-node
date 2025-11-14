@@ -24,14 +24,15 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.5",
+    "@skygenesisenterprise/enterprise-node": "^1.0.9",
+    "@types/node": "^20.19.25",
+    "rimraf": "^5.0.5",
     "rollup": "^4.9.6",
     "rollup-plugin-dts": "^6.1.0",
-    "typescript": "^5.3.3",
-    "rimraf": "^5.0.5",
-    "@skygenesisenterprise/enterprise-node": "^1.0.9"
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
     "@skygenesisenterprise/enterprise-node": "^1.0.0"
