@@ -3,14 +3,14 @@
  * Plugin Next.js officiel pour Enterprise SDK
  */
 
-// Import types from core package source
+// Import local types to avoid import issues
 import {
   EnterprisePlugin,
   PluginManifest,
   PluginContext,
   PluginCommand,
   PluginConfigSchema,
-} from '../../../core/src/plugin-system/types';
+} from './types';
 
 export class NextJSPlugin implements EnterprisePlugin {
   readonly manifest: PluginManifest = {

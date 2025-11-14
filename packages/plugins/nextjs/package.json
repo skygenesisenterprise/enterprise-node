@@ -23,7 +23,8 @@
     "next": "^14.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "@skygenesisenterprise/enterprise-node": "^1.1.4"
+    "@skygenesisenterprise/enterprise-node": "^1.1.4",
+    "@skygenesisenterprise/shared": "^1.0.9"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",

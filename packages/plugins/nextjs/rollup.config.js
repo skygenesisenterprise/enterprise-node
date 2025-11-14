@@ -37,6 +37,9 @@ export default defineConfig([
           importHelpers: false,
           // Important: allow type-only imports
           importsNotUsedAsValues: 'remove',
+          // Fix for TypeScript compilation
+          isolatedModules: true,
+          noEmit: false,
         },
       }),
       // Then resolve modules
@@ -52,7 +55,7 @@ export default defineConfig([
       'react',
       'react-dom',
       '@skygenesisenterprise/enterprise-node',
-      '../../../core/src/plugin-system/types',
+      // Remove relative path from external to allow TypeScript plugin to process it
     ],
   },
   // Type definitions
