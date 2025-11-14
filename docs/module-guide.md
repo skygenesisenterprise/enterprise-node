@@ -724,4 +724,126 @@ console.log(capabilities);
 4. **Documentation**: Leverage self-reference for auto-documentation
 5. **Testing**: Use module inspection for comprehensive testing
 
+## Debug Module
+
+The Debug module provides a comprehensive debugging and logging system inspired by Rust's tracing and logging ecosystem. It offers structured logging, distributed tracing, and powerful debugging tools for enterprise applications.
+
+### Features
+
+- **Structured Logging**: Multi-level logging with structured data support
+- **Distributed Tracing**: Span-based tracing with parent-child relationships
+- **Rust-Inspired Design**: Familiar concepts from Rust's tracing ecosystem
+- **Performance Monitoring**: Built-in timing and performance metrics
+- **Flexible Output**: Console, file, or custom output destinations
+- **Macros System**: Convenient logging macros for different modules
+- **Type Safety**: Full TypeScript support with strict typing
+- **Zero Overhead**: Optimized for production use with conditional compilation
+
+### Configuration
+
+```typescript
+import { debug, LogLevel } from '@skygenesisenterprise/debug';
+
+// Enable debug mode
+debug.enableDebugMode();
+
+// Set global log level
+debug.setGlobalLevel(LogLevel.DEBUG);
+
+// Create module-specific logger
+const logger = debug.getLogger('my-module');
+logger.info('Module initialized');
+```
+
+### Usage Examples
+
+#### Basic Logging
+
+```typescript
+import { createDebugLogger } from '@skygenesisenterprise/debug';
+
+const logger = createDebugLogger('user-service');
+
+// Simple logging
+logger.info('User logged in successfully');
+logger.error('Database connection failed');
+
+// Structured logging with fields
+logger.info('User action completed', {
+  userId: '12345',
+  action: 'purchase',
+  duration: 150,
+  success: true,
+});
+```
+
+#### Distributed Tracing
+
+```typescript
+import { debug } from '@skygenesisenterprise/debug';
+
+// Automatic span management
+const result = debug.instrument(
+  'user-registration',
+  (span) => {
+    span.setMetadata({ userId: '12345' });
+
+    // Nested operations
+    debug.instrument('validate-input', (validationSpan) => {
+      return { valid: true };
+    });
+
+    debug.instrument('save-to-database', (dbSpan) => {
+      return { saved: true };
+    });
+
+    return { success: true };
+  },
+  'user-service'
+);
+```
+
+#### Module-Specific Macros
+
+```typescript
+import { runtime_log, wasm_log, ai_log, storage_log, auth_log } from '@skygenesisenterprise/debug';
+
+// Pre-configured macros for different modules
+runtime_log.debug('WASM module loaded', { size: 1024 });
+ai_log.info('Text generated', { tokens: 150, model: 'gpt-3.5-turbo' });
+storage_log.warn('Storage quota exceeded', { used: '95%', limit: '100%' });
+auth_log.info('User authenticated', { userId: '123', method: 'jwt' });
+```
+
+### Framework Integration
+
+The debug module integrates seamlessly with the Enterprise SDK plugin system:
+
+```typescript
+import { createEnterpriseApp } from '@skygenesisenterprise/enterprise-node';
+
+const app = createEnterpriseApp({
+  modules: {
+    debug: true, // Enable debug module
+    ai: true,
+    storage: true,
+  },
+  debug: {
+    level: 'debug', // Global debug level
+    tracing: true, // Enable distributed tracing
+    output: 'console',
+  },
+});
+```
+
+### Best Practices
+
+1. **Structured Logging**: Use structured data instead of string concatenation
+2. **Appropriate Levels**: Choose correct log levels (TRACE, DEBUG, INFO, WARN, ERROR)
+3. **Span Naming**: Use descriptive and consistent span names
+4. **Error Context**: Include rich context when logging errors
+5. **Performance**: Use conditional logging for expensive operations
+
+For detailed documentation, see [Debug Guide](./debug-guide.md).
+
 Each module in the Enterprise SDK is designed to work seamlessly with others while maintaining independence and flexibility. Choose the modules that fit your needs and configure them according to your requirements.

@@ -48,6 +48,7 @@ const config: EnterpriseConfig = {
     project: true, // Enable project management
     auth: true, // Enable authentication
     sdk: true, // Enable self-reference (unique feature!)
+    debug: true, // Enable debug system with tracing
   },
   runtime: {
     wasmPath: '/wasm/euse_core.wasm',
@@ -139,6 +140,40 @@ async function authenticateUser(email: string, password: string) {
 }
 ```
 
+### Debug System Example (New!)
+
+```typescript
+async function demonstrateDebug() {
+  try {
+    // Access the debug module
+    const debug = sdk.debug;
+
+    // Create a span for tracing
+    const span = debug.createSpan('user-operation', {
+      userId: 'user-123',
+      operation: 'data-processing',
+    });
+
+    // Log at different levels
+    debug.info('Starting user operation', { userId: 'user-123' });
+    debug.debug('Processing data', { recordCount: 1000 });
+    debug.warn('Rate limit approaching', { currentRate: 95, maxRate: 100 });
+
+    // Simulate some work
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // End the span
+    span.end();
+
+    // Get performance metrics
+    const metrics = debug.getMetrics();
+    console.log('Operation completed in', span.duration, 'ms');
+  } catch (error) {
+    debug.error('Debug operation failed', { error: error.message });
+  }
+}
+```
+
 ### Self-Reference Example (Unique Feature!)
 
 ```typescript
@@ -173,7 +208,7 @@ async function exploreSDK() {
 ```typescript
 // App.tsx
 import React from 'react';
-import { EnterpriseProvider, useAi, useAuth } from '@skygenesisenterprise/react';
+import { EnterpriseProvider, useAi, useAuth, useDebug } from '@skygenesisenterprise/react';
 
 function App() {
   return (
@@ -186,10 +221,25 @@ function App() {
 function Dashboard() {
   const { generate } = useAi();
   const { user, login, logout } = useAuth();
+  const debug = useDebug();
 
   const handleGenerate = async () => {
-    const result = await generate("Hello from React!");
-    console.log(result.text);
+    // Create a span for the operation
+    const span = debug.createSpan('ai-generation', {
+      promptLength: "Hello from React!".length
+    });
+
+    try {
+      const result = await generate("Hello from React!");
+      debug.info('AI generation successful', {
+        tokenCount: result.usage?.totalTokens
+      });
+      console.log(result.text);
+    } catch (error) {
+      debug.error('AI generation failed', { error: error.message });
+    } finally {
+      span.end();
+    }
   };
 
   return (
@@ -208,17 +258,28 @@ function Dashboard() {
 // App.svelte
 <script>
   import { onMount } from 'svelte';
-  import { enterpriseStore, useAi } from '@skygenesisenterprise/svelte';
+  import { enterpriseStore, useAi, useDebug } from '@skygenesisenterprise/svelte';
 
   const { generate } = useAi();
+  const debug = useDebug();
 
   onMount(() => {
     enterpriseStore.initialize();
+    debug.info('Svelte app initialized');
   });
 
   async function handleGenerate() {
-    const result = await generate("Hello from Svelte!");
-    console.log(result.text);
+    const span = debug.createSpan('svelte-ai-generation');
+
+    try {
+      const result = await generate("Hello from Svelte!");
+      debug.info('Content generated', { length: result.text.length });
+      console.log(result.text);
+    } catch (error) {
+      debug.error('Generation failed', { error: error.message });
+    } finally {
+      span.end();
+    }
   }
 </script>
 
@@ -245,16 +306,43 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 
 // pages/index.tsx
-import { useAi, useStorage } from '@skygenesisenterprise/react';
+import { useAi, useStorage, useDebug } from '@skygenesisenterprise/react';
+import { useEffect } from 'react';
 
 export default function HomePage() {
   const { generate } = useAi();
   const { save } = useStorage();
+  const debug = useDebug();
+
+  useEffect(() => {
+    debug.info('Next.js page loaded', { page: 'index' });
+  }, []);
+
+  const handleGenerateAndSave = async () => {
+    const span = debug.createSpan('nextjs-workflow');
+
+    try {
+      // Generate content
+      const result = await generate("Generate a blog post about Next.js");
+      debug.info('Content generated', { wordCount: result.text.split(' ').length });
+
+      // Save to storage (simulated)
+      const file = new File([result.text], 'blog-post.txt', { type: 'text/plain' });
+      await save(file, { path: '/content/blog-post.txt' });
+
+      debug.info('Workflow completed successfully');
+    } catch (error) {
+      debug.error('Workflow failed', { error: error.message });
+    } finally {
+      span.end();
+    }
+  };
 
   return (
     <div>
       <h1>Enterprise SDK + Next.js</h1>
       <p>Building intelligent applications made easy!</p>
+      <button onClick={handleGenerateAndSave}>Generate & Save Content</button>
     </div>
   );
 }
@@ -345,10 +433,11 @@ pnpm test test/sdk.test.ts
 
 Congratulations! You now have Enterprise SDK set up. Here's what to explore next:
 
-1. **[API Reference](./api.md)** - Complete API documentation
-2. **[Module Guide](./modules.md)** - Deep dive into each module
-3. **[Configuration Guide](./configuration.md)** - Advanced configuration options
-4. **[Examples](./examples.md)** - Real-world examples and tutorials
+1. **[Debug Guide](./debug-guide.md)** - Learn about the new debug system with tracing
+2. **[API Reference](./api-reference.md)** - Complete API documentation
+3. **[Module Guide](./module-guide.md)** - Deep dive into each module
+4. **[Configuration Guide](./configuration-guide.md)** - Advanced configuration options
+5. **[Integration Guide](./integration-guide.md)** - Framework-specific integrations
 
 ## 🆘 Need Help?
 
@@ -364,5 +453,6 @@ You've successfully set up Enterprise SDK! Start building amazing intelligent ap
 - 🔐 Secure authentication
 - 📋 Project management
 - 🔄 Self-reference capabilities
+- 🔍 Debug system with tracing and performance monitoring
 
 Happy coding! 🚀

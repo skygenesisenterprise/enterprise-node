@@ -53,15 +53,26 @@ export default App;
 
 ```typescript
 import React from 'react';
-import { useAI, useStorage, useUI } from '@skygenesisenterprise/core';
+import { useAI, useStorage, useUI, useDebug } from '@skygenesisenterprise/core';
 
 function AIComponent() {
   const ai = useAI();
+  const debug = useDebug();
   const [response, setResponse] = React.useState('');
 
   const generateText = async () => {
-    const result = await ai.generate('Write a hello world message');
-    setResponse(result);
+    const span = debug.createSpan('ai-generation');
+
+    try {
+      debug.info('Starting AI generation');
+      const result = await ai.generate('Write a hello world message');
+      setResponse(result);
+      debug.info('AI generation successful', { length: result.length });
+    } catch (error) {
+      debug.error('AI generation failed', { error: error.message });
+    } finally {
+      span.end();
+    }
   };
 
   return (
@@ -74,23 +85,36 @@ function AIComponent() {
 
 function StorageComponent() {
   const storage = useStorage();
+  const debug = useDebug();
   const [data, setData] = React.useState(null);
 
   React.useEffect(() => {
     const loadData = async () => {
-      const result = await storage.retrieve('user:123');
-      setData(result);
+      const span = debug.createSpan('storage-load');
+
+      try {
+        debug.debug('Loading storage data', { key: 'user:123' });
+        const result = await storage.retrieve('user:123');
+        setData(result);
+        debug.info('Storage data loaded successfully');
+      } catch (error) {
+        debug.error('Storage load failed', { error: error.message });
+      } finally {
+        span.end();
+      }
     };
     loadData();
-  }, [storage]);
+  }, [storage, debug]);
 
   return <div>{JSON.stringify(data)}</div>;
 }
 
 function UIComponent() {
   const ui = useUI();
+  const debug = useDebug();
 
   const showNotification = () => {
+    debug.debug('Showing notification', { type: 'success' });
     ui.showNotification('Hello from Enterprise SDK!', 'success');
   };
 
@@ -98,6 +122,36 @@ function UIComponent() {
     <button onClick={showNotification}>
       Show Notification
     </button>
+  );
+}
+
+function DebugComponent() {
+  const debug = useDebug();
+  const [metrics, setMetrics] = React.useState(null);
+
+  React.useEffect(() => {
+    // Update metrics every 5 seconds
+    const interval = setInterval(() => {
+      setMetrics(debug.getMetrics());
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [debug]);
+
+  const testLogging = () => {
+    debug.trace('Trace message');
+    debug.debug('Debug message');
+    debug.info('Info message');
+    debug.warn('Warning message');
+    debug.error('Error message');
+  };
+
+  return (
+    <div>
+      <h3>Debug System</h3>
+      <button onClick={testLogging}>Test Logging</button>
+      <pre>{JSON.stringify(metrics, null, 2)}</pre>
+    </div>
   );
 }
 ```
@@ -227,24 +281,53 @@ export async function initializeEnterprise() {
 ```svelte
 <!-- src/routes/+page.svelte -->
 <script>
-  import { ai, storage, ui } from '@skygenesisenterprise/core/stores';
+  import { ai, storage, ui, debug } from '@skygenesisenterprise/core/stores';
   import { onMount } from 'svelte';
 
   let response = '';
   let data = null;
+  let metrics = null;
 
   onMount(async () => {
-    // Use AI module
-    $ai.generate('Hello world').then(result => {
-      response = result;
-    });
+    $debug.info('Svelte page mounted');
 
-    // Use Storage module
-    data = await $storage.retrieve('user:123');
+    // Use AI module with debug tracing
+    const span = $debug.createSpan('svelte-page-load');
+
+    try {
+      // Use AI module
+      const aiResult = await $ai.generate('Hello world');
+      response = aiResult;
+      $debug.info('AI generation completed', { length: response.length });
+
+      // Use Storage module
+      data = await $storage.retrieve('user:123');
+      $debug.info('Storage data loaded', { hasData: !!data });
+    } catch (error) {
+      $debug.error('Page load failed', { error: error.message });
+    } finally {
+      span.end();
+    }
+
+    // Update metrics periodically
+    const interval = setInterval(() => {
+      metrics = $debug.getMetrics();
+    }, 5000);
+
+    return () => clearInterval(interval);
   });
 
   function showNotification() {
+    $debug.debug('Showing notification from Svelte');
     $ui.showNotification('Hello from Svelte!', 'success');
+  }
+
+  function testDebugLevels() {
+    $debug.trace('Trace level message');
+    $debug.debug('Debug level message');
+    $debug.info('Info level message');
+    $debug.warn('Warning level message');
+    $debug.error('Error level message');
   }
 </script>
 
@@ -252,6 +335,12 @@ export async function initializeEnterprise() {
 <p>AI Response: {response}</p>
 <p>Storage Data: {JSON.stringify(data)}</p>
 <button on:click={showNotification}>Show Notification</button>
+<button on:click={testDebugLevels}>Test Debug Levels</button>
+
+{#if metrics}
+  <h3>Debug Metrics</h3>
+  <pre>{JSON.stringify(metrics, null, 2)}</pre>
+{/if}
 ```
 
 ### Vue Integration
@@ -304,19 +393,62 @@ app.mount('#app');
   <div>
     <button @click="generateText">Generate Text</button>
     <p>{{ response }}</p>
+    <button @click="testDebug">Test Debug</button>
+    <div v-if="metrics">
+      <h4>Debug Metrics:</h4>
+      <pre>{{ JSON.stringify(metrics, null, 2) }}</pre>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue';
+import { ref, inject, onMounted } from 'vue';
 import type { EnterpriseSDK } from '@skygenesisenterprise/core';
 
 const enterprise = inject<EnterpriseSDK>('enterprise');
 const response = ref('');
+const metrics = ref(null);
+
+onMounted(() => {
+  if (enterprise?.debug) {
+    enterprise.debug.info('Vue component mounted');
+
+    // Update metrics periodically
+    const interval = setInterval(() => {
+      metrics.value = enterprise.debug.getMetrics();
+    }, 5000);
+
+    onUnmounted(() => clearInterval(interval));
+  }
+});
 
 const generateText = async () => {
   if (enterprise) {
-    response.value = await enterprise.ai.generate('Write a hello message');
+    const span = enterprise.debug.createSpan('vue-ai-generation');
+
+    try {
+      enterprise.debug.info('Starting AI generation from Vue');
+      response.value = await enterprise.ai.generate('Write a hello message');
+      enterprise.debug.info('AI generation successful', {
+        responseLength: response.value.length,
+      });
+    } catch (error) {
+      enterprise.debug.error('AI generation failed', {
+        error: error.message,
+      });
+    } finally {
+      span.end();
+    }
+  }
+};
+
+const testDebug = () => {
+  if (enterprise?.debug) {
+    enterprise.debug.trace('Vue trace message');
+    enterprise.debug.debug('Vue debug message');
+    enterprise.debug.info('Vue info message');
+    enterprise.debug.warn('Vue warning message');
+    enterprise.debug.error('Vue error message');
   }
 };
 </script>
@@ -345,18 +477,36 @@ async function initializeSDK() {
       ai: true,
       storage: true,
       auth: true,
+      debug: true, // Enable debug system
     },
   });
 }
 
 // AI Endpoint
 app.post('/api/ai/generate', async (req, res) => {
+  const span = enterprise.debug.createSpan('express-ai-endpoint');
+
   try {
     const { prompt } = req.body;
+    enterprise.debug.info('AI generation request', {
+      promptLength: prompt?.length,
+      ip: req.ip,
+    });
+
     const response = await enterprise.ai.generate(prompt);
+
+    enterprise.debug.info('AI generation successful', {
+      responseLength: response.length,
+    });
     res.json({ response });
   } catch (error) {
+    enterprise.debug.error('AI generation failed', {
+      error: error.message,
+      stack: error.stack,
+    });
     res.status(500).json({ error: error.message });
+  } finally {
+    span.end();
   }
 });
 
@@ -655,9 +805,50 @@ export default defineConfig({
 
 ### Monitoring and Debugging
 
-1. **Performance Monitoring**: Track SDK performance
-2. **Error Tracking**: Monitor SDK errors
-3. **Usage Analytics**: Track module usage
+1. **Performance Monitoring**: Track SDK performance with built-in debug spans
+2. **Error Tracking**: Monitor SDK errors with structured logging
+3. **Usage Analytics**: Track module usage and performance metrics
 4. **Health Checks**: Implement health check endpoints
+5. **Debug System**: Use the integrated debug module for comprehensive tracing and logging
+
+#### Debug System Integration
+
+The Enterprise SDK includes a comprehensive debug system inspired by Rust's tracing ecosystem:
+
+```typescript
+// Enable debug module in configuration
+const config = {
+  modules: {
+    debug: true, // Enable debug system
+    // ... other modules
+  },
+};
+
+// Use debug in your application
+const debug = enterprise.debug;
+
+// Create spans for tracing operations
+const span = debug.createSpan('user-operation', { userId: '123' });
+
+// Log at different levels
+debug.trace('Detailed trace information');
+debug.debug('Debug information');
+debug.info('General information');
+debug.warn('Warning message');
+debug.error('Error occurred', { error: error.message });
+
+// Get performance metrics
+const metrics = debug.getMetrics();
+console.log('Active spans:', metrics.activeSpans);
+console.log('Total operations:', metrics.totalOperations);
+```
+
+#### Framework-Specific Debug Integration
+
+- **React**: Use `useDebug()` hook for component-level debugging
+- **Svelte**: Access debug via `$debug` store
+- **Vue**: Use injected debug instance from enterprise SDK
+- **Next.js**: Debug spans automatically track API route performance
+- **Express**: Middleware integration for request tracing
 
 This integration guide provides comprehensive information for integrating the Enterprise SDK with various frameworks and platforms. Choose the integration that best fits your development stack and requirements.

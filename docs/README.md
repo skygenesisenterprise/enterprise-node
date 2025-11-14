@@ -18,6 +18,8 @@
 - [Installation](#installation)
 - [Core Concepts](#core-concepts)
 - [Modules](#modules)
+- [Debug System](#debug-system)
+- [Plugin System](#plugin-system)
 - [Configuration](#configuration)
 - [Integrations](#integrations)
 - [API Reference](#api-reference)
@@ -37,6 +39,8 @@ The Enterprise SDK is a comprehensive, modular TypeScript SDK designed for build
 - 🔐 **Authentication**: JWT, OAuth, and SAML authentication providers
 - 📁 **Project Management**: Programmatic package.json and project management
 - 🔄 **Self-Reference**: Unique meta-programming and introspection capabilities
+- 🔍 **Debug System**: Comprehensive tracing and logging inspired by Rust's tracing
+- 🔌 **Plugin System**: Modular architecture with lifecycle management
 - ⚡ **Performance**: WASM runtime with JavaScript fallbacks
 - 🎭 **Branding**: Comprehensive theming and branding system
 
@@ -63,6 +67,7 @@ const enterprise = await createEnterprise({
     ai: true,
     storage: true,
     ui: true,
+    debug: true, // Enable debug system
   },
   branding: {
     name: 'My Application',
@@ -80,6 +85,11 @@ const user = await enterprise.storage.retrieve('user:123');
 
 // Use UI module
 enterprise.ui.showNotification('Welcome to Enterprise SDK!', 'success');
+
+// Use Debug module
+const span = enterprise.debug.createSpan('user-operation');
+enterprise.debug.info('Operation completed successfully');
+span.end();
 ```
 
 ### 3. React Integration
@@ -167,10 +177,12 @@ The Enterprise SDK follows a modular architecture where each module provides spe
 │   ├── ui/          # UI components
 │   ├── auth/        # Authentication
 │   ├── project/     # Project management
-│   └── sdk/         # Self-reference capabilities
+│   ├── sdk/         # Self-reference capabilities
+│   └── debug/       # Debug system and tracing
 ├── integrations/
 │   ├── react/       # React integration
 │   └── svelte/      # Svelte integration
+├── plugins/         # Plugin system
 └── shared/          # Shared utilities
 ```
 
@@ -184,6 +196,7 @@ const config = {
     ai: { provider: 'openai', apiKey: '...' },
     storage: { provider: 's3', bucket: 'my-bucket' },
     ui: { theme: 'dark' },
+    debug: { level: 'info', enableTracing: true },
   },
   branding: {
     name: 'My App',
@@ -340,6 +353,89 @@ const analysis = await sdk.analyzeSelf();
 
 [📖 Full SDK Documentation](./module-guide.md#sdk-module)
 
+## 🔍 Debug System
+
+Comprehensive debugging and tracing system inspired by Rust's tracing ecosystem.
+
+**Features:**
+
+- 5-level logging (TRACE, DEBUG, INFO, WARN, ERROR)
+- Distributed tracing with spans
+- Performance monitoring and metrics
+- Structured logging with JSON output
+- Module-specific debug macros
+- Real-time log filtering
+
+**Quick Example:**
+
+```typescript
+// Enable debug module
+const enterprise = await createEnterprise({
+  modules: { debug: true },
+});
+
+// Create spans for tracing
+const span = enterprise.debug.createSpan('user-operation', {
+  userId: '123',
+  operation: 'data-processing',
+});
+
+// Log at different levels
+enterprise.debug.info('Processing user data', { recordCount: 1000 });
+enterprise.debug.warn('Rate limit approaching', { currentRate: 95 });
+
+// End span and get metrics
+span.end();
+const metrics = enterprise.debug.getMetrics();
+console.log(`Operation completed in ${span.duration}ms`);
+```
+
+[📖 Full Debug Documentation](./debug-guide.md)
+
+## 🔌 Plugin System
+
+Modular plugin architecture with lifecycle management and debug integration.
+
+**Features:**
+
+- Plugin registration and discovery
+- Lifecycle management (initialize, configure, destroy)
+- Dependency resolution
+- Performance monitoring
+- Framework-specific plugins
+- Debug integration for all plugin operations
+
+**Quick Example:**
+
+```typescript
+// Create a plugin
+class MyPlugin implements EnterprisePlugin {
+  name = 'my-plugin';
+  version = '1.0.0';
+
+  async initialize(context: PluginContext) {
+    context.debug.info('Initializing plugin');
+    // Plugin setup logic
+  }
+
+  async execute(input: any) {
+    const span = context.debug.createSpan('plugin-execution');
+    try {
+      // Plugin logic
+      return { processed: true, data: input };
+    } finally {
+      span.end();
+    }
+  }
+}
+
+// Register and use plugin
+await enterprise.plugins.register(new MyPlugin());
+const result = await enterprise.plugins.execute('my-plugin', data);
+```
+
+[📖 Full Plugin Documentation](./plugin-guide.md)
+
 ## ⚙️ Configuration
 
 ### Basic Configuration
@@ -371,6 +467,12 @@ const enterprise = await createEnterprise({
       provider: 'jwt',
       secret: process.env.JWT_SECRET,
       expiresIn: '1h',
+    },
+    debug: {
+      level: 'info',
+      enableTracing: true,
+      enableConsole: true,
+      maxLogEntries: 1000,
     },
   },
   branding: {
@@ -508,6 +610,8 @@ interface EnterpriseSDK {
   auth: Auth;
   project: Project;
   sdk: SDK;
+  debug: Debug;
+  plugins: PluginManager;
 }
 ```
 
@@ -652,6 +756,97 @@ const aiInfo = enterprise.sdk.getModuleInfo('ai');
 console.log('AI module:', aiInfo);
 ```
 
+### Debug System Example
+
+```typescript
+import { createEnterprise } from '@skygenesisenterprise/core';
+
+const enterprise = await createEnterprise({
+  modules: {
+    ai: true,
+    debug: { level: 'info', enableTracing: true },
+  },
+});
+
+// Create a span for user operation
+const userSpan = enterprise.debug.createSpan('user-registration', {
+  userId: 'user-123',
+  email: 'user@example.com',
+});
+
+try {
+  enterprise.debug.info('Starting user registration');
+
+  // Simulate user registration
+  const result = await enterprise.ai.generate('Welcome message for new user');
+
+  enterprise.debug.info('User registration successful', {
+    userId: 'user-123',
+    messageLength: result.length,
+  });
+} catch (error) {
+  enterprise.debug.error('User registration failed', {
+    userId: 'user-123',
+    error: error.message,
+  });
+} finally {
+  userSpan.end();
+
+  // Get performance metrics
+  const metrics = enterprise.debug.getMetrics();
+  console.log(`Registration completed in ${userSpan.duration}ms`);
+  console.log('Total operations:', metrics.totalSpans);
+}
+```
+
+### Plugin System Example
+
+```typescript
+import { EnterprisePlugin, PluginContext } from '@skygenesisenterprise/core';
+
+class AnalyticsPlugin implements EnterprisePlugin {
+  name = 'analytics-plugin';
+  version = '1.0.0';
+
+  async initialize(context: PluginContext) {
+    context.debug.info('Initializing analytics plugin');
+
+    // Setup analytics tracking
+    this.setupTracking(context.debug);
+  }
+
+  trackEvent(event: string, data: any) {
+    const span = enterprise.debug.createSpan('analytics-event', { event });
+
+    try {
+      // Send to analytics service
+      this.sendToAnalytics(event, data);
+
+      enterprise.debug.info('Event tracked', { event, dataKeys: Object.keys(data) });
+    } catch (error) {
+      enterprise.debug.error('Event tracking failed', { event, error: error.message });
+    } finally {
+      span.end();
+    }
+  }
+
+  private setupTracking(debug: any) {
+    debug.debug('Analytics tracking setup completed');
+  }
+
+  private sendToAnalytics(event: string, data: any) {
+    // Analytics service integration
+  }
+}
+
+// Register and use the plugin
+await enterprise.plugins.register(new AnalyticsPlugin());
+await enterprise.plugins.execute('analytics-plugin', {
+  event: 'user_login',
+  data: { userId: 'user-123', timestamp: Date.now() },
+});
+```
+
 [📖 More Examples](./examples.md)
 
 ## 🔧 Troubleshooting
@@ -791,7 +986,8 @@ enterprise-sdk/
 │   ├── ui/            # UI module
 │   ├── auth/          # Auth module
 │   ├── project/       # Project module
-│   └── sdk/           # SDK module
+│   ├── sdk/           # SDK module
+│   └── debug/         # Debug module
 ├── src/               # Source code
 ├── docs/              # Documentation
 ├── examples/          # Example projects
