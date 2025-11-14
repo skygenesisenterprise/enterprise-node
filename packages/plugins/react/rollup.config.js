@@ -27,6 +27,7 @@ export default defineConfig([
         declarationDir: 'dist',
         rootDir: 'src',
         exclude: ['../../../core/src/plugin-system/types.ts'],
+        outputToFilesystem: false,
       }),
     ],
     external: [

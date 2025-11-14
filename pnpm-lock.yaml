@@ -132,7 +132,7 @@ importers:
     dependencies:
       '@skygenesisenterprise/enterprise-node':
         specifier: workspace:*
-        version: link:../../core
+        version: link:../../..
       '@skygenesisenterprise/shared':
         specifier: workspace:*
         version: link:../../shared
@@ -233,7 +233,7 @@ importers:
     dependencies:
       '@skygenesisenterprise/enterprise-node':
         specifier: workspace:*
-        version: link:../../core
+        version: link:../../..
       '@skygenesisenterprise/shared':
         specifier: workspace:*
         version: link:../../shared
@@ -282,7 +282,7 @@ importers:
     dependencies:
       '@skygenesisenterprise/enterprise-node':
         specifier: workspace:*
-        version: link:../../core
+        version: link:../../..
       '@skygenesisenterprise/shared':
         specifier: workspace:*
         version: link:../../shared
@@ -325,6 +325,34 @@ importers:
         version: 1.6.1(@types/node@20.19.25)
 
   packages/modules/ai:
+    dependencies:
+      '@skygenesisenterprise/shared':
+        specifier: workspace:*
+        version: link:../../shared
+    devDependencies:
+      '@rollup/plugin-node-resolve':
+        specifier: ^15.0.0
+        version: 15.3.1(rollup@4.53.2)
+      '@rollup/plugin-typescript':
+        specifier: ^11.0.0
+        version: 11.1.6(rollup@4.53.2)(typescript@5.9.3)
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.25
+      rimraf:
+        specifier: ^5.0.0
+        version: 5.0.10
+      rollup:
+        specifier: ^4.0.0
+        version: 4.53.2
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
+      vitest:
+        specifier: ^1.0.0
+        version: 1.6.1(@types/node@20.19.25)
+
+  packages/modules/api:
     dependencies:
       '@skygenesisenterprise/shared':
         specifier: workspace:*
@@ -549,7 +577,7 @@ importers:
         version: 11.1.6(rollup@4.53.2)(typescript@5.9.3)
       '@skygenesisenterprise/enterprise-node':
         specifier: ^1.0.9
-        version: 1.1.4
+        version: link:../../..
       rimraf:
         specifier: ^5.0.5
         version: 5.0.10
@@ -567,7 +595,7 @@ importers:
     dependencies:
       '@skygenesisenterprise/enterprise-node':
         specifier: ^1.1.4
-        version: 1.1.4
+        version: link:../../..
       '@skygenesisenterprise/shared':
         specifier: ^1.0.9
         version: link:../../shared
@@ -632,7 +660,7 @@ importers:
         version: 11.1.6(rollup@4.53.2)(typescript@5.9.3)
       '@skygenesisenterprise/enterprise-node':
         specifier: ^1.0.9
-        version: 1.1.4
+        version: link:../../..
       '@types/node':
         specifier: ^20.19.25
         version: 20.19.25
@@ -2152,10 +2180,6 @@ packages:
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
-
-  /@skygenesisenterprise/enterprise-node@1.1.4:
-    resolution: {integrity: sha512-DeILBiDUtsS+sF6tDYvRoQLObmA0HQwUglPDcqlGnwyuYdKum8FGy7neHSeXiGG1ICEDdWXO+XFAWyu6KDzMwA==}
-    engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
 
   /@smithy/abort-controller@4.2.5:
     resolution: {integrity: sha512-j7HwVkBw68YW8UmFRcjZOmssE77Rvk0GWAIN1oFBhsaovQmZWYCIcGa9/pwRB0ExI8Sk9MWNALTjftjHZea7VA==}
