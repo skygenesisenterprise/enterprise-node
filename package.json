@@ -1,7 +1,7 @@
 {
-  "name": "@skygenesisenterprise/enterprise-monorepo",
-  "version": "1.0.9",
-  "description": "Enterprise SDK Monorepo - Le runtime web du SDK universel Enterprise de Sky Genesis Enterprise",
+  "name": "@skygenesisenterprise/enterprise-node",
+  "version": "1.2.9",
+  "description": "Enterprise SDK - Le runtime web du SDK universel Enterprise de Sky Genesis Enterprise",
   "type": "module",
   "private": false,
   "workspaces": [
@@ -29,7 +29,7 @@
   "keywords": [
     "sdk",
     "enterprise",
-    "monorepo",
+    "sdk",
     "wasm",
     "ai",
     "storage",
