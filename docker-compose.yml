@@ -1,0 +1,183 @@
+# 🐳 Docker Compose pour Enterprise SDK
+# Permet de lancer facilement différentes configurations du SDK
+
+version: '3.8'
+
+services:
+  # Service de base - SDK Enterprise
+  enterprise-base:
+    build:
+      context: .
+      target: base
+    image: skygenesisenterprise/enterprise-node:latest
+    container_name: enterprise-sdk-base
+    environment:
+      - NODE_ENV=production
+      - SDK_DEBUG=false
+      - SDK_WASM_ENABLED=true
+    volumes:
+      - ./examples:/app/examples:ro
+    networks:
+      - enterprise-network
+    profiles:
+      - base
+
+  # Service de démonstration complète
+  enterprise-demo:
+    build:
+      context: .
+      target: demo
+    image: skygenesisenterprise/enterprise-node:demo
+    container_name: enterprise-sdk-demo
+    environment:
+      - NODE_ENV=production
+      - SDK_DEBUG=true
+      - SDK_WASM_ENABLED=true
+    volumes:
+      - ./examples:/app/examples:ro
+    networks:
+      - enterprise-network
+    profiles:
+      - demo
+
+  # Service de développement
+  enterprise-dev:
+    build:
+      context: .
+      target: development
+    image: skygenesisenterprise/enterprise-node:dev
+    container_name: enterprise-sdk-dev
+    environment:
+      - NODE_ENV=development
+      - SDK_DEBUG=true
+      - SDK_WASM_ENABLED=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - '3000:3000'
+      - '9229:9229' # Port pour le debugging Node.js
+    networks:
+      - enterprise-network
+    profiles:
+      - dev
+
+  # Service Next.js avec SDK
+  enterprise-nextjs:
+    build:
+      context: .
+      target: base
+    image: skygenesisenterprise/enterprise-node:nextjs
+    container_name: enterprise-sdk-nextjs
+    environment:
+      - NODE_ENV=production
+      - SDK_DEBUG=false
+      - SDK_WASM_ENABLED=true
+    volumes:
+      - ./examples/nextjs-simple-example.tsx:/app/index.tsx:ro
+    ports:
+      - '3001:3000'
+    networks:
+      - enterprise-network
+    profiles:
+      - nextjs
+
+  # Service Quick Start
+  enterprise-quickstart:
+    build:
+      context: .
+      target: base
+    image: skygenesisenterprise/enterprise-node:quickstart
+    container_name: enterprise-sdk-quickstart
+    environment:
+      - NODE_ENV=production
+      - SDK_DEBUG=true
+      - SDK_WASM_ENABLED=true
+    volumes:
+      - ./examples/quick-start.ts:/app/quick-start.ts:ro
+    networks:
+      - enterprise-network
+    profiles:
+      - quickstart
+
+  # Service avec variables d'environnement pour l'IA
+  enterprise-ai:
+    build:
+      context: .
+      target: demo
+    image: skygenesisenterprise/enterprise-node:ai
+    container_name: enterprise-sdk-ai
+    environment:
+      - NODE_ENV=production
+      - SDK_DEBUG=true
+      - SDK_WASM_ENABLED=true
+      - AI_API_KEY=${AI_API_KEY:-your-api-key-here}
+      - AI_MODEL=euse-generate-v0.1.0
+      - AI_MAX_TOKENS=1000
+      - AI_TEMPERATURE=0.7
+    volumes:
+      - ./examples:/app/examples:ro
+    networks:
+      - enterprise-network
+    profiles:
+      - ai
+
+  # Service avec base de données (pour le module Storage)
+  enterprise-storage:
+    build:
+      context: .
+      target: demo
+    image: skygenesisenterprise/enterprise-node:storage
+    container_name: enterprise-sdk-storage
+    environment:
+      - NODE_ENV=production
+      - SDK_DEBUG=true
+      - SDK_WASM_ENABLED=true
+      - STORAGE_TYPE=database
+      - DATABASE_URL=postgresql://enterprise:password@postgres:5432/enterprise_db
+    depends_on:
+      - postgres
+    volumes:
+      - ./examples:/app/examples:ro
+    networks:
+      - enterprise-network
+    profiles:
+      - storage
+
+  # Base de données PostgreSQL pour le module Storage
+  postgres:
+    image: postgres:15-alpine
+    container_name: enterprise-postgres
+    environment:
+      - POSTGRES_DB=enterprise_db
+      - POSTGRES_USER=enterprise
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - enterprise-network
+    profiles:
+      - storage
+
+  # Service Redis pour le cache
+  redis:
+    image: redis:7-alpine
+    container_name: enterprise-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - enterprise-network
+    profiles:
+      - cache
+
+networks:
+  enterprise-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
