@@ -86,3 +86,4 @@ export declare const project_log: {
     span: <T>(name: string, fn: () => T, metadata?: Record<string, any>) => T;
     asyncSpan: <T>(name: string, fn: () => Promise<T>, metadata?: Record<string, any>) => Promise<T>;
 };
+//# sourceMappingURL=macros.d.ts.map

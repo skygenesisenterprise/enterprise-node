@@ -36,7 +36,8 @@ export interface Subscriber {
     on_span_end(span: SpanContext): void;
 }
 export declare class DebugError extends Error {
-    code?: string | undefined;
-    context?: Record<string, any> | undefined;
-    constructor(message: string, code?: string | undefined, context?: Record<string, any> | undefined);
+    code?: string;
+    context?: Record<string, any>;
+    constructor(message: string, code?: string, context?: Record<string, any>);
 }
+//# sourceMappingURL=types.d.ts.map

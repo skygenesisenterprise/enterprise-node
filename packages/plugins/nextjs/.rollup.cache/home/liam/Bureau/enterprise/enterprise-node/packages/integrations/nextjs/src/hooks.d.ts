@@ -85,3 +85,4 @@ export declare function useNextjsAI(): {
     isProcessing: boolean;
     isAvailable: boolean;
 };
+//# sourceMappingURL=hooks.d.ts.map

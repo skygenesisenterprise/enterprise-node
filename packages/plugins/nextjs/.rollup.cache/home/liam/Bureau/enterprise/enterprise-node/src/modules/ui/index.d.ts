@@ -45,3 +45,4 @@ export declare class Ui implements ModuleInterface {
     private injectStyles;
 }
 export default Ui;
+//# sourceMappingURL=index.d.ts.map

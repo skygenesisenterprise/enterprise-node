@@ -14,3 +14,4 @@ export interface AuthResult {
     token?: string;
     error?: string;
 }
+//# sourceMappingURL=types.d.ts.map

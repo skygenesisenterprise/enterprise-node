@@ -11,3 +11,4 @@ export * from './src/hooks';
 export * from './packages/core/src/plugin-system/types';
 export { PluginManager } from './packages/core/src/plugin-system/plugin-manager';
 export { default } from './src/index';
+//# sourceMappingURL=index.d.ts.map

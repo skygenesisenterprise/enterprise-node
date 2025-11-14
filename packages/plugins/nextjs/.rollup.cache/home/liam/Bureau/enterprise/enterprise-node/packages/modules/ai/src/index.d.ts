@@ -75,10 +75,11 @@ export declare const manifest: {
     version: string;
     description: string;
     author: string;
-    dependencies: never[];
+    dependencies: any[];
     exports: {
         '.': string;
     };
     runtime: "hybrid";
 };
 export default Ai;
+//# sourceMappingURL=index.d.ts.map

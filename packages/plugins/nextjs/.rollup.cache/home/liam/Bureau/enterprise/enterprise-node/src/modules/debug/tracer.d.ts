@@ -36,3 +36,4 @@ export declare class Tracer {
     inSpanAsync<T>(name: string, fn: (span: Span) => Promise<T>, parent?: SpanContext, metadata?: Record<string, any>): Promise<T>;
     finishAll(): void;
 }
+//# sourceMappingURL=tracer.d.ts.map

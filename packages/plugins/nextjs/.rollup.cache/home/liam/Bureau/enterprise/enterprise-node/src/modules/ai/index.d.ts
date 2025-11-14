@@ -27,3 +27,4 @@ export declare class Ai implements ModuleInterface {
     }>;
 }
 export default Ai;
+//# sourceMappingURL=index.d.ts.map

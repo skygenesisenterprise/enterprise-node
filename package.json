@@ -1,5 +1,5 @@
 {
-  "name": "@skygenesisenterprise/enterprise-node",
+  "name": "@skygenesisenterprise/enterprise-monorepo",
   "version": "1.0.9",
   "description": "Enterprise SDK Monorepo - Le runtime web du SDK universel Enterprise de Sky Genesis Enterprise",
   "type": "module",
@@ -40,8 +40,6 @@
   ],
   "author": "Sky Genesis Enterprise",
   "license": "MIT",
-  "main": "index.js",
-  "types": "index.d.ts",
   "exports": {
     ".": {
       "types": "./index.d.ts",

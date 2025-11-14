@@ -28,3 +28,4 @@ export declare const enterpriseLayoutConfig: {
         footer: boolean;
     };
 };
+//# sourceMappingURL=metadata.d.ts.map

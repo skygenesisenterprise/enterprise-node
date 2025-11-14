@@ -32,3 +32,4 @@ export declare class BrandingManager {
     applyTheme(): void;
 }
 export declare const brandingManager: BrandingManager;
+//# sourceMappingURL=branding.d.ts.map

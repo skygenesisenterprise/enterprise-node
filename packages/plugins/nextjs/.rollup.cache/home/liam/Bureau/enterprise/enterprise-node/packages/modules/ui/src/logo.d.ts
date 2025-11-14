@@ -10,3 +10,4 @@ export declare function createLogoComponent(brandingManager: any): (props: LogoP
     render: () => Promise<any>;
 };
 export { createLogoComponent as Logo };
+//# sourceMappingURL=logo.d.ts.map

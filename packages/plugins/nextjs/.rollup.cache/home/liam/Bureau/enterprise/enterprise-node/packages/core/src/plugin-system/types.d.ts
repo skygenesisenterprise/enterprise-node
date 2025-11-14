@@ -149,3 +149,4 @@ export interface PluginSystemConfig {
     allowUnsafePlugins?: boolean;
     trustedAuthors?: string[];
 }
+//# sourceMappingURL=types.d.ts.map

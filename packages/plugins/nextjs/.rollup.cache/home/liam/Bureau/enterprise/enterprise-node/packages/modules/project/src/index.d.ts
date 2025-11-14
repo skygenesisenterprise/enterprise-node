@@ -25,3 +25,4 @@ export declare class ProjectManager {
     private generateId;
 }
 export * from './types';
+//# sourceMappingURL=index.d.ts.map

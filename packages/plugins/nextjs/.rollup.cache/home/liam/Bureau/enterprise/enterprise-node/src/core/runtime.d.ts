@@ -9,3 +9,4 @@ export declare class WasmRuntime implements RuntimeCore {
     private createImportObject;
     private simulateCall;
 }
+//# sourceMappingURL=runtime.d.ts.map

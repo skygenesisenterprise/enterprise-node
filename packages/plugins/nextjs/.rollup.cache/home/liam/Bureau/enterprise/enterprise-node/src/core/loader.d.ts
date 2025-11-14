@@ -14,3 +14,4 @@ export declare class ModuleLoader {
     getFramework(): FrameworkType;
     destroy(): Promise<void>;
 }
+//# sourceMappingURL=loader.d.ts.map

@@ -52,3 +52,4 @@ export declare function useUi(): {
     toast: (message: string, type?: any) => Promise<any>;
     isAvailable: any;
 };
+//# sourceMappingURL=svelte.d.ts.map

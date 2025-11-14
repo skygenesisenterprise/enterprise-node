@@ -14,3 +14,4 @@ export declare class AuthManager {
     authorize(user: User, _resource: string, _action: string): Promise<boolean>;
 }
 export * from './types';
+//# sourceMappingURL=index.d.ts.map

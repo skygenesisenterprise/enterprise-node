@@ -17,3 +17,4 @@ export declare class UIManager {
 }
 export * from './types';
 export * from './logo';
+//# sourceMappingURL=index.d.ts.map

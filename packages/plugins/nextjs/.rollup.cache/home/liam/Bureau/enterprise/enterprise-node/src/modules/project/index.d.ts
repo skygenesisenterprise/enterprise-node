@@ -46,3 +46,4 @@ export declare class Project implements ModuleInterface {
     private saveProjects;
 }
 export default Project;
+//# sourceMappingURL=index.d.ts.map

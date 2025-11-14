@@ -41,3 +41,4 @@ export interface RuntimeCore {
     destroy(): void;
 }
 export type FrameworkType = 'react' | 'svelte' | 'nextjs' | 'vanilla';
+//# sourceMappingURL=index.d.ts.map

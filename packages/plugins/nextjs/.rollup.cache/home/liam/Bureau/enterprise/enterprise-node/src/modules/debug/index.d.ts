@@ -26,8 +26,9 @@ export declare function createDebugLogger(target: string): Logger;
 export declare function createTracer(): Tracer;
 export declare function instrument<T>(name: string, fn: (span: Span) => T, target?: string, metadata?: Record<string, any>): T;
 export declare function instrumentAsync<T>(name: string, fn: (span: Span) => Promise<T>, target?: string, metadata?: Record<string, any>): Promise<T>;
-export declare const trace: (target?: string) => (message: string, fields?: Record<string, any>) => void;
-export declare const debug_log: (target?: string) => (message: string, fields?: Record<string, any>) => void;
-export declare const info: (target?: string) => (message: string, fields?: Record<string, any>) => void;
-export declare const warn: (target?: string) => (message: string, fields?: Record<string, any>) => void;
-export declare const error: (target?: string) => (message: string, fields?: Record<string, any>) => void;
+export declare const trace: (target?: string) => any;
+export declare const debug_log: (target?: string) => any;
+export declare const info: (target?: string) => any;
+export declare const warn: (target?: string) => any;
+export declare const error: (target?: string) => any;
+//# sourceMappingURL=index.d.ts.map

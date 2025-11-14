@@ -9,7 +9,7 @@ import {
   PluginContext,
   PluginCommand,
   PluginConfigSchema,
-} from '../../../../../enterprise-node/index';
+} from '@skygenesisenterprise/enterprise-node';
 
 export class NextJSPlugin implements EnterprisePlugin {
   readonly manifest: PluginManifest = {
@@ -650,8 +650,8 @@ export default function Document() {
   }
 
   private generatePage(path: string, type: string): string {
-    const componentName =
-      path.split('/').pop()?.charAt(0).toUpperCase() + path.split('/').pop()?.slice(1) || 'Page';
+    const fileName = path.split('/').pop() || '';
+    const componentName = fileName.charAt(0).toUpperCase() + fileName.slice(1) || 'Page';
 
     if (type === 'page') {
       return `export default function ${componentName}() {
@@ -669,8 +669,8 @@ export default function Document() {
   }
 
   private generatePageTest(path: string): string {
-    const componentName =
-      path.split('/').pop()?.charAt(0).toUpperCase() + path.split('/').pop()?.slice(1) || 'Page';
+    const fileName = path.split('/').pop() || '';
+    const componentName = fileName.charAt(0).toUpperCase() + fileName.slice(1) || 'Page';
 
     return `import { render, screen } from '@testing-library/react';
 import ${componentName} from './${path}';

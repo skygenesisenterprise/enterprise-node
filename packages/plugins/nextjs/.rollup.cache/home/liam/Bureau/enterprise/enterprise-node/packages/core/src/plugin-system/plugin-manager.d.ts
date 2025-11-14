@@ -81,3 +81,4 @@ export declare class PluginManager extends EventEmitter {
      */
     destroy(): Promise<void>;
 }
+//# sourceMappingURL=plugin-manager.d.ts.map

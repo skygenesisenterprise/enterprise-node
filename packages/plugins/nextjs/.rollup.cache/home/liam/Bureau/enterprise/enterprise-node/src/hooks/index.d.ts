@@ -1,2 +1,3 @@
-export * from './react';
-export * from './svelte';
+export { useAi as useReactAi, useAuth as useReactAuth, useBranding as useReactBranding, useProject as useReactProject, useStorage as useReactStorage, useUi as useReactUi, useEnterprise as useReactEnterprise, } from './react';
+export { useAi as useSvelteAi, useAuth as useSvelteAuth, useBranding as useSvelteBranding, useProject as useSvelteProject, useStorage as useSvelteStorage, useUi as useSvelteUi, } from './svelte';
+//# sourceMappingURL=index.d.ts.map

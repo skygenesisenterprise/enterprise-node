@@ -22,7 +22,8 @@
   "dependencies": {
     "next": "^14.0.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "@skygenesisenterprise/enterprise-node": "^1.1.4"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -32,10 +33,12 @@
     "rollup-plugin-dts": "^6.1.0",
     "typescript": "^5.3.3",
     "rimraf": "^5.0.5",
-    "@skygenesisenterprise/enterprise-node": "^1.0.9"
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/node": "^20.0.0"
   },
   "peerDependencies": {
-    "@skygenesisenterprise/enterprise-node": "^1.0.0"
+    "@skygenesisenterprise/enterprise-node": "^1.1.4"
   },
   "scripts": {
     "build": "rimraf dist && rollup -c",

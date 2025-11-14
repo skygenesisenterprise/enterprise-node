@@ -63,3 +63,4 @@ export declare class Auth implements ModuleInterface {
     private clearSession;
 }
 export default Auth;
+//# sourceMappingURL=index.d.ts.map

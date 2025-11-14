@@ -35,3 +35,4 @@ export declare class Storage implements ModuleInterface {
     private generateHash;
 }
 export default Storage;
+//# sourceMappingURL=index.d.ts.map

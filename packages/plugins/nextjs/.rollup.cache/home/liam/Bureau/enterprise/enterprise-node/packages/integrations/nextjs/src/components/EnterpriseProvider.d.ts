@@ -12,3 +12,4 @@ interface EnterpriseProviderProps {
  */
 export declare function EnterpriseProvider({ children, config, autoInitialize, fallback, errorComponent, }: EnterpriseProviderProps): import("react/jsx-runtime").JSX.Element;
 export {};
+//# sourceMappingURL=EnterpriseProvider.d.ts.map

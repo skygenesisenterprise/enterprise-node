@@ -21,3 +21,4 @@ export declare class Logger {
     withFields(fields: Record<string, any>): Logger;
     withTarget(target: string): Logger;
 }
+//# sourceMappingURL=logger.d.ts.map

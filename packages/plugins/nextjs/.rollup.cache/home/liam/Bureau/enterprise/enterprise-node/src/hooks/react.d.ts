@@ -13,13 +13,13 @@ export declare function useAi(): {
     enhance: any;
     generate: any;
     isProcessing: any;
-    isAvailable: any;
+    isAvailable: boolean;
 };
 export declare function useStorage(): {
     save: any;
     load: any;
     isUploading: any;
-    isAvailable: any;
+    isAvailable: boolean;
 };
 export declare function useAuth(): {
     login: any;
@@ -28,7 +28,7 @@ export declare function useAuth(): {
     user: any;
     isAuthenticated: any;
     isAuthenticating: any;
-    isAvailable: any;
+    isAvailable: boolean;
 };
 export declare function useBranding(): {
     logoUrl: any;
@@ -46,11 +46,12 @@ export declare function useProject(): {
     open: any;
     save: any;
     currentProject: any;
-    isAvailable: any;
+    isAvailable: boolean;
 };
 export declare function useUi(): {
     notify: any;
     modal: any;
     toast: any;
-    isAvailable: any;
+    isAvailable: boolean;
 };
+//# sourceMappingURL=react.d.ts.map

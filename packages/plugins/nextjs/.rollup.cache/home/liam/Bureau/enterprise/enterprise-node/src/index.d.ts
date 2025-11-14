@@ -39,3 +39,4 @@ export * from './types';
 export * from './hooks';
 export declare const getNextjsBridge: () => Promise<any>;
 export default Enterprise;
+//# sourceMappingURL=index.d.ts.map

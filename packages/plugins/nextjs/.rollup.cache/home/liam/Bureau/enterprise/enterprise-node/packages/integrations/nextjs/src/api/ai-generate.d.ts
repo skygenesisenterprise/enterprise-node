@@ -14,3 +14,4 @@ export declare function GET(): Promise<NextResponse<{
     status: string;
     error: string;
 }>>;
+//# sourceMappingURL=ai-generate.d.ts.map
