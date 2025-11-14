@@ -9,7 +9,7 @@ import {
   PluginContext,
   PluginCommand,
   PluginConfigSchema,
-} from '../../../../../enterprise-node/index';
+} from '@skygenesisenterprise/enterprise-node';
 
 export class CapacitorPlugin implements EnterprisePlugin {
   readonly manifest: PluginManifest = {

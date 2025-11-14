@@ -1,0 +1,33 @@
+import { Logger } from './logger';
+import { Tracer, Span } from './tracer';
+import { Subscriber } from './types';
+import { LogLevel } from './types';
+export declare class DebugModule {
+    private static instance;
+    private tracer;
+    private loggers;
+    private globalSubscribers;
+    private constructor();
+    static getInstance(): DebugModule;
+    getLogger(target?: string): Logger;
+    getTracer(): Tracer;
+    subscribe(subscriber: Subscriber): void;
+    unsubscribe(subscriber: Subscriber): void;
+    setGlobalLevel(level: LogLevel): void;
+    enableDebugMode(): void;
+    enableTraceMode(): void;
+    disableDebugMode(): void;
+    instrument<T>(name: string, fn: (span: Span) => T, target?: string, metadata?: Record<string, any>): T;
+    instrumentAsync<T>(name: string, fn: (span: Span) => Promise<T>, target?: string, metadata?: Record<string, any>): Promise<T>;
+    shutdown(): void;
+}
+export declare const debug: DebugModule;
+export declare function createDebugLogger(target: string): Logger;
+export declare function createTracer(): Tracer;
+export declare function instrument<T>(name: string, fn: (span: Span) => T, target?: string, metadata?: Record<string, any>): T;
+export declare function instrumentAsync<T>(name: string, fn: (span: Span) => Promise<T>, target?: string, metadata?: Record<string, any>): Promise<T>;
+export declare const trace: (target?: string) => (message: string, fields?: Record<string, any>) => void;
+export declare const debug_log: (target?: string) => (message: string, fields?: Record<string, any>) => void;
+export declare const info: (target?: string) => (message: string, fields?: Record<string, any>) => void;
+export declare const warn: (target?: string) => (message: string, fields?: Record<string, any>) => void;
+export declare const error: (target?: string) => (message: string, fields?: Record<string, any>) => void;

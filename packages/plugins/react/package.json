@@ -2,6 +2,7 @@
   "name": "@skygenesisenterprise/plugin-react",
   "version": "1.0.0",
   "description": "Plugin React officiel pour Enterprise SDK",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Sky Genesis Enterprise",
@@ -21,6 +22,16 @@
   "dependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "rollup": "^4.9.6",
+    "rollup-plugin-dts": "^6.1.0",
+    "typescript": "^5.3.3",
+    "rimraf": "^5.0.5",
+    "@skygenesisenterprise/enterprise-node": "^1.0.9"
   },
   "peerDependencies": {
     "@skygenesisenterprise/enterprise-node": "^1.0.0"
