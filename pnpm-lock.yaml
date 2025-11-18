@@ -254,17 +254,17 @@ importers:
         specifier: ^18.0.0
         version: 18.3.26
       '@types/react-dom':
-        specifier: ^18.0.0
-        version: 18.3.7(@types/react@18.3.26)
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@18.3.26)
       next:
         specifier: ^14.0.0
-        version: 14.2.33(react-dom@18.3.1)(react@18.3.1)
+        version: 14.2.33(react-dom@19.2.0)(react@18.3.1)
       react:
         specifier: ^18.0.0
         version: 18.3.1
       react-dom:
-        specifier: ^18.0.0
-        version: 18.3.1(react@18.3.1)
+        specifier: ^19.2.0
+        version: 19.2.0(react@18.3.1)
       rimraf:
         specifier: ^5.0.0
         version: 5.0.10
@@ -303,14 +303,14 @@ importers:
         specifier: ^18.0.0
         version: 18.3.26
       '@types/react-dom':
-        specifier: ^18.0.0
-        version: 18.3.7(@types/react@18.3.26)
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@18.3.26)
       react:
         specifier: ^18.0.0
         version: 18.3.1
       react-dom:
-        specifier: ^18.0.0
-        version: 18.3.1(react@18.3.1)
+        specifier: ^19.2.0
+        version: 19.2.0(react@18.3.1)
       rimraf:
         specifier: ^5.0.0
         version: 5.0.10
@@ -577,7 +577,7 @@ importers:
         version: 11.1.6(rollup@4.53.2)(typescript@5.9.3)
       '@skygenesisenterprise/enterprise-node':
         specifier: ^1.0.9
-        version: link:../../..
+        version: 1.3.0
       rimraf:
         specifier: ^5.0.5
         version: 5.0.10
@@ -595,19 +595,19 @@ importers:
     dependencies:
       '@skygenesisenterprise/enterprise-node':
         specifier: ^1.1.4
-        version: link:../../..
+        version: 1.3.0
       '@skygenesisenterprise/shared':
         specifier: ^1.0.9
         version: link:../../shared
       next:
         specifier: ^14.0.0
-        version: 14.2.33(react-dom@18.3.1)(react@18.3.1)
+        version: 14.2.33(react-dom@19.2.0)(react@18.3.1)
       react:
         specifier: ^18.0.0
         version: 18.3.1
       react-dom:
-        specifier: ^18.0.0
-        version: 18.3.1(react@18.3.1)
+        specifier: ^19.2.0
+        version: 19.2.0(react@18.3.1)
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
@@ -625,8 +625,8 @@ importers:
         specifier: ^18.0.0
         version: 18.3.26
       '@types/react-dom':
-        specifier: ^18.0.0
-        version: 18.3.7(@types/react@18.3.26)
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@18.3.26)
       rimraf:
         specifier: ^5.0.5
         version: 5.0.10
@@ -646,8 +646,8 @@ importers:
         specifier: ^18.0.0
         version: 18.3.1
       react-dom:
-        specifier: ^18.0.0
-        version: 18.3.1(react@18.3.1)
+        specifier: ^19.2.0
+        version: 19.2.0(react@18.3.1)
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
@@ -660,7 +660,7 @@ importers:
         version: 11.1.6(rollup@4.53.2)(typescript@5.9.3)
       '@skygenesisenterprise/enterprise-node':
         specifier: ^1.0.9
-        version: link:../../..
+        version: 1.3.0
       '@types/node':
         specifier: ^20.19.25
         version: 20.19.25
@@ -2181,6 +2181,10 @@ packages:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
 
+  /@skygenesisenterprise/enterprise-node@1.3.0:
+    resolution: {integrity: sha512-1cqZR9kbMSLJGaJq/THqxkHja+kAiYaoHaW4yGj4rFcaeno6hoZoFVBd1u9OyqnI4oe3VwprFDF16X9qfmIIUw==}
+    engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
+
   /@smithy/abort-controller@4.2.5:
     resolution: {integrity: sha512-j7HwVkBw68YW8UmFRcjZOmssE77Rvk0GWAIN1oFBhsaovQmZWYCIcGa9/pwRB0ExI8Sk9MWNALTjftjHZea7VA==}
     engines: {node: '>=18.0.0'}
@@ -2670,10 +2674,10 @@ packages:
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
     dev: true
 
-  /@types/react-dom@18.3.7(@types/react@18.3.26):
-    resolution: {integrity: sha512-MEe3UeoENYVFXzoXEWsvcpg6ZvlrFNlOQ7EOsvhI3CfAXwzPfO8Qwuxd40nepsYKqyyVQnTdEfv68q91yLcKrQ==}
+  /@types/react-dom@19.2.3(@types/react@18.3.26):
+    resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
     peerDependencies:
-      '@types/react': ^18.0.0
+      '@types/react': ^19.2.0
     dependencies:
       '@types/react': 18.3.26
     dev: true
@@ -4878,7 +4882,7 @@ packages:
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  /next@14.2.33(react-dom@18.3.1)(react@18.3.1):
+  /next@14.2.33(react-dom@19.2.0)(react@18.3.1):
     resolution: {integrity: sha512-GiKHLsD00t4ACm1p00VgrI0rUFAC9cRDGReKyERlM57aeEZkOQGcZTpIbsGn0b562FTPJWmYfKwplfO9EaT6ng==}
     engines: {node: '>=18.17.0'}
     hasBin: true
@@ -4903,7 +4907,7 @@ packages:
       graceful-fs: 4.2.11
       postcss: 8.4.31
       react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
+      react-dom: 19.2.0(react@18.3.1)
       styled-jsx: 5.1.1(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 14.2.33
@@ -5324,14 +5328,13 @@ packages:
   /queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  /react-dom@18.3.1(react@18.3.1):
-    resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
+  /react-dom@19.2.0(react@18.3.1):
+    resolution: {integrity: sha512-UlbRu4cAiGaIewkPyiRGJk0imDN2T3JjieT6spoL2UeSf5od4n5LB/mQ4ejmxhCFT1tYe8IvaFulzynWovsEFQ==}
     peerDependencies:
-      react: ^18.3.1
+      react: ^19.2.0
     dependencies:
-      loose-envify: 1.4.0
       react: 18.3.1
-      scheduler: 0.23.2
+      scheduler: 0.27.0
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -5578,10 +5581,8 @@ packages:
     resolution: {integrity: sha512-yqYn1JhPczigF94DMS+shiDMjDowYO6y9+wB/4WgO0Y19jWYk0lQ4tuG5KI7kj4FTp1wxPj5IFfcrz/s1c3jjQ==}
     dev: false
 
-  /scheduler@0.23.2:
-    resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
-    dependencies:
-      loose-envify: 1.4.0
+  /scheduler@0.27.0:
+    resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
 
   /semver@5.3.0:
     resolution: {integrity: sha512-mfmm3/H9+67MCVix1h+IXTpDwL6710LyHuk7+cWC9T1mE0qz4iHhh6r4hU2wrIT9iTsAAC2XQRvfblL028cpLw==}
